@@ -1,2 +1,2 @@
 # CampusWebAPI
-Web API Project for Cumpus
+Web API Project for Campus
