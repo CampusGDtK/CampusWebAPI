@@ -11,4 +11,8 @@
     <Folder Include="Repositories\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Campus.Core\Campus.Core.csproj" />
+  </ItemGroup>
+
 </Project>

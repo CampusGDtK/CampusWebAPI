@@ -18,4 +18,9 @@
     <Folder Include="ClientApp\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Campus.Core\Campus.Core.csproj" />
+    <ProjectReference Include="..\Campus.Infrastructure\Campus.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
