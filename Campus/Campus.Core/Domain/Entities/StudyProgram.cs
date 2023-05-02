@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Campus.Core.Domain.Entities;
 
 public class StudyProgram
 {
+    [Key]
     public Guid Id { get; set; }
 
     public string Name { get; set; } = null!;
 
     public Guid SpecialityId { get; set; }
 
-    public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
-
+    [ForeignKey("SpecialityId")]
     public virtual Speciality Speciality { get; set; } = null!;
 }

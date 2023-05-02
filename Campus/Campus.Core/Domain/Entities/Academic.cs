@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Campus.Core.Domain.Entities;
 
 public class Academic
 {
+    [Key]
     public Guid Id { get; set; }
 
     public string Name { get; set; } = null!;
 
     public Guid CathedralId { get; set; }
 
-    public virtual ICollection<AcademicDisciplineGroup> AcademicDisciplineGroups { get; set; } = new List<AcademicDisciplineGroup>();
-
-    public virtual Cathedra Cathedral { get; set; } = null!;
-
-    public virtual ICollection<Group> Groups { get; set; } = new List<Group>();
+    [ForeignKey("CathedralId")]
+    public Cathedra Cathedral { get; set; } = null!;
 }

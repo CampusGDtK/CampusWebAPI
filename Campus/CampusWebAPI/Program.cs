@@ -1,4 +1,6 @@
+using Campus.Infrastructure.DataBaseContext;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,11 @@ builder.Services.AddApiVersioning(config =>
 builder.Services.AddVersionedApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'V";
+});
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
 });
 
 var app = builder.Build();

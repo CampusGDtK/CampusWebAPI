@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Campus.Core.Domain.Entities;
 
 public class Cathedra
 {
+    [Key]
     public Guid Id { get; set; }
 
     public string Name { get; set; } = null!;
@@ -13,9 +14,6 @@ public class Cathedra
 
     public Guid FacultyId { get; set; }
 
-    public virtual ICollection<Academic> Academics { get; set; } = new List<Academic>();
-
-    public virtual ICollection<Discipline> Disciplines { get; set; } = new List<Discipline>();
-
-    public virtual Faculty Faculty { get; set; } = null!;
+    [ForeignKey("FacultyId")]
+    public Faculty Faculty { get; set; } = null!;
 }

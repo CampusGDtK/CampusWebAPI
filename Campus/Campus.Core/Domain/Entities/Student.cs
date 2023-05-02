@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Campus.Core.Domain.Entities;
 
 public class Student
 {
+    [Key]
     public Guid Id { get; set; }
 
     public string FullName { get; set; } = null!;
@@ -17,7 +18,6 @@ public class Student
 
     public Guid GroupId { get; set; }
 
-    public virtual ICollection<CurrentControl> CurrentControls { get; set; } = new List<CurrentControl>();
-
+    [ForeignKey("GroupId")]
     public virtual Group Group { get; set; } = null!;
 }
