@@ -8,11 +8,16 @@
 
   <ItemGroup>
     <Folder Include="DataBaseContext\" />
+    <Folder Include="Entities\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Campus.Core\Campus.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
   </ItemGroup>
 
 </Project>
