@@ -1,4 +1,5 @@
-﻿using Campus.Core.Domain.Entities;
+﻿using AutoMapper;
+using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Infrastructure.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,12 @@ namespace Campus.Infrastructure.Repositories
     public class GroupRepository : IRepository<Group>
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public GroupRepository(ApplicationDbContext db)
+        public GroupRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task Create(Group entity)
@@ -51,9 +54,18 @@ namespace Campus.Infrastructure.Repositories
             return await _db.Groups.Include(x => x.Curator).Include(x => x.Faculty).Include(x => x.StudyProgram).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<Group?> Update(Group entity)
+        public async Task<Group?> Update(Group entity)
         {
-            throw new NotImplementedException();
+            var result = await _db.Groups.FindAsync(entity.Id);
+
+            if (result is null)
+            {
+                return null;
+            }
+
+            _mapper.Map(entity, result);
+            await _db.SaveChangesAsync();
+            return result;
         }
     }
 }

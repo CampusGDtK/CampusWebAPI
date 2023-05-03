@@ -1,4 +1,5 @@
-﻿using Campus.Core.Domain.Entities;
+﻿using AutoMapper;
+using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Infrastructure.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +13,13 @@ namespace Campus.Infrastructure.Repositories
 {
     public class DisciplineRepository : IRepository<Discipline>
     {
-        ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public DisciplineRepository(ApplicationDbContext db)
+        public DisciplineRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task Create(Discipline entity)
@@ -54,9 +57,18 @@ namespace Campus.Infrastructure.Repositories
             return result;
         }
 
-        public Task<Discipline?> Update(Discipline entity)
+        public async Task<Discipline?> Update(Discipline entity)
         {
-            throw new NotImplementedException();
+            var result = await _db.Disciplines.FindAsync(entity.Id);
+
+            if (result is null)
+            {
+                return null;
+            }
+
+            _mapper.Map(entity, result);
+            await _db.SaveChangesAsync();
+            return result;
         }
     }
 }
