@@ -1,4 +1,5 @@
-﻿using Campus.Core.Domain.Entities;
+﻿using AutoMapper;
+using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Infrastructure.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +11,15 @@ using System.Threading.Tasks;
 
 namespace Campus.Infrastructure.Repositories
 {
-    public class CurrentControlRespository : IRepository<CurrentControl>
+    public class CurrentControlRepository : IRepository<CurrentControl>
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public CurrentControlRespository(ApplicationDbContext db)
+        public CurrentControlRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task Create(CurrentControl entity)
@@ -56,9 +59,17 @@ namespace Campus.Infrastructure.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<CurrentControl?> Update(CurrentControl entity)
+        public async Task<CurrentControl?> Update(CurrentControl entity)
         {
-            throw new NotImplementedException();
+            CurrentControl? currentControl = await _db.CurrentControls.FindAsync(entity.Id);
+            if(currentControl == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(entity, currentControl);
+            await _db.SaveChangesAsync();
+            return currentControl;
         }
     }
 }

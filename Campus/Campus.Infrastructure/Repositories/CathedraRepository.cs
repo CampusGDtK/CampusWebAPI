@@ -1,10 +1,12 @@
-﻿using Campus.Core.Domain.Entities;
+﻿using AutoMapper;
+using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Infrastructure.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +15,12 @@ namespace Campus.Infrastructure.Repositories
     public class CathedraRepository : IRepository<Cathedra>
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public CathedraRepository(ApplicationDbContext db)
+        public CathedraRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task Create(Cathedra entity)
@@ -50,9 +54,17 @@ namespace Campus.Infrastructure.Repositories
             return await _db.Cathedras.Include(x => x.Faculty).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public Task<Cathedra?> Update(Cathedra entity)
+        public async Task<Cathedra?> Update(Cathedra entity)
         {
-            throw new NotImplementedException();
+            Cathedra? cathedra = await _db.Cathedras.FindAsync(entity.Id);
+            if(cathedra == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(entity, cathedra);
+            await _db.SaveChangesAsync();
+            return cathedra;
         }
     }
 }

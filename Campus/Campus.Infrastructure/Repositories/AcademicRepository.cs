@@ -1,4 +1,5 @@
-﻿using Campus.Core.Domain.Entities;
+﻿using AutoMapper;
+using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Infrastructure.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace Campus.Infrastructure.Repositories
     public class AcademicRepository : IRepository<Academic>
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public AcademicRepository(ApplicationDbContext db)
+        public AcademicRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task Create(Academic entity)
@@ -52,7 +55,15 @@ namespace Campus.Infrastructure.Repositories
 
         public async Task<Academic?> Update(Academic entity)
         {
-            throw new NotImplementedException();
+            Academic? academic = await _db.Academics.FindAsync(entity.Id);
+            if(academic == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(entity, academic);
+            await _db.SaveChangesAsync();
+            return academic;
         }
     }
 }

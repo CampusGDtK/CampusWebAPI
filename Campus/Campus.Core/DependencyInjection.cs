@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Campus.Core.Domain.Entities;
+using Campus.Core.Domain.RepositoryContracts;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Campus.Core;

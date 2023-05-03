@@ -1,22 +1,26 @@
-﻿using Campus.Core.Domain.Entities;
+﻿using AutoMapper;
+using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Infrastructure.DataBaseContext;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Campus.Infrastructure.Repositories
 {
-    public class AcademicDisciplineGroupRespository : IRepository<AcademicDisciplineGroup>
+    public class AcademicDisciplineGroupRepository : IRepository<AcademicDisciplineGroup>
     {
         private readonly ApplicationDbContext _db;
+        private readonly IMapper _mapper;
 
-        public AcademicDisciplineGroupRespository(ApplicationDbContext db)
+        public AcademicDisciplineGroupRepository(ApplicationDbContext db, IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         public async Task Create(AcademicDisciplineGroup entity)
@@ -60,7 +64,15 @@ namespace Campus.Infrastructure.Repositories
 
         public async Task<AcademicDisciplineGroup?> Update(AcademicDisciplineGroup entity)
         {
-            throw new NotImplementedException();
+            AcademicDisciplineGroup? adg = await _db.AcademicDisciplineGroups.FindAsync(entity.Id);
+            if (adg == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(entity, adg);
+            await _db.SaveChangesAsync();
+            return adg;
         }
     }
 }
