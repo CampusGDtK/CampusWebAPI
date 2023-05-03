@@ -33,7 +33,7 @@ namespace Campus.Infrastructure.Repositories
             if (result == null)
                 return false;
 
-            _db.Disciplines.RemoveRange(result);
+            _db.Disciplines.Remove(result);
 
             await _db.SaveChangesAsync();
 
