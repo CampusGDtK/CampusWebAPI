@@ -43,18 +43,18 @@ namespace Campus.Infrastructure.Repositories
         public async Task<IEnumerable<AcademicDisciplineGroup>> GetAll()
         {
             return _db.AcademicDisciplineGroups
-                .Include("Academic")
-                .Include("Discipline")
-                .Include("Group")
+                .Include(x => x.Academic)
+                .Include(x => x.Discipline)
+                .Include(x => x.Group)
                 .AsEnumerable();
         }
 
         public async Task<AcademicDisciplineGroup?> GetValueById(Guid id)
         {
             return await _db.AcademicDisciplineGroups
-                .Include("Academic")
-                .Include("Discipline")
-                .Include("Group")
+                .Include(x => x.Academic)
+                .Include(x => x.Discipline)
+                .Include(x => x.Group)
                 .FirstOrDefaultAsync(a => a.Id == id);
         }
 
