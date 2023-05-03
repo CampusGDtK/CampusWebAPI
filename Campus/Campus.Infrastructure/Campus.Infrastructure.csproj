@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="DataBaseContext\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>
