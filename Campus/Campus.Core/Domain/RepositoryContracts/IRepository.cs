@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Campus.Core.Domain.RepositoryContracts
+﻿namespace Campus.Core.Domain.RepositoryContracts
 {
     /// <summary>
     /// Repository for data base.
@@ -40,7 +34,7 @@ namespace Campus.Core.Domain.RepositoryContracts
         Task<T?> Update(T entity);
 
         /// <summary>
-        /// Mehtod for deleting entity from data base.
+        /// Method for deleting entity from data base.
         /// </summary>
         /// <param name="id">Guid of entity to delete.</param>
         /// <returns>True - if deleting is successful, otherwise - false.</returns>
