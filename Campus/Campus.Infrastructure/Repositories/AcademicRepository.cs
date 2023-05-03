@@ -42,12 +42,12 @@ namespace Campus.Infrastructure.Repositories
 
         public async Task<IEnumerable<Academic>> GetAll()
         {
-            return _db.Academics.Include("Cathedral").AsEnumerable();
+            return _db.Academics.Include(x => x.Cathedral).AsEnumerable();
         }
 
         public async Task<Academic?> GetValueById(Guid id)
         {
-            return await _db.Academics.Include("Cathedral").FirstOrDefaultAsync(a => a.Id == id);
+            return await _db.Academics.Include(x => x.Cathedral).FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<Academic?> Update(Academic entity)

@@ -43,16 +43,16 @@ namespace Campus.Infrastructure.Repositories
         public async Task<IEnumerable<CurrentControl>> GetAll()
         {
             return _db.CurrentControls
-                .Include("Discipline")
-                .Include("Student")
+                .Include(x => x.Discipline)
+                .Include(x => x.Student)
                 .AsEnumerable();
         }
 
         public async Task<CurrentControl?> GetValueById(Guid id)
         {
             return await _db.CurrentControls
-                .Include("Discipline")
-                .Include("Student")
+                .Include(x => x.Discipline)
+                .Include(x => x.Student)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
