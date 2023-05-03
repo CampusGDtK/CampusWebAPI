@@ -22,6 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Academic\Controllers\" />
+    <Folder Include="Areas\Admin\Controllers\" />
+    <Folder Include="Areas\Student\Controllers\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 using Campus.Core;
+using Campus.Infrastructure;
 using Campus.Infrastructure.DataBaseContext;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
 });
 builder.Services.AddCore();
+builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
