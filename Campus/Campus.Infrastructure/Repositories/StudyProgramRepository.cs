@@ -33,6 +33,7 @@ public class StudyProgramRepository : IRepository<StudyProgram>
     public async Task Create(StudyProgram entity)
     {
         await _db.StudyPrograms.AddAsync(entity);
+        await _db.SaveChangesAsync();
     }
 
     public async Task<StudyProgram?> Update(StudyProgram entity)
@@ -43,6 +44,7 @@ public class StudyProgramRepository : IRepository<StudyProgram>
             return null;
         }
         _mapper.Map(entity, studyProgram);
+        await _db.SaveChangesAsync();
         return studyProgram;
     }
 
@@ -54,6 +56,7 @@ public class StudyProgramRepository : IRepository<StudyProgram>
             return false;
         }
         _db.StudyPrograms.Remove(studyProgram);
+        await _db.SaveChangesAsync();
         return true;
     }
 }

@@ -33,6 +33,7 @@ public class StudentRepository : IRepository<Student>
     public async Task Create(Student entity)
     {
         await _db.Students.AddAsync(entity);
+        await _db.SaveChangesAsync();
     }
 
     public async Task<Student?> Update(Student entity)
@@ -44,6 +45,7 @@ public class StudentRepository : IRepository<Student>
         }
         
         _mapper.Map(entity, student);
+        await _db.SaveChangesAsync();
         return student;
     }
 
@@ -55,6 +57,7 @@ public class StudentRepository : IRepository<Student>
             return false;
         }
         _db.Students.Remove(student);
+        await _db.SaveChangesAsync();
         return true;
     }
 }
