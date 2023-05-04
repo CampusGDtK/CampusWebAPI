@@ -13,7 +13,7 @@ namespace Campus.Core.DTO
         public string Name { get; set; } = null!;
         public string Dean { get; set; } = null!;
         public Guid? SpecialitiesId { get; set; }
-        public string? SpecialityName { get; set; } = null!;
+        public string? SpecialityName { get; set; }
     }
 
     public static partial class EntitiesExtensions

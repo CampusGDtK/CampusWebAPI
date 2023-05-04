@@ -18,7 +18,7 @@ namespace Campus.Core.DTO
 
         public Guid FacultyId { get; set; }
 
-        public string FacultyName { get; set; } = null!;
+        public string? FacultyName { get; set; }
     }
 
     public static partial class EntitiesExtensions
@@ -31,7 +31,7 @@ namespace Campus.Core.DTO
                 Name = cathedra.Name,
                 Head = cathedra.Head,
                 FacultyId = cathedra.FacultyId,
-                FacultyName = cathedra.Faculty?.Name ?? ""
+                FacultyName = cathedra.Faculty?.Name
             };
         }
     }
