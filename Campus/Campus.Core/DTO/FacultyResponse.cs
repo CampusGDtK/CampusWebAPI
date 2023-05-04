@@ -12,8 +12,8 @@ namespace Campus.Core.DTO
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string Dean { get; set; } = null!;
-        public Guid? SpecialitiesId { get; set; }
-        public string? SpecialityName { get; set; }
+        public IEnumerable<Guid>? SpecialitiesId { get; set; }
+        public IEnumerable<string>? SpecialitiesName { get; set; }
     }
 
     public static partial class EntitiesExtensions

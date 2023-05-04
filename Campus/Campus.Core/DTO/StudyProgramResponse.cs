@@ -5,14 +5,11 @@ namespace Campus.Core.DTO;
 
 public class StudyProgramResponse
 {
-    [Required]
     public Guid Id { get; set; }
-    [Required]
     public string Name { get; set; } = null!;
-    [Required]
     public Guid SpecialityId { get; set; }
 
-    public string SpecialityName { get; set; }
+    public string? SpecialityName { get; set; }
 }
 
 public static partial class EntitiesExtensions
@@ -24,7 +21,7 @@ public static partial class EntitiesExtensions
             Id = studyProgram.Id,
             Name = studyProgram.Name,
             SpecialityId = studyProgram.SpecialityId,
-            SpecialityName = studyProgram.Speciality.Name
+            SpecialityName = studyProgram.Speciality?.Name
         };
     }
 }

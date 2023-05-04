@@ -10,7 +10,7 @@ public class StudentResponse
     public string PhoneNumber { get; set; } = null!;
     public string Email { get; set; } = null!;
     public Guid GroupId { get; set; }
-    public string GroupName { get; set; } = null!;
+    public string? GroupName { get; set; } = null!;
 }
 
 public static partial class EntitiesExtensions
@@ -25,7 +25,7 @@ public static partial class EntitiesExtensions
             PhoneNumber = student.PhoneNumber,
             Email = student.Email,
             GroupId = student.GroupId,
-            GroupName = student.Group.Name
+            GroupName = student.Group?.Name
         };
     }
 }
