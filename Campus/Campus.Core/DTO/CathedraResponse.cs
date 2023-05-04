@@ -18,6 +18,6 @@ namespace Campus.Core.DTO
 
         public Guid FacultyId { get; set; }
 
-        public Faculty Faculty { get; set; } = null!;
+        public string FacultyName { get; set; } = null!;
     }
 }
