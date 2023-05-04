@@ -1,6 +1,4 @@
-﻿using Campus.Core.Domain.Entities;
-
-namespace Campus.Core.DTO;
+﻿namespace Campus.Core.DTO;
 
 public class DisciplineResponse
 {
