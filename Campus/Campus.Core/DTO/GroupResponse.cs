@@ -16,14 +16,32 @@ namespace Campus.Core.DTO
 
         public Guid CuratorId { get; set; }
 
-        public string CuratorName { get; set; } = null!;
+        public string? CuratorName { get; set; }
 
         public Guid StudyProgramId { get; set; }
 
-        public string StudyProgramName { get; set; } = null!;
+        public string? StudyProgramName { get; set; }
 
         public Guid FacultyId { get; set; }
 
-        public string FacultyName { get;set; } = null!;
+        public string? FacultyName { get;set; }
+    }
+
+    public static partial class EntitiesExtensions
+    {
+        public static GroupResponse ToGroupResponse(this Group group)
+        {
+            return new GroupResponse
+            {
+                Id = group.Id,
+                Name = group.Name,
+                CuratorId = group.CuratorId,
+                CuratorName = group.Curator?.Name,
+                StudyProgramId = group.StudyProgramId,
+                StudyProgramName = group.StudyProgram?.Name,
+                FacultyId = group.FacultyId,
+                FacultyName = group.Faculty?.Name
+            };
+        }
     }
 }
