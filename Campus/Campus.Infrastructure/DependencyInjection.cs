@@ -25,6 +25,7 @@ namespace Campus.Infrastructure
             services.AddScoped<IRepository<Faculty>, FacultyRepository>();
             services.AddScoped<IRepository<Group>, GroupRepository>();
             services.AddScoped<IRepository<Speciality>, SpecialityRepository>();
+            services.AddScoped<IRepository<SpecialityFaculty>, SpecialityFacultyRepository>();
             services.AddScoped<IRepository<Student>, StudentRepository>();
             services.AddScoped<IRepository<StudyProgram>, StudyProgramRepository>();
 
