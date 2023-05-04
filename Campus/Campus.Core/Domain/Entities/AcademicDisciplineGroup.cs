@@ -15,11 +15,11 @@ public class AcademicDisciplineGroup
     public Guid AcademicId { get; set; }
 
     [ForeignKey("GroupId")]
-    public virtual Academic Academic { get; set; } = null!;
+    public Academic? Academic { get; set; }
 
     [ForeignKey("DisciplineId")]
-    public virtual Discipline Discipline { get; set; } = null!;
+    public Discipline? Discipline { get; set; }
 
     [ForeignKey("AcademicId")]
-    public virtual Group Group { get; set; } = null!;
+    public Group? Group { get; set; }
 }

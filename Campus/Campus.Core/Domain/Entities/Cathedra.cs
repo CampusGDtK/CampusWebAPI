@@ -15,5 +15,5 @@ public class Cathedra
     public Guid FacultyId { get; set; }
 
     [ForeignKey("FacultyId")]
-    public Faculty Faculty { get; set; } = null!;
+    public Faculty? Faculty { get; set; }
 }

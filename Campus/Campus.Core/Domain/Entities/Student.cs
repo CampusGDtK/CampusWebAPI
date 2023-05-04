@@ -19,5 +19,5 @@ public class Student
     public Guid GroupId { get; set; }
 
     [ForeignKey("GroupId")]
-    public virtual Group Group { get; set; } = null!;
+    public Group? Group { get; set; }
 }

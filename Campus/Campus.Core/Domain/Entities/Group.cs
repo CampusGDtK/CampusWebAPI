@@ -17,11 +17,11 @@ public class Group
     public Guid FacultyId { get; set; }
 
     [ForeignKey("CuratorId")]
-    public Academic Curator { get; set; } = null!;
+    public Academic? Curator { get; set; }
 
     [ForeignKey("StudyProgramId")]
-    public Faculty Faculty { get; set; } = null!;
+    public Faculty? Faculty { get; set; }
 
     [ForeignKey("FacultyId")]
-    public StudyProgram StudyProgram { get; set; } = null!;
+    public StudyProgram? StudyProgram { get; set; }
 }

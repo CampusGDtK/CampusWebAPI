@@ -21,8 +21,8 @@ public class CurrentControl
     public long TotalMark { get; set; }
 
     [ForeignKey("DisciplineId")]
-    public Discipline Discipline { get; set; } = null!;
+    public Discipline? Discipline { get; set; }
 
     [ForeignKey("StudentId")]
-    public Student Student { get; set; } = null!;
+    public Student? Student { get; set; }
 }

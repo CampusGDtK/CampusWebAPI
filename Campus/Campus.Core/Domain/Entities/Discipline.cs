@@ -13,5 +13,5 @@ public class Discipline
     public Guid CathedralId { get; set; }
 
     [ForeignKey("CathedralId")]
-    public Cathedra Cathedral { get; set; } = null!;
+    public Cathedra? Cathedral { get; set; }
 }

@@ -13,5 +13,5 @@ public class StudyProgram
     public Guid SpecialityId { get; set; }
 
     [ForeignKey("SpecialityId")]
-    public virtual Speciality Speciality { get; set; } = null!;
+    public Speciality? Speciality { get; set; }
 }

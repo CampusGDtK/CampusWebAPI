@@ -13,8 +13,8 @@ public class SpecialityFaculty
     public Guid FacultyId { get; set; }
 
     [ForeignKey("FacultyId")]
-    public Faculty Faculty { get; set; } = null!;
+    public Faculty? Faculty { get; set; }
 
     [ForeignKey("SpecialityId")]
-    public Speciality Speciality { get; set; } = null!;
+    public Speciality? Speciality { get; set; }
 }
