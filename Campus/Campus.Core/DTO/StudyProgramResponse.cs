@@ -12,5 +12,5 @@ public class StudyProgramResponse
     [Required]
     public Guid SpecialityId { get; set; }
 
-    public Speciality Speciality { get; set; }
+    public string SpecialityName { get; set; }
 }

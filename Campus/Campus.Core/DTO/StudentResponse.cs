@@ -10,5 +10,5 @@ public class StudentResponse
     public string PhoneNumber { get; set; } = null!;
     public string Email { get; set; } = null!;
     public Guid GroupId { get; set; }
-    public Group Group { get; set; } = null!;
+    public string GroupName { get; set; } = null!;
 }
