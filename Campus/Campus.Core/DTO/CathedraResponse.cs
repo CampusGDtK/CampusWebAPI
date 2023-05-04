@@ -20,4 +20,19 @@ namespace Campus.Core.DTO
 
         public string FacultyName { get; set; } = null!;
     }
+
+    public static partial class EntitiesExtensions
+    {
+        public static CathedraResponse ToCathedraResponse(this Cathedra cathedra)
+        {
+            return new CathedraResponse
+            {
+                Id = cathedra.Id,
+                Name = cathedra.Name,
+                Head = cathedra.Head,
+                FacultyId = cathedra.FacultyId,
+                FacultyName = cathedra.Faculty?.Name ?? ""
+            };
+        }
+    }
 }

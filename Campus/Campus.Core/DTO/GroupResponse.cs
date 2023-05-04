@@ -26,4 +26,22 @@ namespace Campus.Core.DTO
 
         public string FacultyName { get;set; } = null!;
     }
+
+    public static partial class EntitiesExtensions
+    {
+        public static GroupResponse ToGroupResponse(this Group group)
+        {
+            return new GroupResponse
+            {
+                Id = group.Id,
+                Name = group.Name,
+                CuratorId = group.CuratorId,
+                CuratorName = group.Curator?.Name ?? "",
+                StudyProgramId = group.StudyProgramId,
+                StudyProgramName = group.StudyProgram?.Name ?? "",
+                FacultyId = group.FacultyId,
+                FacultyName = group.Faculty?.Name ?? ""
+            };
+        }
+    }
 }
