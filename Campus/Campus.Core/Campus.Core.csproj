@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="ServiceContracts\" />
     <Folder Include="Services\" />
-    <Folder Include="DTO\" />
   </ItemGroup>
 
   <ItemGroup>
