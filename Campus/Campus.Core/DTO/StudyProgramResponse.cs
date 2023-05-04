@@ -14,3 +14,17 @@ public class StudyProgramResponse
 
     public string SpecialityName { get; set; }
 }
+
+public static partial class EntitiesExtensions
+{
+    public static StudyProgramResponse ToStudyProgramResponse(this StudyProgram studyProgram)
+    {
+        return new StudyProgramResponse
+        {
+            Id = studyProgram.Id,
+            Name = studyProgram.Name,
+            SpecialityId = studyProgram.SpecialityId,
+            SpecialityName = studyProgram.Speciality.Name
+        };
+    }
+}
