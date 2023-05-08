@@ -38,4 +38,19 @@ namespace Campus.Core.DTO
             };
         }
     }
+
+    public static partial class ResponsesExtensions
+    {
+        public static GroupUpdateRequest ToGroupUpdateRequest(this GroupResponse groupResponse)
+        {
+            return new GroupUpdateRequest
+            {
+                Id = groupResponse.Id,
+                Name = groupResponse.Name,
+                CuratorId = groupResponse.CuratorId,
+                FacultyId = groupResponse.FacultyId,
+                StudyProgramId = groupResponse.StudyProgramId,
+            };
+        }
+    }
 }
