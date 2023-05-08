@@ -19,14 +19,12 @@ namespace Campus.Core.DTO
         public string Dean { get; set; } = null!;
         
         [Required]
-        [Range(1,int.MaxValue)]
         public IEnumerable<Guid> Specialities { get; set; } = null!;
 
         public Faculty ToFaculty()
         {
             return new Faculty
             {
-                Id = Guid.NewGuid(),
                 Name = Name,
                 Dean = Dean
             };
