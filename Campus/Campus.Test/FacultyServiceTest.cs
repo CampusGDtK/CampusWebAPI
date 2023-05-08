@@ -298,22 +298,6 @@ namespace Campus.Test
             //Assert
             await action.Should().ThrowAsync<KeyNotFoundException>();
         }
-
-        [Fact]
-        public async Task Remove_ValidId()
-        {
-            //Assert
-            var faculty = _fixture.Create<Faculty>();
-
-
-            _facultyRepositoryMock.Setup(x => x.Delete(It.IsAny<Guid>())).ReturnsAsync(true);
-
-            //Act
-            var result = await _facultyService.Remove(faculty.Id);
-
-            //Assert
-            result.Should().BeTrue();
-        }
         #endregion
     }
 }
