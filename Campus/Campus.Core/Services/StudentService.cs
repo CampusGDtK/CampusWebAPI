@@ -1,10 +1,11 @@
 ﻿using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Core.DTO;
+using Campus.Core.ServiceContracts;
 
 namespace Campus.Core.Services;
 
-public class StudentService
+public class StudentService : IStudentService
 {
     private readonly IRepository<Student> _studentRepository;
     private readonly IRepository<Group> _groupRepository;

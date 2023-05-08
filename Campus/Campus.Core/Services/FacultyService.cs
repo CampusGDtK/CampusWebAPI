@@ -54,14 +54,12 @@ namespace Campus.Core.Services
             return result.ToFacultyResponse();
         }
 
-        public async Task<bool> Remove(Guid facultyId)
+        public async Task Remove(Guid facultyId)
         {
             var result = await _facultyRepository.Delete(facultyId);
 
             if(!result)
                 throw new KeyNotFoundException(nameof(result));
-
-            return result;
         }
 
         public async Task<FacultyResponse> Update(FacultyUpdateRequest facultyUpdateRequest)

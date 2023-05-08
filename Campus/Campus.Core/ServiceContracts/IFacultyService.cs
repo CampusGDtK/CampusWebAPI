@@ -12,7 +12,7 @@ namespace Campus.Core.ServiceContracts
         Task<IEnumerable<FacultyResponse>> GetAll();
         Task<FacultyResponse> GetById(Guid facultyId);
         Task<FacultyResponse> Add(FacultyAddRequest? facultyAddRequest);
-        Task<bool> Remove(Guid facultyId);
+        Task Remove(Guid facultyId);
         Task<FacultyResponse> Update(FacultyUpdateRequest? facultyUpdateRequest);
     }
 }
