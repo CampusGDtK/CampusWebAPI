@@ -58,6 +58,9 @@ namespace Campus.Core.Services
         {
             var result = await _facultyRepository.Delete(facultyId);
 
+            if(!result)
+                throw new KeyNotFoundException(nameof(result));
+
             return result;
         }
 

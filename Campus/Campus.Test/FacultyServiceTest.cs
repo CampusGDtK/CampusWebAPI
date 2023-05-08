@@ -290,10 +290,13 @@ namespace Campus.Test
             var id = Guid.NewGuid();
 
             //Act
-            var result = await _facultyService.Remove(id);
+            var action = async () =>
+            {
+                await _facultyService.Remove(id);
+            };
 
             //Assert
-            result.Should().BeFalse();
+            await action.Should().ThrowAsync<KeyNotFoundException>();
         }
 
         [Fact]
