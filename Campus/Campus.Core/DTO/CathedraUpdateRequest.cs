@@ -35,4 +35,18 @@ namespace Campus.Core.DTO
             };
         }
     }
+    public static partial class ResponsesExtensions
+    {
+        public static CathedraUpdateRequest ToCathedraUpdateRequest(this CathedraResponse cathedraResponse)
+     
+        {
+            return new CathedraUpdateRequest
+            {
+                Id = cathedraResponse.Id,
+                FacultyId = cathedraResponse.FacultyId,
+                Head = cathedraResponse.Head,
+                Name = cathedraResponse.Name
+            };
+        }
+    }
 }

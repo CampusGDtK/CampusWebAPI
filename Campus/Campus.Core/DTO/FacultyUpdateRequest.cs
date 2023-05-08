@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,6 @@ namespace Campus.Core.DTO
         public string Dean { get; set; } = null!;
 
         [Required]
-        [Range(1, int.MaxValue)]
         public IEnumerable<Guid> Specialities { get; set; } = null!;
 
         public Faculty ToFaculty()
@@ -35,4 +35,19 @@ namespace Campus.Core.DTO
             };
         }
     }
+
+    public static partial class ResponsesExtensions
+    {
+        public static FacultyUpdateRequest ToFacultyUpdateRequest(this FacultyResponse facultyResponse)
+        {
+            return new FacultyUpdateRequest
+            {
+                Id = facultyResponse.Id,
+                Name = facultyResponse.Name,
+                Dean = facultyResponse.Dean,
+                Specialities = facultyResponse.SpecialitiesId ?? new List<Guid>()
+            };
+        }
+    }
+
 }
