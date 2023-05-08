@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Campus.Core\Campus.Core.csproj" />
+    <ProjectReference Include="..\Campus.Infrastructure\Campus.Infrastructure.csproj" />
+    <ProjectReference Include="..\CampusWebAPI\CampusWebAPI.csproj" />
   </ItemGroup>
 
 </Project>
