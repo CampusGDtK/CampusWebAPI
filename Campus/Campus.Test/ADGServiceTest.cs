@@ -65,6 +65,52 @@ namespace Campus.Test
                 await _adgService.GetDisciplinesByAcademicId(academicId);
             });
         }
+
+        [Fact]
+        public async Task GetDisciplinesByAcademicId_ValidGuid()
+        {
+            //Arrange
+            Guid academicId = Guid.NewGuid();
+
+            Academic academic = _autoFixture.Build<Academic>()
+                .With(p => p.Id, academicId)
+                .Create();
+
+            Guid disciplineId1 = Guid.NewGuid();
+            Guid disciplineId2 = Guid.NewGuid();
+
+            Guid groupId1 = Guid.NewGuid();
+            Guid groupId2 = Guid.NewGuid();
+            Guid groupId3 = Guid.NewGuid();
+            Guid groupId4 = Guid.NewGuid();
+
+            Discipline discipline1 = _autoFixture.Build<Discipline>()
+                .With(p => p.Id, disciplineId1)
+                .Create();
+            Discipline discipline2 = _autoFixture.Build<Discipline>()
+                .With(p => p.Id, disciplineId2)
+                .Create();
+
+            List<AcademicDisciplineGroup> relation = new List<AcademicDisciplineGroup>()
+            {
+                new AcademicDisciplineGroup() { Id = Guid.NewGuid(), AcademicId = academicId, DisciplineId = disciplineId1, GroupId = groupId1, Discipline = discipline1 },
+                new AcademicDisciplineGroup() { Id = Guid.NewGuid(), AcademicId = academicId, DisciplineId = disciplineId1, GroupId = groupId2, Discipline = discipline1 },
+                new AcademicDisciplineGroup() { Id = Guid.NewGuid(), AcademicId = academicId, DisciplineId = disciplineId2, GroupId = groupId3, Discipline = discipline2 },
+                new AcademicDisciplineGroup() { Id = Guid.NewGuid(), AcademicId = academicId, DisciplineId = disciplineId2, GroupId = groupId4, Discipline = discipline2 },
+            };
+
+            _adgRepositoryMock.Setup(p => p.GetAll()).ReturnsAsync(relation);
+            _academicRepositoryMock.Setup(p => p.GetValueById(academicId))
+                .ReturnsAsync(academic);
+
+            //Act
+            IEnumerable<DisciplineResponse>? disciplines = await _adgService.GetDisciplinesByAcademicId(academicId);
+
+            //Assert
+            Assert.NotNull(disciplines);
+            Assert.True(disciplines.Any(discipline => discipline.Id == disciplineId1));
+            Assert.True(disciplines.Any(discipline => discipline.Id == disciplineId2));
+        }
         #endregion
 
         #region GetGroupsByDisciplineAndAcademicId

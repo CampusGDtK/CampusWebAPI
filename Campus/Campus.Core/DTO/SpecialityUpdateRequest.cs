@@ -27,4 +27,18 @@ namespace Campus.Core.DTO
             return speciality;
         }
     }
+    
+    public static partial class ResponsesExtensions
+    {
+        public static SpecialityUpdateRequest ToSpecialityUpdateRequest(this SpecialityResponse specialityResponse)
+        {
+            SpecialityUpdateRequest specialityUpdateRequest = new SpecialityUpdateRequest()
+            {
+                Id = specialityResponse.Id,
+                Name = specialityResponse.Name
+            };
+
+            return specialityUpdateRequest;
+        }
+    }
 }

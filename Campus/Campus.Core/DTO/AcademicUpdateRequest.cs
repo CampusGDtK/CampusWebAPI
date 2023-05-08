@@ -30,4 +30,19 @@ namespace Campus.Core.DTO
             return academic;
         }
     }
+
+    public static partial class ResponsesExtensions
+    {
+        public static AcademicUpdateRequest ToAcademicUpdateRequest(this AcademicResponse academicResponse)
+        {
+            AcademicUpdateRequest academicUpdateRequest = new AcademicUpdateRequest()
+            {
+                Id = academicResponse.Id,
+                Name = academicResponse.Name,
+                CathedralId = academicResponse.CathedraId
+            };
+
+            return academicUpdateRequest;
+        }
+    }
 }
