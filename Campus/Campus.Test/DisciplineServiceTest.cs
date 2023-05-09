@@ -28,7 +28,7 @@ public class DisciplineServiceTest
         _disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync(discipline);
 
         // Act
-        var result = await _disciplineService.GetById(disciplineId);
+        var result = await _disciplineService.GetDisciplineById(disciplineId);
 
         // Assert
         Assert.NotNull(result);
@@ -44,7 +44,7 @@ public class DisciplineServiceTest
         _disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync((Discipline?)null);
 
         // Act & Assert
-        await Assert.ThrowsAsync<KeyNotFoundException>(() => _disciplineService.GetById(disciplineId));
+        await Assert.ThrowsAsync<KeyNotFoundException>(() => _disciplineService.GetDisciplineById(disciplineId));
         _disciplineRepositoryMock.Verify(r => r.GetValueById(disciplineId), Times.Once);
     }
 
@@ -120,7 +120,7 @@ public class DisciplineServiceTest
         _disciplineRepositoryMock.Setup(r => r.Create(discipline)).Returns(Task.CompletedTask);
 
         // Act
-        var result = await _disciplineService.Create(disciplineRequest);
+        var result = await _disciplineService.Add(disciplineRequest);
 
         // Assert
         Assert.NotNull(result);
@@ -131,7 +131,7 @@ public class DisciplineServiceTest
     public async Task Create_WithNullDisciplineRequest_ThrowsArgumentNullException()
     {
         // Act & Assert
-        await Assert.ThrowsAsync<ArgumentNullException>(() => _disciplineService.Create(null));
+        await Assert.ThrowsAsync<ArgumentNullException>(() => _disciplineService.Add(null));
     }
 
     [Fact]
@@ -172,19 +172,6 @@ public class DisciplineServiceTest
         // Act & Assert
         await Assert.ThrowsAsync<KeyNotFoundException>(() => _disciplineService.Update(disciplineRequest));
     }
-    [Fact]
-    public async Task Delete_WithExistingId_ReturnsTrue()
-    {
-        // Arrange
-        var disciplineId = Guid.NewGuid();
-        _disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync(new Discipline { Id = disciplineId });
-        _disciplineRepositoryMock.Setup(r => r.Delete(disciplineId)).ReturnsAsync(true);
-        // Act
-        var result = await _disciplineService.Delete(disciplineId);
-
-        // Assert
-        Assert.True(result);
-    }
 
     [Fact]
     public async Task Delete_WithNonexistentId_ThrowsKeyNotFoundException()
@@ -194,7 +181,35 @@ public class DisciplineServiceTest
         _disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync((Discipline?)null);
 
         // Act & Assert
-        await Assert.ThrowsAsync<KeyNotFoundException>(() => _disciplineService.Delete(disciplineId));
+        await Assert.ThrowsAsync<KeyNotFoundException>(() => _disciplineService.Remove(disciplineId));
+    }
+
+    [Fact]
+    public async Task Create_WithNonExistentCathedraId_ShouldThrowKeyNotFoundException()
+    {
+        
+        // Arrange
+        var disciplineRequest = new DisciplineAddRequest { Name = "Chemistry", CathedraId = Guid.NewGuid() };
+        var discipline = disciplineRequest.ToDiscipline();
+        _cathedraRepositoryMock.Setup(r => r.GetValueById(disciplineRequest.CathedraId)).ReturnsAsync((Cathedra?)null);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<KeyNotFoundException>(() => _disciplineService.Add(disciplineRequest));
+        
+    }
+    
+    [Fact]
+    public async Task Update_WithNonExistentCathedraId_ShouldThrowKeyNotFoundException()
+    {
+        
+        // Arrange
+        var disciplineRequest = new DisciplineUpdateRequest { Name = "Chemistry", CathedraId = Guid.NewGuid() };
+        var discipline = disciplineRequest.ToDiscipline();
+        _cathedraRepositoryMock.Setup(r => r.GetValueById(disciplineRequest.CathedraId)).ReturnsAsync((Cathedra?)null);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<KeyNotFoundException>(() => _disciplineService.Update(disciplineRequest));
+        
     }
     
 }

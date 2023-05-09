@@ -1,10 +1,11 @@
 ﻿using Campus.Core.Domain.Entities;
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Core.DTO;
+using Campus.Core.ServiceContracts;
 
 namespace Campus.Core.Services;
 
-public class DisciplineService
+public class DisciplineService : IDisciplineService
 {
     private readonly IRepository<Discipline> _disciplineRepository;
     private readonly IRepository<Cathedra> _cathedraRepository;
@@ -16,7 +17,7 @@ public class DisciplineService
         _cathedraRepository = cathedraRepository;
     }
 
-    public async Task<DisciplineResponse> GetById(Guid id)
+    public async Task<DisciplineResponse> GetDisciplineById(Guid id)
     {
         var discipline = await _disciplineRepository.GetValueById(id);
         if (discipline is null)
@@ -47,11 +48,16 @@ public class DisciplineService
             .Select(d => d.ToDisciplineResponse());
     }
     
-    public async Task<DisciplineResponse> Create(DisciplineAddRequest? disciplineRequest)
+    public async Task<DisciplineResponse> Add(DisciplineAddRequest? disciplineRequest)
     {
         if (disciplineRequest is null)
         {
             throw new ArgumentNullException(nameof(disciplineRequest), "Discipline request is null");
+        }
+        
+        if (await _cathedraRepository.GetValueById(disciplineRequest.CathedraId) is null)
+        {
+            throw new KeyNotFoundException("Cathedra not found");
         }
 
         var discipline = disciplineRequest.ToDiscipline();
@@ -65,7 +71,12 @@ public class DisciplineService
         {
             throw new ArgumentNullException(nameof(disciplineRequest), "Discipline request is null");
         }
-
+        
+        if (await _cathedraRepository.GetValueById(disciplineRequest.CathedraId) is null)
+        {
+            throw new KeyNotFoundException("Cathedra not found");
+        }
+        
         var result = await _disciplineRepository.Update(disciplineRequest.ToDiscipline());
         if (result is null)
         {
@@ -75,13 +86,13 @@ public class DisciplineService
         return result.ToDisciplineResponse();
     }
     
-    public async Task<bool> Delete(Guid id)
+    public async Task Remove(Guid id)
     {
         if (await _disciplineRepository.GetValueById(id) is null)
         {
             throw new KeyNotFoundException("Discipline not found");
         }
-        return await _disciplineRepository.Delete(id);
+        await _disciplineRepository.Delete(id);
     }
     
 }
