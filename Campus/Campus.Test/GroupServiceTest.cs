@@ -20,6 +20,9 @@ namespace Campus.Test
 
         private readonly IRepository<Group> _groupRepository;
         private readonly Mock<IRepository<Group>> _groupRepositoryMock;
+        
+        private readonly IRepository<Faculty> _facultyRepository;
+        private readonly Mock<IRepository<Faculty>> _facultyRepositoryMock;
 
         private readonly IFixture _fixture;
 
@@ -30,10 +33,31 @@ namespace Campus.Test
             _groupRepositoryMock = new Mock<IRepository<Group>>();
             _groupRepository = _groupRepositoryMock.Object;
 
-            _groupService = new GroupService(_groupRepository);
+            _facultyRepositoryMock = new Mock<IRepository<Faculty>>();
+            _facultyRepository = _facultyRepositoryMock.Object;
+
+            _groupService = new GroupService(_groupRepository, _facultyRepository);
         }
 
         #region AddGroup
+        [Fact]
+        public async Task Add_InvalidFacultyId_KeyNotFoundException()
+        {
+            //Arrange
+            var groupToAdd = _fixture.Create<GroupAddRequest>();
+
+            _facultyRepositoryMock.Setup(x => x.GetValueById(It.IsAny<Guid>())).ReturnsAsync(null as Faculty);
+
+            //Act
+            var action = async () =>
+            {
+                await _groupService.Add(groupToAdd);
+            };
+
+            //Assert
+            await action.Should().ThrowAsync<KeyNotFoundException>();
+        }
+
         [Fact]
         public async Task Add_NullGroup_ArgumentNullException()
         {
@@ -58,6 +82,8 @@ namespace Campus.Test
                 .With(x => x.Name, null as string)
                 .Create();
 
+            _facultyRepositoryMock.Setup(x => x.GetValueById(It.IsAny<Guid>())).ReturnsAsync(_fixture.Build<Faculty>().With(x => x.Id, groupToAdd.FacultyId).Create());
+
             //Act
             var action = async () =>
             {
@@ -78,6 +104,8 @@ namespace Campus.Test
             var group = groupToAdd.ToGroup();
 
             var exeptedResponse = group.ToGroupResponse();
+
+            _facultyRepositoryMock.Setup(x => x.GetValueById(It.IsAny<Guid>())).ReturnsAsync(_fixture.Build<Faculty>().With(x => x.Id, groupToAdd.FacultyId).Create());
 
             //Act
             var result = await _groupService.Add(groupToAdd);
@@ -136,6 +164,10 @@ namespace Campus.Test
 
             group3.FacultyId = group1.FacultyId;
 
+            var faculty = _fixture.Build<Faculty>()
+                .With(x => x.Id, group1.FacultyId)
+                .Create();
+
             var groups = new List<Group>
             {
                 group1, group2, group3, group4
@@ -147,6 +179,7 @@ namespace Campus.Test
             };
 
             _groupRepositoryMock.Setup(x => x.GetAll()).ReturnsAsync(groups);
+            _facultyRepositoryMock.Setup(x => x.GetValueById(It.IsAny<Guid>())).ReturnsAsync(faculty);
 
             //Act
             var actualGroupsResponse = await _groupService.GetByFacultyId(group1.FacultyId);
@@ -156,7 +189,7 @@ namespace Campus.Test
         }
 
         [Fact]
-        public async Task GetByFacultyId_UnknownFacultyId_EmptyGroupList()
+        public async Task GetByFacultyId_UnknownFacultyId_KeyNotFoundException()
         {
             //Arrange
             var group1 = _fixture.Build<Group>().Create();
@@ -174,10 +207,13 @@ namespace Campus.Test
             _groupRepositoryMock.Setup(x => x.GetAll()).ReturnsAsync(groups);
 
             //Act
-            var actualGroupsResponse = await _groupService.GetByFacultyId(Guid.NewGuid());
+            var action = async () =>
+            {
+                await _groupService.GetByFacultyId(Guid.NewGuid());
+            };
 
             //Assert
-            actualGroupsResponse.Count().Should().Be(0);
+            await action.Should().ThrowAsync<KeyNotFoundException>();
         }
         #endregion
 
@@ -215,6 +251,24 @@ namespace Campus.Test
 
         #region Update
         [Fact]
+        public async Task Update_InvalidFacultyId_KeyNotFoundException()
+        {
+            //Arrange
+            var groupToAdd = _fixture.Create<GroupUpdateRequest>();
+
+            _facultyRepositoryMock.Setup(x => x.GetValueById(It.IsAny<Guid>())).ReturnsAsync(null as Faculty);
+
+            //Act
+            var action = async () =>
+            {
+                await _groupService.Update(groupToAdd);
+            };
+
+            //Assert
+            await action.Should().ThrowAsync<KeyNotFoundException>();
+        }
+
+        [Fact]
         public async Task Update_NullGroup_ArgumentNullException()
         {
             //Arrange
@@ -237,6 +291,8 @@ namespace Campus.Test
             var groupToUpdate = _fixture.Build<GroupUpdateRequest>()
                 .With(x => x.Name, null as string)
                 .Create();
+
+            _facultyRepositoryMock.Setup(x => x.GetValueById(It.IsAny<Guid>())).ReturnsAsync(_fixture.Build<Faculty>().With(x => x.Id, groupToUpdate.FacultyId).Create());
 
             //Act
             var action = async () =>
@@ -278,6 +334,8 @@ namespace Campus.Test
             var groupToUpdate = expectedResponse.ToGroupUpdateRequest();
 
             _groupRepositoryMock.Setup(x => x.Update(It.IsAny<Group>())).ReturnsAsync(group);
+
+            _facultyRepositoryMock.Setup(x => x.GetValueById(It.IsAny<Guid>())).ReturnsAsync(_fixture.Build<Faculty>().With(x => x.Id, group.FacultyId).Create());
 
             //Act
             var actualResult = await _groupService.Update(groupToUpdate);

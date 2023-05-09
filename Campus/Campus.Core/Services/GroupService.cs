@@ -14,16 +14,23 @@ namespace Campus.Core.Services
     public class GroupService : IGroupService
     {
         private readonly IRepository<Group> _groupRepository;
+        private readonly IRepository<Faculty> _facultyRepository;
 
-        public GroupService(IRepository<Group> groupRepository)
+        public GroupService(IRepository<Group> groupRepository, IRepository<Faculty> facultyRepository)
         {
             _groupRepository = groupRepository;
+            _facultyRepository = facultyRepository;
         }
 
         public async Task<GroupResponse> Add(GroupAddRequest groupAddRequest)
         {
             if(groupAddRequest is null)
                 throw new ArgumentNullException(nameof(groupAddRequest));
+
+            if (await _facultyRepository.GetValueById(groupAddRequest.FacultyId) == null)
+            {
+                throw new KeyNotFoundException(nameof(groupAddRequest.FacultyId));
+            }                
 
             ValidationHelper.ModelValidation(groupAddRequest);
 
@@ -53,6 +60,9 @@ namespace Campus.Core.Services
 
         public async Task<IEnumerable<GroupResponse>> GetByFacultyId(Guid facultyId)
         {
+            if (await _facultyRepository.GetValueById(facultyId) == null)
+                throw new KeyNotFoundException(nameof(facultyId));
+
             var allGroups = await _groupRepository.GetAll();
 
             allGroups = allGroups.AsQueryable().Where(x => x.FacultyId == facultyId);
@@ -74,6 +84,9 @@ namespace Campus.Core.Services
         {
             if (groupUpdateRequest == null)
                 throw new ArgumentNullException(nameof(groupUpdateRequest));
+
+            if (await _facultyRepository.GetValueById(groupUpdateRequest.FacultyId) == null)
+                throw new KeyNotFoundException(nameof(groupUpdateRequest.FacultyId));
 
             ValidationHelper.ModelValidation(groupUpdateRequest);
 
