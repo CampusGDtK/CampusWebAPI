@@ -9,7 +9,7 @@ namespace Campus.Core.ServiceContracts
 {
     public interface IDisciplineService
     {
-        Task<DisciplineResponse?> GetDisciplineById(Guid disciplineId);
+        Task<DisciplineResponse> GetDisciplineById(Guid disciplineId);
         Task<IEnumerable<DisciplineResponse>> GetAll();
         Task<IEnumerable<DisciplineResponse>> GetByCathedraId(Guid cathedraId);
         Task<DisciplineResponse> Add(DisciplineAddRequest disciplineAddRequest);
