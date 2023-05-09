@@ -2,6 +2,7 @@
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,20 @@ namespace Campus.Core.Services
         private readonly IRepository<Academic> _academicRepository;
         private readonly IRepository<Discipline> _disciplineRepository;
         private readonly IRepository<Group> _groupsRepository;
+        private readonly IRepository<CurrentControl> _currentControlRepository;
+
+        private readonly IRepository<Student> _studentRepository;
 
         public ADGService(IRepository<AcademicDisciplineGroup> adgRepository, IRepository<Academic> academicRepository,
-        IRepository<Discipline> disciplineRepository, IRepository<Group> groupsRepository)
+        IRepository<Discipline> disciplineRepository, IRepository<Group> groupsRepository, 
+        IRepository<CurrentControl> currentControlRepository, IRepository<Student> studentRepository)
         {
             _adgRepository = adgRepository;
             _academicRepository = academicRepository;
             _disciplineRepository = disciplineRepository;
             _groupsRepository = groupsRepository;
+            _currentControlRepository = currentControlRepository;
+            _studentRepository = studentRepository;
         }
         
         public async Task<IEnumerable<DisciplineResponse>> GetDisciplinesByAcademicId(Guid academicId)
@@ -83,26 +90,7 @@ namespace Campus.Core.Services
                 throw new ArgumentNullException(nameof(setRequest));
 
             //Validating keys
-            Academic? academic = await _academicRepository.GetValueById(setRequest.AcademicId);
-
-            if (academic == null)
-                throw new KeyNotFoundException(nameof(setRequest.AcademicId));
-
-            foreach(KeyValuePair<Guid, IEnumerable<Guid>> pair in setRequest.DisciplineGroupsRelation)
-            {
-                Discipline? discipline = await _disciplineRepository.GetValueById(pair.Key);
-
-                if(discipline == null)
-                    throw new KeyNotFoundException("dicsiplie");
-
-                foreach(Guid groupId in pair.Value)
-                {
-                    Group? group = await _groupsRepository.GetValueById(groupId);
-
-                    if (group == null)
-                        throw new KeyNotFoundException("group");
-                }
-            }
+            await ValidationHelper.ValidateADGSetRequest(setRequest, _academicRepository, _disciplineRepository, _groupsRepository);
 
             //Proceeding
             foreach(KeyValuePair<Guid, IEnumerable<Guid>> pair in setRequest.DisciplineGroupsRelation)
