@@ -44,8 +44,12 @@ public class StudentService : IStudentService
         return students.Where(s => s.GroupId == groupId).Select(s => s.ToStudentResponse());
     }
 
-    public async Task Create(StudentAddRequest request)
+    public async Task<StudentResponse> Create(StudentAddRequest? request)
     {
+        if (request is null)
+        {
+            throw new ArgumentNullException(nameof(request),"Request is null");
+        }
         var student = new Student
         {
             Id = Guid.NewGuid(),
@@ -56,10 +60,16 @@ public class StudentService : IStudentService
             GroupId = request.GroupId
         };
         await _studentRepository.Create(student);
+
+        return student.ToStudentResponse();
     }
     
     public async Task<StudentResponse> Update(StudentUpdateRequest request)
     {
+        if (request is null)
+        {
+            throw new ArgumentNullException(nameof(request),"Request is null");
+        }
         var student = new Student
         {
             Id = request.Id,

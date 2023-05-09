@@ -205,4 +205,48 @@ public class StudentServiceTests
         // Act & Assert
         await Assert.ThrowsAsync<KeyNotFoundException>(() => _studentService.Delete(studentId));
     }
+    
+    [Fact]
+    public async Task Create_Student_ShouldReturnCreatedStudent()
+    {
+        // Arrange
+        var request = new StudentAddRequest
+        {
+            FullName = "John Doe",
+            GroupId = Guid.NewGuid()
+        };
+        var createdStudent = request.ToStudent();
+
+        _studentRepositoryMock.Setup(repo => repo.Create(It.IsAny<Student>()))
+                             .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _studentService.Create(request);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(createdStudent.FullName, result.FullName);
+        Assert.Equal(createdStudent.GroupId,result.GroupId);
+    }
+    
+    [Fact]
+    public async Task Create_NullStudent_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        StudentAddRequest? request = null;
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => _studentService.Create(request!));
+    }
+    
+    [Fact]
+    public async Task Update_NullStudent_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        StudentUpdateRequest? request = null;
+
+        // Act & Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(() => _studentService.Update(request!));
+    }
+    
 }
