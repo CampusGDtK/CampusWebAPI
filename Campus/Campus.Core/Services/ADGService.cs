@@ -41,7 +41,7 @@ namespace Campus.Core.Services
                 .Select(adg => adg.Discipline)
                 .ToList();
 
-            return disciplines.Select(discipline => discipline.ToDisciplineResponseResponse());
+            return disciplines.Select(discipline => discipline.ToDisciplineResponse());
         }
 
         public async Task<IEnumerable<GroupResponse>> GetGroupsByDisciplineAndAcademicId(Guid academicId, Guid disciplineId)

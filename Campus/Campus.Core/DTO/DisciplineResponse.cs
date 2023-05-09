@@ -12,7 +12,7 @@ public class DisciplineResponse
 
 public static partial class EntitiesExtensions
 {
-    public static DisciplineResponse ToDisciplineResponseResponse(this Discipline discipline)
+    public static DisciplineResponse ToDisciplineResponse(this Discipline discipline)
     {
         return new DisciplineResponse
         {
