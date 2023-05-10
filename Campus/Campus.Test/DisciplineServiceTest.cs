@@ -115,9 +115,12 @@ public class DisciplineServiceTest
     public async Task Create_WithValidDisciplineRequest_ShouldReturnCreatedDisciplineResponse()
     {
         // Arrange
-        var disciplineRequest = new DisciplineAddRequest { Name = "Chemistry" };
+        var cathedraId = Guid.NewGuid();
+        var disciplineRequest = new DisciplineAddRequest { Name = "Chemistry", CathedraId = cathedraId};
+        var cathedra = new Cathedra { Id = cathedraId, Name = "IPI" };
         var discipline = disciplineRequest.ToDiscipline();
         _disciplineRepositoryMock.Setup(r => r.Create(discipline)).Returns(Task.CompletedTask);
+        _cathedraRepositoryMock.Setup(r => r.GetValueById(cathedraId)).ReturnsAsync(cathedra);
 
         // Act
         var result = await _disciplineService.Add(disciplineRequest);
@@ -139,11 +142,14 @@ public class DisciplineServiceTest
     {
         // Arrange
         var disciplineId = Guid.NewGuid();
-        var existingDiscipline = new Discipline { Id = disciplineId, Name = "Math" };
-        var disciplineRequest = new DisciplineUpdateRequest { Id = disciplineId, Name = "Biology" };
+        var cathedraId = Guid.NewGuid();
+        var cathedra = new Cathedra { Id = cathedraId, Name = "IPI" };
+        var existingDiscipline = new Discipline { Id = disciplineId, Name = "Math", CathedralId = cathedraId};
+        var disciplineRequest = new DisciplineUpdateRequest { Id = disciplineId, Name = "Biology",CathedraId = cathedraId };
         var updatedDiscipline = disciplineRequest.ToDiscipline();
         _disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync(existingDiscipline);
         _disciplineRepositoryMock.Setup(r => r.Update(It.IsAny<Discipline>())).ReturnsAsync(updatedDiscipline);
+        _cathedraRepositoryMock.Setup(r => r.GetValueById(cathedraId)).ReturnsAsync(cathedra);
 
         // Act
         var result = await _disciplineService.Update(disciplineRequest);
