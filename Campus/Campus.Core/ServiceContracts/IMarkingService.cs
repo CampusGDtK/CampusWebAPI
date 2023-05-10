@@ -26,5 +26,12 @@ namespace Campus.Core.ServiceContracts
         /// <param name="markSetRequest">Object of MarkSetRequest that contains student and discipline Id and marks to set.</param>
         /// <returns>Marks that has been set.</returns>
         Task<MarkResponse> SetMark(MarkSetRequest markSetRequest);
+
+        /// <summary>
+        /// Method to delete mark o student for discipline.
+        /// </summary>
+        /// <param name="studentId">Guid of student.</param>
+        /// <param name="disciplineId">Guid of discipline.</param>
+        Task DeleteMark(Guid studentId, Guid disciplineId);
     }
 }

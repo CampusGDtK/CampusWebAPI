@@ -26,5 +26,12 @@ namespace Campus.Core.ServiceContracts
         /// <param name="disciplineId">Guid of discipline.</param>
         /// <param name="syllabus">Details of syllabus.</param>
         Task SetSyllabus(Guid academicId, Guid disciplineId, IEnumerable<string> syllabus);
+
+        /// <summary>
+        /// Method for deleting syllabus of academic for descipline.
+        /// </summary>
+        /// <param name="academicId">Guid of academic.</param>
+        /// <param name="disciplineId">Guid of discipline.</param>
+        Task DeleteSyllabus(Guid academicId, Guid disciplineId);
     }
 }
