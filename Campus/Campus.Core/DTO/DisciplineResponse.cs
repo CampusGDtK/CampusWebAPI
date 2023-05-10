@@ -18,8 +18,8 @@ public static partial class EntitiesExtensions
         {
             Id = discipline.Id,
             Name = discipline.Name,
-            CathedraId = discipline.CathedralId,
-            CathedraName = discipline.Cathedral?.Name
+            CathedraId = discipline.CathedraId,
+            CathedraName = discipline.Cathedra?.Name
         };
     }
 }

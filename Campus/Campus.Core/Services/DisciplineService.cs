@@ -44,7 +44,7 @@ public class DisciplineService : IDisciplineService
         var disciplines = await _disciplineRepository.GetAll();
         
         return disciplines
-            .Where(d => d.CathedralId == cathedraId)
+            .Where(d => d.CathedraId == cathedraId)
             .Select(d => d.ToDisciplineResponse());
     }
     

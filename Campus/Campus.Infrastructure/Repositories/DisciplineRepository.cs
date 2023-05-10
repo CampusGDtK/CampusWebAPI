@@ -45,14 +45,14 @@ namespace Campus.Infrastructure.Repositories
 
         public async Task<IEnumerable<Discipline>> GetAll()
         {
-            var result = _db.Disciplines.Include(x => x.Cathedral).AsEnumerable();
+            var result = _db.Disciplines.Include(x => x.Cathedra).AsEnumerable();
 
             return result;
         }
 
         public async Task<Discipline?> GetValueById(Guid id)
         {
-            var result = await _db.Disciplines.Include(x => x.Cathedral).FirstOrDefaultAsync(x => x.Id == id);
+            var result = await _db.Disciplines.Include(x => x.Cathedra).FirstOrDefaultAsync(x => x.Id == id);
 
             return result;
         }

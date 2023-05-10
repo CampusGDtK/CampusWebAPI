@@ -14,4 +14,9 @@ public class StudyProgram
 
     [ForeignKey("SpecialityId")]
     public Speciality? Speciality { get; set; }
+
+    public Guid CathedraId { get; set; }
+
+    [ForeignKey("CathedraId")]
+    public Cathedra? Cathedra { get; set; }
 }

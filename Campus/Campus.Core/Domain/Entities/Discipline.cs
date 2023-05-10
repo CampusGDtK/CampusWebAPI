@@ -10,8 +10,8 @@ public class Discipline
 
     public string Name { get; set; } = null!;
 
-    public Guid CathedralId { get; set; }
+    public Guid CathedraId { get; set; }
 
-    [ForeignKey("CathedralId")]
-    public Cathedra? Cathedral { get; set; }
+    [ForeignKey("CathedraId")]
+    public Cathedra? Cathedra { get; set; }
 }

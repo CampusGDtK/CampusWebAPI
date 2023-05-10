@@ -20,7 +20,7 @@ public class DisciplineUpdateRequest
         {
             Id = Id,
             Name = Name,
-            CathedralId = CathedraId
+            CathedraId = CathedraId
         };
     }
 }

@@ -18,7 +18,7 @@ public class DisciplineAddRequest
         {
             Id = Guid.NewGuid(),
             Name = Name,
-            CathedralId = CathedraId
+            CathedraId = CathedraId
         };
     }
 }

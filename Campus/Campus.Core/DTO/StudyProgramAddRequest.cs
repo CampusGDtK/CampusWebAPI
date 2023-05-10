@@ -8,8 +8,12 @@ public sealed class StudyProgramAddRequest
 {
     [Required]
     public string Name { get; set; } = null!;
+
     [Required]
     public Guid SpecialityId { get; set; }
+
+    [Required]
+    public Guid CathedraId { get; set; }
     
     public StudyProgram ToStudyProgram()
     {
@@ -17,7 +21,8 @@ public sealed class StudyProgramAddRequest
         {
             Id = Guid.NewGuid(),
             Name = Name,
-            SpecialityId = SpecialityId
+            SpecialityId = SpecialityId,
+            CathedraId = CathedraId
         };
     } 
 }

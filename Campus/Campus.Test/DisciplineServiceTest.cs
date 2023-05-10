@@ -91,8 +91,8 @@ public class DisciplineServiceTest
         var cathedra = new Cathedra { Id = cathedraId, Name = "Computer Science" };
         var disciplines = new List<Discipline>
         {
-            new Discipline { Id = Guid.NewGuid(), Name = "Math", CathedralId = cathedraId },
-            new Discipline { Id = Guid.NewGuid(), Name = "Physics", CathedralId = cathedraId }
+            new Discipline { Id = Guid.NewGuid(), Name = "Math", CathedraId = cathedraId },
+            new Discipline { Id = Guid.NewGuid(), Name = "Physics", CathedraId = cathedraId }
         };
         _cathedraRepositoryMock.Setup(r => r.GetValueById(cathedraId)).ReturnsAsync(cathedra);
         _disciplineRepositoryMock.Setup(r => r.GetAll()).ReturnsAsync(disciplines);
@@ -108,7 +108,7 @@ public class DisciplineServiceTest
             Assert.NotNull(disciplineResponse);
             Assert.Contains(disciplines, d => d.Id == disciplineResponse.Id 
                                               && d.Name == disciplineResponse.Name 
-                                              && d.CathedralId == disciplineResponse.CathedraId);
+                                              && d.CathedraId == disciplineResponse.CathedraId);
         });
     }
     [Fact]
