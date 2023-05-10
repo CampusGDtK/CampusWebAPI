@@ -17,20 +17,18 @@ namespace Campus.Core.Services
         private readonly IRepository<Academic> _academicRepository;
         private readonly IRepository<Discipline> _disciplineRepository;
         private readonly IRepository<Group> _groupsRepository;
-        private readonly IRepository<CurrentControl> _currentControlRepository;
 
-        private readonly IRepository<Student> _studentRepository;
+        private readonly ISyllabusService _syllabusService;
 
         public ADGService(IRepository<AcademicDisciplineGroup> adgRepository, IRepository<Academic> academicRepository,
         IRepository<Discipline> disciplineRepository, IRepository<Group> groupsRepository, 
-        IRepository<CurrentControl> currentControlRepository, IRepository<Student> studentRepository)
+        ISyllabusService syllabusService)
         {
             _adgRepository = adgRepository;
             _academicRepository = academicRepository;
             _disciplineRepository = disciplineRepository;
             _groupsRepository = groupsRepository;
-            _currentControlRepository = currentControlRepository;
-            _studentRepository = studentRepository;
+            _syllabusService = syllabusService;
         }
         
         public async Task<IEnumerable<DisciplineResponse>> GetDisciplinesByAcademicId(Guid academicId)
@@ -124,6 +122,15 @@ namespace Campus.Core.Services
             if(relation.Count == 0)
                 throw new ArgumentException("Academic has no relations.");
 
+            List<Guid> disciplines = relation.Select(rel => rel.DisciplineId).ToList();
+
+            //Deleting syllabys
+            foreach(Guid disciplineId in disciplines)
+            {
+                await _syllabusService.DeleteSyllabus(academicId, disciplineId);
+            }
+
+            //Reseting relation
             foreach(AcademicDisciplineGroup adg in relation)
             {
                 await _adgRepository.Delete(adg.Id);
