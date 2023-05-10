@@ -144,7 +144,7 @@ public class DisciplineServiceTest
         var disciplineId = Guid.NewGuid();
         var cathedraId = Guid.NewGuid();
         var cathedra = new Cathedra { Id = cathedraId, Name = "IPI" };
-        var existingDiscipline = new Discipline { Id = disciplineId, Name = "Math", CathedralId = cathedraId};
+        var existingDiscipline = new Discipline { Id = disciplineId, Name = "Math", CathedraId = cathedraId};
         var disciplineRequest = new DisciplineUpdateRequest { Id = disciplineId, Name = "Biology",CathedraId = cathedraId };
         var updatedDiscipline = disciplineRequest.ToDiscipline();
         _disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync(existingDiscipline);
