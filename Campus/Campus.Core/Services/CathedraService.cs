@@ -91,6 +91,9 @@ namespace Campus.Core.Services
 
             var result = await _cathedraRepository.Update(cathedra);
 
+            if (result is null)
+                throw new KeyNotFoundException(nameof(result));
+
             return result.ToCathedraResponse();
         }
     }
