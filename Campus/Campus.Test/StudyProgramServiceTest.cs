@@ -101,7 +101,8 @@ public class StudyProgramServiceTest
         Assert.All(result, studyProgramResponse =>
         {
             Assert.NotNull(studyProgramResponse);
-            Assert.Contains(studyPrograms, s => s.Id == studyProgramResponse.Id && s.CathedraId == studyProgramResponse.CathedraId);
+            Assert.Contains(studyPrograms, s => s.Id == studyProgramResponse.Id 
+                                                && s.CathedraId == studyProgramResponse.CathedraId);
         });
     }
 
@@ -140,7 +141,8 @@ public class StudyProgramServiceTest
         Assert.All(result, studyProgramResponse =>
         {
             Assert.NotNull(studyProgramResponse);
-            Assert.Contains(studyPrograms, s => s.Id == studyProgramResponse.Id && s.SpecialityId == studyProgramResponse.SpecialityId);
+            Assert.Contains(studyPrograms, s => s.Id == studyProgramResponse.Id 
+                                                && s.SpecialityId == studyProgramResponse.SpecialityId);
         });
     }
     
@@ -182,7 +184,9 @@ public class StudyProgramServiceTest
         Assert.All(result, studyProgramResponse =>
         {
             Assert.NotNull(studyProgramResponse);
-            Assert.Contains(studyPrograms, s => s.Id == studyProgramResponse.Id && s.SpecialityId == studyProgramResponse.SpecialityId && s.CathedraId == studyProgramResponse.CathedraId);
+            Assert.Contains(studyPrograms, s => s.Id == studyProgramResponse.Id 
+                                                && s.SpecialityId == studyProgramResponse.SpecialityId 
+                                                && s.CathedraId == studyProgramResponse.CathedraId);
         });
     }
     

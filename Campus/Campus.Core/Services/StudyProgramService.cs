@@ -110,10 +110,10 @@ public class StudyProgramService : IStudyProgramService
 
     public async Task Delete(Guid studyProgramId)
     {
-        if (await _studyProgramRepository.GetValueById(studyProgramId) is null)
+        var result = await _studyProgramRepository.Delete(studyProgramId);
+        if (!result)
         {
             throw new KeyNotFoundException("Study program not found");
         }
-        await _studyProgramRepository.Delete(studyProgramId);
     }
 }
