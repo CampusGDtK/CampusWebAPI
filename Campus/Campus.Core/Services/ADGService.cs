@@ -17,17 +17,22 @@ namespace Campus.Core.Services
         private readonly IRepository<Academic> _academicRepository;
         private readonly IRepository<Discipline> _disciplineRepository;
         private readonly IRepository<Group> _groupsRepository;
+        private readonly IRepository<Student> _studentsRepository;
+        private readonly IRepository<CurrentControl> _currentControlRepository;
 
         private readonly ISyllabusService _syllabusService;
 
         public ADGService(IRepository<AcademicDisciplineGroup> adgRepository, IRepository<Academic> academicRepository,
-        IRepository<Discipline> disciplineRepository, IRepository<Group> groupsRepository, 
+        IRepository<Discipline> disciplineRepository, IRepository<Group> groupsRepository, IRepository<Student> studentsRepository,
+        IRepository<CurrentControl> currentControlRepository,
         ISyllabusService syllabusService)
         {
             _adgRepository = adgRepository;
             _academicRepository = academicRepository;
             _disciplineRepository = disciplineRepository;
             _groupsRepository = groupsRepository;
+            _studentsRepository = studentsRepository;
+            _currentControlRepository = currentControlRepository;
             _syllabusService = syllabusService;
         }
         
@@ -93,6 +98,7 @@ namespace Campus.Core.Services
             //Proceeding
             foreach(KeyValuePair<Guid, IEnumerable<Guid>> pair in setRequest.DisciplineGroupsRelation)
             {
+                //Create relation between academic, discipline and groups
                 foreach(Guid groupId in pair.Value)
                 {
                     AcademicDisciplineGroup adg = new AcademicDisciplineGroup()
@@ -104,6 +110,26 @@ namespace Campus.Core.Services
                     };
 
                     await _adgRepository.Create(adg);
+                }
+
+                //Create current control record for all students from stream
+                List<Guid> studentsId = (await _studentsRepository.GetAll())
+                    .Where(student => pair.Value.Contains(student.GroupId))
+                    .Select(student => student.Id)
+                    .ToList();
+
+                foreach(Guid studentId in studentsId)
+                {
+                    CurrentControl currentControl = new CurrentControl()
+                    {
+                        Id = Guid.NewGuid(),
+                        StudentId = studentId,
+                        DisciplineId = pair.Key,
+                        Detail = "[]",
+                        Mark = "[]"
+                    };
+
+                    await _currentControlRepository.Create(currentControl);
                 }
             }
         }

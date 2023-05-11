@@ -18,7 +18,8 @@ public class CurrentControl
     [Column(TypeName = "jsonb")]
     public string Mark { get; set; } = null!;
 
-    public long TotalMark { get; set; }
+    [Range(0, 100)]
+    public int TotalMark { get; set; }
 
     [ForeignKey("DisciplineId")]
     public Discipline? Discipline { get; set; }

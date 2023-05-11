@@ -22,11 +22,15 @@ namespace Campus.Test
         private readonly IRepository<Academic> _academicRepository;
         private readonly IRepository<Discipline> _disciplineRepository;
         private readonly IRepository<Group> _groupsRepository;
+        private readonly IRepository<Student> _studentsRepository;
+        private readonly IRepository<CurrentControl> _currentControlRepository;
 
         private readonly Mock<IRepository<AcademicDisciplineGroup>> _adgRepositoryMock;
         private readonly Mock<IRepository<Academic>> _academicRepositoryMock;
         private readonly Mock<IRepository<Discipline>> _disciplineRepositoryMock;
         private readonly Mock<IRepository<Group>> _groupsRepositoryMock;
+        private readonly Mock<IRepository<Student>> _studentsRepositoryMock;
+        private readonly Mock<IRepository<CurrentControl>> _currentControlRepositoryMock;
 
         private readonly Fixture _autoFixture;
 
@@ -36,13 +40,17 @@ namespace Campus.Test
             _academicRepositoryMock = new Mock<IRepository<Academic>>();
             _disciplineRepositoryMock = new Mock<IRepository<Discipline>>();
             _groupsRepositoryMock = new Mock<IRepository<Group>>();
+            _studentsRepositoryMock = new Mock<IRepository<Student>>();
+            _currentControlRepositoryMock = new Mock<IRepository<CurrentControl>>();
 
             _adgRepository = _adgRepositoryMock.Object;
             _academicRepository = _academicRepositoryMock.Object;
             _disciplineRepository = _disciplineRepositoryMock.Object;
             _groupsRepository = _groupsRepositoryMock.Object;
+            _studentsRepository = _studentsRepositoryMock.Object;
+            _currentControlRepository = _currentControlRepositoryMock.Object;
 
-            _adgService = new ADGService(_adgRepository, _academicRepository, _disciplineRepository, _groupsRepository, null);
+            _adgService = new ADGService(_adgRepository, _academicRepository, _disciplineRepository, _groupsRepository, _studentsRepository, _currentControlRepository, null);
 
             _autoFixture = new Fixture();
         }
