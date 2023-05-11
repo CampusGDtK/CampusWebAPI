@@ -11,8 +11,9 @@ namespace Campus.Core.ServiceContracts
     {
         Task<StudyProgramResponse> GetById(Guid studyProgramId);
         Task<IEnumerable<StudyProgramResponse>> GetAll();
-        Task<IEnumerable<StudyProgramResponse>> GetByFacultyId(Guid facultyId);
+        Task<IEnumerable<StudyProgramResponse>> GetByCathedraId(Guid cathedraId);
         Task<IEnumerable<StudyProgramResponse>> GetBySpecialityId(Guid specialityId);
+        Task<IEnumerable<StudyProgramResponse>> GetBySpecialityAndCathedraId(Guid cathedraId,Guid specialityId);
         Task<StudyProgramResponse> Add(StudyProgramAddRequest studyProgramAddRequest);
         Task<StudyProgramResponse> Update(StudyProgramUpdateRequest studyProgramUpdateRequest);
         Task Delete(Guid studyProgramId);
