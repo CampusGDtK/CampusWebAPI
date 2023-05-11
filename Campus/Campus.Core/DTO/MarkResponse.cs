@@ -12,5 +12,6 @@ namespace Campus.Core.DTO
         public Guid DisciplineId { get; set; }
         public IEnumerable<string> Details { get; set; } = null!;
         public IEnumerable<int> Marks { get; set; } = null!;
+        public int TotalMark { get; set; }
     }
 }
