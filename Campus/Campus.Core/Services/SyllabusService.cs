@@ -94,6 +94,9 @@ namespace Campus.Core.Services
             if (await _disciplineRepository.GetValueById(disciplineId) is null)
                 throw new KeyNotFoundException(nameof(disciplineId));
 
+            if(syllabus is null)
+                throw new ArgumentNullException(nameof(syllabus));
+
             List<Guid> groupsId = (await _adgRepository.GetAll())
                 .Where(adg => adg.AcademicId == academicId && adg.DisciplineId == disciplineId)
                 .Select(adg => adg.GroupId)
