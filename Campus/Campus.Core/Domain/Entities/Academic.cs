@@ -13,7 +13,7 @@ public class Academic
     public string Name { get; set; } = null!;
 
     [Required]
-    public string Positotion { get; set; } = null!;
+    public string Position { get; set; } = null!;
 
     [Required]
     public string Email { get; set; } = null!;

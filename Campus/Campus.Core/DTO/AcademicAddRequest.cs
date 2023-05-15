@@ -17,7 +17,7 @@ namespace Campus.Core.DTO
 
         [Required]
         [MaxLength(100)]
-        public string Positotion { get; set; } = null!;
+        public string Position { get; set; } = null!;
 
         [Required]
         [MaxLength(50)]
@@ -41,7 +41,7 @@ namespace Campus.Core.DTO
             {
                 Id = Guid.NewGuid(),
                 Name = this.Name,
-                Positotion = this.Positotion,
+                Position = this.Position,
                 Email = this.Email,
                 PhoneNumber = this.PhoneNumber,
                 Gender = this.Gender.ToString(),

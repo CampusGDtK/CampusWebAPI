@@ -20,7 +20,7 @@ namespace Campus.Core.DTO
 
         [Required]
         [MaxLength(100)]
-        public string Positotion { get; set; } = null!;
+        public string Position { get; set; } = null!;
 
         [Required]
         [MaxLength(50)]
@@ -44,7 +44,7 @@ namespace Campus.Core.DTO
             {
                 Id = this.Id,
                 Name = this.Name,
-                Positotion = this.Positotion,
+                Position = this.Position,
                 Email = this.Email,
                 PhoneNumber = this.PhoneNumber,
                 Gender = this.Gender.ToString(),
@@ -63,7 +63,7 @@ namespace Campus.Core.DTO
             {
                 Id = academicResponse.Id,
                 Name = academicResponse.Name,
-                Positotion = academicResponse.Positotion,
+                Position = academicResponse.Position,
                 Email = academicResponse.Email,
                 PhoneNumber = academicResponse.PhoneNumber,
                 Gender = Enum.Parse<Gender>(academicResponse.Gender),

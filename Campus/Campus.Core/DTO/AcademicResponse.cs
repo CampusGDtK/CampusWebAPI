@@ -13,7 +13,7 @@ namespace Campus.Core.DTO
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
-        public string Positotion { get; set; } = null!;
+        public string Position { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string Gender { get; set; } = null!;
@@ -29,7 +29,7 @@ namespace Campus.Core.DTO
             {
                 Id = academic.Id,
                 Name = academic.Name,
-                Positotion = academic.Positotion,
+                Position = academic.Position,
                 Email = academic.Email,
                 PhoneNumber = academic.PhoneNumber,
                 Gender = academic.Gender,
