@@ -1,5 +1,5 @@
 ﻿using Campus.Core.DTO;
-using Campus.Core.Services;
+using Campus.Core.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CampusWebAPI.Controllers;
@@ -8,9 +8,9 @@ namespace CampusWebAPI.Controllers;
 [ApiController]
 public class StudyProgramsController : Controller
 {
-    private readonly StudyProgramService _studyProgramService;
+    private readonly IStudyProgramService _studyProgramService;
 
-    public StudyProgramsController(StudyProgramService studyProgramService)
+    public StudyProgramsController(IStudyProgramService studyProgramService)
     {
         _studyProgramService = studyProgramService;
     }

@@ -1,14 +1,14 @@
 ﻿using Campus.Core.DTO;
-using Campus.Core.Services;
+using Campus.Core.ServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CampusWebAPI.Controllers;
 
 public class DisciplineController : Controller
 {
-    private readonly DisciplineService _disciplineService;
+    private readonly IDisciplineService _disciplineService;
 
-    public DisciplineController(DisciplineService disciplineService)
+    public DisciplineController(IDisciplineService disciplineService)
     {
         _disciplineService = disciplineService;
     }
@@ -32,13 +32,13 @@ public class DisciplineController : Controller
     [HttpPost]
     public async Task<IActionResult> AddDiscipline([FromBody] DisciplineAddRequest? disciplineRequest)
     {
-        return Ok(await _disciplineService.Add(disciplineRequest));
+        return Ok(await _disciplineService.Add(disciplineRequest!));
     }
     
     [HttpPut]
     public async Task<IActionResult> UpdateDiscipline([FromBody] DisciplineUpdateRequest? disciplineRequest)
     {
-        return Ok(await _disciplineService.Update(disciplineRequest));
+        return Ok(await _disciplineService.Update(disciplineRequest!));
     }
     
     [HttpDelete("{id}")]
