@@ -28,16 +28,16 @@ namespace Campus.Core.Services
         public async Task<MarkResponse> GetByStudentAndDisciplineId(Guid studentId, Guid disciplineId)
         {
             if (await _studentRepository.GetValueById(studentId) is null)
-                throw new KeyNotFoundException(nameof(studentId));
+                throw new KeyNotFoundException("Id of student not found");
 
             if (await _disciplineRepository.GetValueById(disciplineId) is null)
-                throw new KeyNotFoundException(nameof(disciplineId));
+                throw new KeyNotFoundException("Id of discipline not found");
 
             CurrentControl? currentControl = (await _currentControlRepository.GetAll())
                 .FirstOrDefault(control => control.StudentId == studentId && control.DisciplineId == disciplineId);
 
             if (currentControl == null)
-                throw new ArgumentException("Student has not mark for discipline.");
+                throw new ArgumentException("Student has not mark for discipline");
 
             IEnumerable<string>? details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail);
 
@@ -57,23 +57,26 @@ namespace Campus.Core.Services
 
         public async Task<MarkResponse> SetMark(MarkSetRequest markSetRequest)
         {
+            if(markSetRequest == null) 
+                throw new ArgumentNullException("MarkSetRequest is null");
+            
             if (await _studentRepository.GetValueById(markSetRequest.StudentId) is null)
-                throw new KeyNotFoundException(nameof(markSetRequest.StudentId));
+                throw new KeyNotFoundException("Id of student not found");
 
             if (await _disciplineRepository.GetValueById(markSetRequest.DisciplineId) is null)
-                throw new KeyNotFoundException(nameof(markSetRequest.DisciplineId));
+                throw new KeyNotFoundException("Id of discipline not found");
 
             CurrentControl? currentControl = (await _currentControlRepository.GetAll())
                 .FirstOrDefault(control => control.StudentId == markSetRequest.StudentId 
                 && control.DisciplineId == markSetRequest.DisciplineId);
 
             if (currentControl == null)
-                throw new ArgumentException("Student has not mark for discipline.");
+                throw new ArgumentException("Student has not mark for discipline");
 
             IEnumerable<string>? details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail);
 
             if (details.Count() != markSetRequest.Marks.Count())
-                throw new ArgumentException("Size of marks collection does not match to size of syllabus.");
+                throw new ArgumentException("Size of marks collection does not match to size of syllabus");
 
             currentControl.Mark = JsonConvert.SerializeObject(markSetRequest.Marks);
             currentControl.TotalMark = markSetRequest.Marks.Sum();

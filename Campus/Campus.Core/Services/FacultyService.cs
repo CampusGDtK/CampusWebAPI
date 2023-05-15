@@ -23,7 +23,7 @@ namespace Campus.Core.Services
         public async Task<FacultyResponse> Add(FacultyAddRequest? facultyAddRequest)
         {
             if (facultyAddRequest == null) 
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("FacultyAddRequest is null");
 
             ValidationHelper.ModelValidation(facultyAddRequest);
 
@@ -49,7 +49,7 @@ namespace Campus.Core.Services
             var result = await _facultyRepository.GetValueById(facultyId);
 
             if (result is null)
-                throw new KeyNotFoundException(nameof(result));
+                throw new KeyNotFoundException("Id of faclulty not found");
 
             return result.ToFacultyResponse();
         }
@@ -59,17 +59,20 @@ namespace Campus.Core.Services
             var result = await _facultyRepository.Delete(facultyId);
 
             if(!result)
-                throw new KeyNotFoundException(nameof(result));
+                throw new KeyNotFoundException("Id of faclulty not found");
         }
 
         public async Task<FacultyResponse> Update(FacultyUpdateRequest facultyUpdateRequest)
         {
+            if (facultyUpdateRequest == null)
+                throw new ArgumentNullException("FacultyUpdateRequest is null");
+
             ValidationHelper.ModelValidation(facultyUpdateRequest);
 
             var updatedFaculty = await _facultyRepository.Update(facultyUpdateRequest.ToFaculty());
 
             if (updatedFaculty == null)
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Id of faclulty not found");
 
             return updatedFaculty.ToFacultyResponse();
         }

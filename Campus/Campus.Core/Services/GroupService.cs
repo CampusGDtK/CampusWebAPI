@@ -25,11 +25,11 @@ namespace Campus.Core.Services
         public async Task<GroupResponse> Add(GroupAddRequest groupAddRequest)
         {
             if(groupAddRequest is null)
-                throw new ArgumentNullException(nameof(groupAddRequest));
+                throw new ArgumentNullException("GroupAddRequest is null");
 
             if (await _facultyRepository.GetValueById(groupAddRequest.FacultyId) == null)
             {
-                throw new KeyNotFoundException(nameof(groupAddRequest.FacultyId));
+                throw new KeyNotFoundException("Id of faculty not found");
             }                
 
             ValidationHelper.ModelValidation(groupAddRequest);
@@ -48,7 +48,7 @@ namespace Campus.Core.Services
             var result = await _groupRepository.Delete(groupId);
 
             if (!result)
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Id of group not found");
         }
 
         public async Task<IEnumerable<GroupResponse>> GetAll()
@@ -61,7 +61,7 @@ namespace Campus.Core.Services
         public async Task<IEnumerable<GroupResponse>> GetByFacultyId(Guid facultyId)
         {
             if (await _facultyRepository.GetValueById(facultyId) == null)
-                throw new KeyNotFoundException(nameof(facultyId));
+                throw new KeyNotFoundException("Id of faculty not found");
 
             var allGroups = await _groupRepository.GetAll();
 
@@ -75,7 +75,7 @@ namespace Campus.Core.Services
             var result = await _groupRepository.GetValueById(groupId);
 
             if(result == null) 
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Id of group not found");
 
             return result.ToGroupResponse();
         }
@@ -83,10 +83,10 @@ namespace Campus.Core.Services
         public async Task<GroupResponse> Update(GroupUpdateRequest groupUpdateRequest)
         {
             if (groupUpdateRequest == null)
-                throw new ArgumentNullException(nameof(groupUpdateRequest));
+                throw new ArgumentNullException("GroupUpdateRequest is null");
 
             if (await _facultyRepository.GetValueById(groupUpdateRequest.FacultyId) == null)
-                throw new KeyNotFoundException(nameof(groupUpdateRequest.FacultyId));
+                throw new KeyNotFoundException("Id of faculty not found");
 
             ValidationHelper.ModelValidation(groupUpdateRequest);
 

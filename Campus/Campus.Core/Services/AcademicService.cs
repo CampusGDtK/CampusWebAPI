@@ -25,12 +25,12 @@ namespace Campus.Core.Services
         public async Task<AcademicResponse> Add(AcademicAddRequest academicAddRequest)
         {
             if(academicAddRequest == null)
-                throw new ArgumentNullException(nameof(academicAddRequest));
+                throw new ArgumentNullException("AcademicAddRequest is null");
 
             ValidationHelper.ModelValidation(academicAddRequest);
 
             if (await _cathedraRepository.GetValueById(academicAddRequest.CathedraId) is null)
-                throw new KeyNotFoundException(nameof(academicAddRequest.CathedraId));
+                throw new KeyNotFoundException("Id of cathedra not found");
 
             Academic academic = academicAddRequest.ToAcademic();
             academic.Id = Guid.NewGuid();
@@ -45,7 +45,7 @@ namespace Campus.Core.Services
             bool result = await _academicRepository.Delete(academicId);
 
             if(!result)
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
         }
 
         public async Task<IEnumerable<AcademicResponse>> GetAll()
@@ -58,7 +58,7 @@ namespace Campus.Core.Services
         public async Task<IEnumerable<AcademicResponse>> GetByCathedraId(Guid cathedraId)
         {
             if(await _cathedraRepository.GetValueById(cathedraId) is null)
-                throw new KeyNotFoundException(nameof(cathedraId));
+                throw new KeyNotFoundException("Id of cathedra not found");
 
             List<Academic> academics = (await _academicRepository.GetAll())
                 .Where(academic => academic.CathedraId == cathedraId)
@@ -72,7 +72,7 @@ namespace Campus.Core.Services
             Academic? academic = await _academicRepository.GetValueById(academicId);
 
             if (academic == null)
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
 
             return academic.ToAcademicResponse();
         }
@@ -80,18 +80,18 @@ namespace Campus.Core.Services
         public async Task<AcademicResponse> Update(AcademicUpdateRequest academicUpdateRequest)
         {
             if(academicUpdateRequest == null)
-                throw new ArgumentNullException(nameof(academicUpdateRequest));
+                throw new ArgumentNullException("AcademicUpdateRequest is null");
 
             ValidationHelper.ModelValidation(academicUpdateRequest);
 
             if (await _cathedraRepository.GetValueById(academicUpdateRequest.CathedraId) is null)
-                throw new KeyNotFoundException(nameof(academicUpdateRequest.CathedraId));
+                throw new KeyNotFoundException("Id of cathedra not found");
 
             Academic academic = academicUpdateRequest.ToAcademic();
             Academic? academicUpdated = await _academicRepository.Update(academic);
 
             if (academicUpdated == null)
-                throw new KeyNotFoundException(nameof(academicUpdateRequest.Id));
+                throw new KeyNotFoundException("Id of academic is not found");
 
             return academicUpdated.ToAcademicResponse();
         }

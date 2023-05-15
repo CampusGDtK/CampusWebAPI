@@ -25,12 +25,12 @@ namespace Campus.Core.Services
         public async Task<CathedraResponse> Add(CathedraAddRequest cathedraAddRequest)
         {
             if (cathedraAddRequest == null)
-                throw new ArgumentNullException(nameof(cathedraAddRequest));
+                throw new ArgumentNullException("CathedraAddRequest is null");
 
             ValidationHelper.ModelValidation(cathedraAddRequest);
 
             if(await _facultyRepository.GetValueById(cathedraAddRequest.FacultyId) == null)
-                throw new KeyNotFoundException(nameof(cathedraAddRequest.FacultyId));
+                throw new KeyNotFoundException("Id of faculty not found");
 
             Cathedra cathedra = cathedraAddRequest.ToCathedra();
 
@@ -72,7 +72,7 @@ namespace Campus.Core.Services
             var cathedra = await _cathedraRepository.GetValueById(cathedraId);
 
             if (cathedra == null)
-                throw new KeyNotFoundException(nameof(cathedraId));
+                throw new KeyNotFoundException("Id of cathedra not found");
 
             return cathedra.ToCathedraResponse();
         }
@@ -80,19 +80,19 @@ namespace Campus.Core.Services
         public async Task<CathedraResponse> Update(CathedraUpdateRequest cathedraUpdateRequest)
         {
             if (cathedraUpdateRequest == null)
-                throw new ArgumentNullException(nameof(cathedraUpdateRequest));
+                throw new ArgumentNullException("CathderaUpdateRequest is null");
 
             ValidationHelper.ModelValidation(cathedraUpdateRequest);
 
             if (await _facultyRepository.GetValueById(cathedraUpdateRequest.FacultyId) == null)
-                throw new KeyNotFoundException(nameof(cathedraUpdateRequest.FacultyId));
+                throw new KeyNotFoundException("Id of faculty not found");
 
             var cathedra = cathedraUpdateRequest.ToCathedra();
 
             var result = await _cathedraRepository.Update(cathedra);
 
             if (result is null)
-                throw new KeyNotFoundException(nameof(result));
+                throw new KeyNotFoundException("Id of cathedra not found");
 
             return result.ToCathedraResponse();
         }

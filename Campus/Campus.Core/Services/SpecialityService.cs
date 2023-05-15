@@ -2,6 +2,7 @@
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,10 +27,9 @@ namespace Campus.Core.Services
         public async Task<SpecialityResponse> Add(SpecialityAddRequest specialityAddRequest)
         {
             if(specialityAddRequest== null) 
-                throw new ArgumentNullException(nameof(specialityAddRequest));
+                throw new ArgumentNullException("SpecialityAddRequest is null");
 
-            if(string.IsNullOrEmpty(specialityAddRequest.Name))
-                throw new ArgumentException(nameof(specialityAddRequest.Name));
+            ValidationHelper.ModelValidation(specialityAddRequest);
 
             Speciality speciality = specialityAddRequest.ToSpeciality();
             speciality.Id = Guid.NewGuid();
@@ -48,7 +48,7 @@ namespace Campus.Core.Services
         public async Task<IEnumerable<SpecialityResponse>> GetByFacultyId(Guid facultyId)
         {
             if(await _facultyRepository.GetValueById(facultyId) is null)
-                throw new KeyNotFoundException(nameof(facultyId));
+                throw new KeyNotFoundException("Id of faculty not found");
 
             List<SpecialityFaculty> specialtyFaculties = (await _specialityFacultyRepository.GetAll())
                 .Where(specialtyFaculty => specialtyFaculty.FacultyId == facultyId)
@@ -63,7 +63,7 @@ namespace Campus.Core.Services
             Speciality? speciality = await _specialityRepository.GetValueById(specialityId);
 
             if (speciality == null)
-                throw new KeyNotFoundException(nameof(specialityId));
+                throw new KeyNotFoundException("Id of speciality not found");
 
             return speciality.ToSpecialityResponse();
         }
@@ -73,23 +73,22 @@ namespace Campus.Core.Services
             bool result = await _specialityRepository.Delete(specialityId);
 
             if (!result)
-                throw new KeyNotFoundException(nameof(specialityId));
+                throw new KeyNotFoundException("Id of speciality not found");
         }
 
         public async Task<SpecialityResponse> Update(SpecialityUpdateRequest specialityUpdateRequest)
         {
             if(specialityUpdateRequest == null)
-                throw new ArgumentNullException(nameof(specialityUpdateRequest));
+                throw new ArgumentNullException("SpecialityUpdateRequest is required");
 
-            if(string.IsNullOrEmpty(specialityUpdateRequest.Name))
-                throw new ArgumentException(nameof(specialityUpdateRequest.Name));
+            ValidationHelper.ModelValidation(specialityUpdateRequest);
 
             Speciality specialityToUpdate = specialityUpdateRequest.ToSpeciality();
 
             Speciality? specialityUpdated = await _specialityRepository.Update(specialityToUpdate);
 
             if (specialityUpdated == null)
-                throw new KeyNotFoundException(nameof(specialityUpdateRequest));
+                throw new KeyNotFoundException("Id of speciality not found");
 
             return specialityUpdated.ToSpecialityResponse();
         }

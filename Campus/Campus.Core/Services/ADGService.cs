@@ -42,7 +42,7 @@ namespace Campus.Core.Services
 
             if (academic == null)
             {
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
             }
 
             List<Discipline?> disciplines = (await _adgRepository.GetAll())
@@ -60,14 +60,14 @@ namespace Campus.Core.Services
 
             if(academic == null)
             {
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
             }
 
             Discipline? discipline = await _disciplineRepository.GetValueById(disciplineId);
 
             if(discipline == null)
             {
-                throw new KeyNotFoundException(nameof(discipline));
+                throw new KeyNotFoundException("Id of discipline not found");
             }
 
             List<AcademicDisciplineGroup> relation = (await _adgRepository.GetAll())
@@ -90,7 +90,7 @@ namespace Campus.Core.Services
         public async Task SetRelation(ADGSetRequest setRequest)
         {
             if(setRequest == null)
-                throw new ArgumentNullException(nameof(setRequest));
+                throw new ArgumentNullException("ADGSetRequest is null");
 
             //Validating keys
             await ValidationHelper.ValidateADGSetRequest(setRequest, _academicRepository, _disciplineRepository, _groupsRepository);
@@ -139,14 +139,14 @@ namespace Campus.Core.Services
             Academic? academic = await _academicRepository.GetValueById(academicId);
 
             if (academic == null)
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
 
             List<AcademicDisciplineGroup> relation = (await _adgRepository.GetAll())
                 .Where(adg => adg.AcademicId == academicId)
                 .ToList();
 
             if(relation.Count == 0)
-                throw new ArgumentException("Academic has no relations.");
+                throw new ArgumentException("Academic has no relations");
 
             List<Guid> disciplines = relation.Select(rel => rel.DisciplineId).ToList();
 

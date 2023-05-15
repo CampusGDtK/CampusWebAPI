@@ -27,7 +27,7 @@ public class StudentService : IStudentService
         var student = await _studentRepository.GetValueById(id);
         if (student is null)
         {
-            throw new KeyNotFoundException("Student not found");
+            throw new KeyNotFoundException("Id of student not found");
         }
         
         return student.ToStudentResponse();
@@ -37,7 +37,7 @@ public class StudentService : IStudentService
     {
         if (await _groupRepository.GetValueById(groupId) is null)
         {
-            throw new KeyNotFoundException("Student not found");
+            throw new KeyNotFoundException("Id of student not found");
         }
         
         var students = await _studentRepository.GetAll();
@@ -48,7 +48,7 @@ public class StudentService : IStudentService
     {
         if (request is null)
         {
-            throw new ArgumentNullException(nameof(request),"Request is null");
+            throw new ArgumentNullException("StudentAddRequest is null");
         }
         var student = new Student
         {
@@ -68,7 +68,7 @@ public class StudentService : IStudentService
     {
         if (request is null)
         {
-            throw new ArgumentNullException(nameof(request),"Request is null");
+            throw new ArgumentNullException("StudentUpdateRequest is null");
         }
         var student = new Student
         {
@@ -82,7 +82,7 @@ public class StudentService : IStudentService
         var result = await _studentRepository.Update(student);
         if (result is null)
         {
-            throw new KeyNotFoundException("Student not found");
+            throw new KeyNotFoundException("Id of student not found");
         }
         return result.ToStudentResponse();
     }

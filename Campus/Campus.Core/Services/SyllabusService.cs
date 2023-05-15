@@ -32,10 +32,10 @@ namespace Campus.Core.Services
         public async Task DeleteSyllabus(Guid academicId, Guid disciplineId)
         {
             if (await _academicRepository.GetValueById(academicId) is null)
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
 
             if (await _disciplineRepository.GetValueById(disciplineId) is null)
-                throw new KeyNotFoundException(nameof(disciplineId));
+                throw new KeyNotFoundException("Id of discipline not found");
 
             List<Guid> groupsId = (await _adgRepository.GetAll())
                 .Where(adg => adg.AcademicId == academicId && adg.DisciplineId == disciplineId)
@@ -43,7 +43,7 @@ namespace Campus.Core.Services
                 .ToList();
 
             if (groupsId.Count == 0)
-                throw new ArgumentException("There are not realations between academic and disciplines.");
+                throw new ArgumentException("There are not realations between academic and disciplines");
 
             List<Guid> studentsId = (await _studentRepository.GetAll())
                 .Where(student => groupsId.Contains(student.GroupId))
@@ -62,17 +62,17 @@ namespace Campus.Core.Services
         public async Task<IEnumerable<string>> GetSyllabus(Guid academicId, Guid disciplineId)
         {
             if (await _academicRepository.GetValueById(academicId) is null)
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
 
             if (await _disciplineRepository.GetValueById(disciplineId) is null)
-                throw new KeyNotFoundException(nameof(disciplineId));
+                throw new KeyNotFoundException("Id of discipline not found");
 
             Guid? groupId = (await _adgRepository.GetAll())
                 .FirstOrDefault(adg => adg.AcademicId == academicId && adg.DisciplineId == disciplineId)?
                 .GroupId;
 
             if (groupId == null)
-                throw new ArgumentException("There are not realations between academic and disciplines.");
+                throw new ArgumentException("There are not realations between academic and disciplines");
 
             Guid studentId = (await _studentRepository.GetAll())
                 .First(student => student.GroupId == groupId)
@@ -89,13 +89,13 @@ namespace Campus.Core.Services
         public async Task SetSyllabus(Guid academicId, Guid disciplineId, IEnumerable<string> syllabus)
         {
             if (await _academicRepository.GetValueById(academicId) is null)
-                throw new KeyNotFoundException(nameof(academicId));
+                throw new KeyNotFoundException("Id of academic not found");
 
             if (await _disciplineRepository.GetValueById(disciplineId) is null)
-                throw new KeyNotFoundException(nameof(disciplineId));
+                throw new KeyNotFoundException("Id of discipline not found");
 
             if(syllabus is null)
-                throw new ArgumentNullException(nameof(syllabus));
+                throw new ArgumentNullException("Syllabus is null");
 
             List<Guid> groupsId = (await _adgRepository.GetAll())
                 .Where(adg => adg.AcademicId == academicId && adg.DisciplineId == disciplineId)
@@ -103,7 +103,7 @@ namespace Campus.Core.Services
                 .ToList();
 
             if (groupsId.Count == 0)
-                throw new ArgumentException("There are not realations between academic and disciplines.");
+                throw new ArgumentException("There are not realations between academic and disciplines");
 
             List<Guid> studentsId = (await _studentRepository.GetAll())
                 .Where(student => groupsId.Contains(student.GroupId))

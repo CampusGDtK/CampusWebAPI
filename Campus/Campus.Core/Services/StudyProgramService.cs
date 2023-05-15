@@ -22,7 +22,7 @@ public class StudyProgramService : IStudyProgramService
         var studyProgram = await _studyProgramRepository.GetValueById(studyProgramId);
         if (studyProgram is null)
         {
-            throw new KeyNotFoundException("Study program not found");
+            throw new KeyNotFoundException("Id of study program not found");
         }
         
         return studyProgram.ToStudyProgramResponse();
@@ -38,7 +38,7 @@ public class StudyProgramService : IStudyProgramService
     {
         if (await _cathedraRepository.GetValueById(cathedraId) is null)
         {
-            throw new KeyNotFoundException("Cathedra not found");
+            throw new KeyNotFoundException("Id of cathedra not found");
         }
         var studyPrograms = await _studyProgramRepository.GetAll();
         return studyPrograms
@@ -50,7 +50,7 @@ public class StudyProgramService : IStudyProgramService
     {
         if(await _specialityRepository.GetValueById(specialityId) is null)
         {
-            throw new KeyNotFoundException("Speciality not found");
+            throw new KeyNotFoundException("Id of speciality not found");
         }
         var studyPrograms = await _studyProgramRepository.GetAll();
         return studyPrograms
@@ -62,11 +62,11 @@ public class StudyProgramService : IStudyProgramService
     {
         if (await _cathedraRepository.GetValueById(cathedraId) is null)
         {
-            throw new KeyNotFoundException("Cathedra not found");
+            throw new KeyNotFoundException("Id of cathedra not found");
         }
         if (await _specialityRepository.GetValueById(specialityId) is null)
         {
-            throw new KeyNotFoundException("Speciality not found");
+            throw new KeyNotFoundException("Id of speciality not found");
         }
         var studyPrograms = await _studyProgramRepository.GetAll();
         return studyPrograms
@@ -76,13 +76,17 @@ public class StudyProgramService : IStudyProgramService
 
     public async Task<StudyProgramResponse> Add(StudyProgramAddRequest studyProgramAddRequest)
     {
-        if(await _cathedraRepository.GetValueById(studyProgramAddRequest.CathedraId) is null)
+        if (studyProgramAddRequest is null)
         {
-            throw new KeyNotFoundException("Cathedra not found");
+            throw new ArgumentNullException("StudyProgramAddRequest is null");
+        }
+        if (await _cathedraRepository.GetValueById(studyProgramAddRequest.CathedraId) is null)
+        {
+            throw new KeyNotFoundException("Id of cathedra not found");
         }
         if(await _specialityRepository.GetValueById(studyProgramAddRequest.SpecialityId) is null)
         {
-            throw new KeyNotFoundException("Speciality not found");
+            throw new KeyNotFoundException("Id of speciality not found");
         }
         var studyProgram = studyProgramAddRequest.ToStudyProgram();
         await _studyProgramRepository.Create(studyProgram);
@@ -91,17 +95,21 @@ public class StudyProgramService : IStudyProgramService
 
     public async Task<StudyProgramResponse> Update(StudyProgramUpdateRequest studyProgramUpdateRequest)
     {
+        if(studyProgramUpdateRequest is null)
+        {
+            throw new ArgumentNullException("StudyProgramUpdateRequest is null");
+        }
         if (await _studyProgramRepository.GetValueById(studyProgramUpdateRequest.Id) is null)
         {
-            throw new KeyNotFoundException("Study program not found");
+            throw new KeyNotFoundException("Id of study program not found");
         }
         if(await _cathedraRepository.GetValueById(studyProgramUpdateRequest.CathedraId) is null)
         {
-            throw new KeyNotFoundException("Cathedra not found");
+            throw new KeyNotFoundException("Id of cathedra not found");
         }
         if(await _specialityRepository.GetValueById(studyProgramUpdateRequest.SpecialityId) is null)
         {
-            throw new KeyNotFoundException("Speciality not found");
+            throw new KeyNotFoundException("Id of speciality not found");
         }
         var studyProgram = studyProgramUpdateRequest.ToStudyProgram();
         await _studyProgramRepository.Update(studyProgram);
@@ -113,7 +121,7 @@ public class StudyProgramService : IStudyProgramService
         var result = await _studyProgramRepository.Delete(studyProgramId);
         if (!result)
         {
-            throw new KeyNotFoundException("Study program not found");
+            throw new KeyNotFoundException("Id of study program not found");
         }
     }
 }
