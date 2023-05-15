@@ -9,11 +9,11 @@ namespace CampusWebAPI.Controllers
 {
     [Route("/faculties")]
     [ApiController]
-    public class FacultyControllerBase : ControllerBase
+    public class FacultyController : ControllerBase
     {
         private readonly IFacultyService _facultyService;
 
-        public FacultyControllerBase(IFacultyService facultyService)
+        public FacultyController(IFacultyService facultyService)
         {
             _facultyService = facultyService;
         }
