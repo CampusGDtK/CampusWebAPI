@@ -1,4 +1,5 @@
 ﻿using Campus.Core.Domain.Entities;
+using Campus.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,11 +13,30 @@ namespace Campus.Core.DTO
     {
         [Required]
         public Guid Id { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string Name { get; set; } = null!;
+
         [Required]
-        public Guid CathedralId { get; set; }
+        [MaxLength(100)]
+        public string Positotion { get; set; } = null!;
+
+        [Required]
+        [MaxLength(50)]
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; } = null!;
+
+        [Required]
+        [MaxLength(20)]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; } = null!;
+
+        [Required]
+        public Gender Gender { get; set; }
+
+        [Required]
+        public Guid CathedraId { get; set; }
 
         public Academic ToAcademic()
         {
@@ -24,7 +44,11 @@ namespace Campus.Core.DTO
             {
                 Id = this.Id,
                 Name = this.Name,
-                CathedralId = this.CathedralId
+                Positotion = this.Positotion,
+                Email = this.Email,
+                PhoneNumber = this.PhoneNumber,
+                Gender = this.Gender.ToString(),
+                CathedraId = this.CathedraId
             };
 
             return academic;
@@ -39,7 +63,11 @@ namespace Campus.Core.DTO
             {
                 Id = academicResponse.Id,
                 Name = academicResponse.Name,
-                CathedralId = academicResponse.CathedraId
+                Positotion = academicResponse.Positotion,
+                Email = academicResponse.Email,
+                PhoneNumber = academicResponse.PhoneNumber,
+                Gender = Enum.Parse<Gender>(academicResponse.Gender),
+                CathedraId = academicResponse.CathedraId
             };
 
             return academicUpdateRequest;

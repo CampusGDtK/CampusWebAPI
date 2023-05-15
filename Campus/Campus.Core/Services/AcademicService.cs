@@ -2,6 +2,7 @@
 using Campus.Core.Domain.RepositoryContracts;
 using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,11 +27,10 @@ namespace Campus.Core.Services
             if(academicAddRequest == null)
                 throw new ArgumentNullException(nameof(academicAddRequest));
 
-            if (string.IsNullOrEmpty(academicAddRequest.Name))
-                throw new ArgumentException(nameof(academicAddRequest.Name));
+            ValidationHelper.ModelValidation(academicAddRequest);
 
-            if (await _cathedraRepository.GetValueById(academicAddRequest.CathedralId) is null)
-                throw new KeyNotFoundException(nameof(academicAddRequest.CathedralId));
+            if (await _cathedraRepository.GetValueById(academicAddRequest.CathedraId) is null)
+                throw new KeyNotFoundException(nameof(academicAddRequest.CathedraId));
 
             Academic academic = academicAddRequest.ToAcademic();
             academic.Id = Guid.NewGuid();
@@ -61,7 +61,7 @@ namespace Campus.Core.Services
                 throw new KeyNotFoundException(nameof(cathedraId));
 
             List<Academic> academics = (await _academicRepository.GetAll())
-                .Where(academic => academic.CathedralId == cathedraId)
+                .Where(academic => academic.CathedraId == cathedraId)
                 .ToList();
 
             return academics.Select(academic => academic.ToAcademicResponse());
@@ -82,11 +82,10 @@ namespace Campus.Core.Services
             if(academicUpdateRequest == null)
                 throw new ArgumentNullException(nameof(academicUpdateRequest));
 
-            if (string.IsNullOrEmpty(academicUpdateRequest.Name))
-                throw new ArgumentException(nameof(academicUpdateRequest.Name));
+            ValidationHelper.ModelValidation(academicUpdateRequest);
 
-            if (await _cathedraRepository.GetValueById(academicUpdateRequest.CathedralId) is null)
-                throw new KeyNotFoundException(nameof(academicUpdateRequest.CathedralId));
+            if (await _cathedraRepository.GetValueById(academicUpdateRequest.CathedraId) is null)
+                throw new KeyNotFoundException(nameof(academicUpdateRequest.CathedraId));
 
             Academic academic = academicUpdateRequest.ToAcademic();
             Academic? academicUpdated = await _academicRepository.Update(academic);

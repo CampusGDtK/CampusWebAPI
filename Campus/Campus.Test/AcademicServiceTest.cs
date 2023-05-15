@@ -133,11 +133,11 @@ namespace Campus.Test
 
             Academic academic1 = _autoFixture.Build<Academic>()
                 .With(p => p.Id, academicId1)
-                .With(p => p.CathedralId, cathedraId)
+                .With(p => p.CathedraId, cathedraId)
                 .Create();
             Academic academic2 = _autoFixture.Build<Academic>()
                 .With(p => p.Id, academicId2)
-                .With(p => p.CathedralId, cathedraId)
+                .With(p => p.CathedraId, cathedraId)
                 .Create();
 
             List<Academic> academics = new List<Academic>()
@@ -228,7 +228,7 @@ namespace Campus.Test
                 .Create();
 
             AcademicAddRequest academicAddRequest = _autoFixture.Build<AcademicAddRequest>()
-                .With(p => p.CathedralId, cathedraId)
+                .With(p => p.CathedraId, cathedraId)
                 .Create();
 
             _cathedraRepositoryMock.Setup(p => p.GetValueById(cathedraId))
@@ -275,7 +275,7 @@ namespace Campus.Test
                 .Create();
 
             AcademicUpdateRequest academicUpdateRequest = _autoFixture.Build<AcademicUpdateRequest>()
-                .With(p => p.CathedralId, cathedraId)
+                .With(p => p.CathedraId, cathedraId)
                 .Create();
 
             _cathedraRepositoryMock.Setup(p => p.GetValueById(cathedraId))
@@ -310,7 +310,7 @@ namespace Campus.Test
             {
                 Id = academicId,
                 Name = null,
-                CathedralId = cathedraId,
+                CathedraId = cathedraId,
             };
 
             _cathedraRepositoryMock.Setup(p => p.GetValueById(cathedraId))
@@ -371,7 +371,7 @@ namespace Campus.Test
 
             AcademicUpdateRequest academicUpdateRequest = _autoFixture.Build<AcademicUpdateRequest>()
                 .With(p => p.Id, academicId)
-                .With(p => p.CathedralId, cathedraId)
+                .With(p => p.CathedraId, cathedraId)
                 .Create();
 
             _cathedraRepositoryMock.Setup(p => p.GetValueById(cathedraId))
