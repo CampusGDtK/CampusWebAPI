@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CampusWebAPI.Controllers;
 
-public class DisciplineController : Controller
+public class DisciplinesController : Controller
 {
     private readonly IDisciplineService _disciplineService;
 
-    public DisciplineController(IDisciplineService disciplineService)
+    public DisciplinesController(IDisciplineService disciplineService)
     {
         _disciplineService = disciplineService;
     }

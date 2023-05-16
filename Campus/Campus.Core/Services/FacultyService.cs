@@ -14,15 +14,17 @@ namespace Campus.Core.Services
     public class FacultyService : IFacultyService
     {
         private readonly IRepository<Faculty> _facultyRepository;
+        private readonly IRepository<SpecialityFaculty> _specialityFacultyRepository;
 
-        public FacultyService(IRepository<Faculty> facultyRepository)
+        public FacultyService(IRepository<Faculty> facultyRepository, IRepository<SpecialityFaculty> specialityFacultyRepository)
         {
             _facultyRepository = facultyRepository;
+            _specialityFacultyRepository = specialityFacultyRepository;
         }
 
         public async Task<FacultyResponse> Add(FacultyAddRequest? facultyAddRequest)
         {
-            if (facultyAddRequest == null) 
+            if (facultyAddRequest == null)
                 throw new ArgumentNullException("FacultyAddRequest is null");
 
             ValidationHelper.ModelValidation(facultyAddRequest);
@@ -33,8 +35,19 @@ namespace Campus.Core.Services
 
             await _facultyRepository.Create(faculty);
 
-            return faculty.ToFacultyResponse();
+            foreach (Guid specialityId in facultyAddRequest.Specialities)
+            {
+                SpecialityFaculty specialityFaculty = new SpecialityFaculty()
+                {
+                    Id = Guid.NewGuid(),
+                    FacultyId = faculty.Id,
+                    SpecialityId = specialityId
+                };
 
+                await _specialityFacultyRepository.Create(specialityFaculty);
+            }
+
+            return faculty.ToFacultyResponse();
         }
 
         public async Task<IEnumerable<FacultyResponse>> GetAll()
@@ -58,7 +71,7 @@ namespace Campus.Core.Services
         {
             var result = await _facultyRepository.Delete(facultyId);
 
-            if(!result)
+            if (!result)
                 throw new KeyNotFoundException("Id of faclulty not found");
         }
 

@@ -6,11 +6,11 @@ namespace CampusWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FacultyController : ControllerBase
+    public class FacultiesController : ControllerBase
     {
         private readonly IFacultyService _facultyService;
 
-        public FacultyController(IFacultyService facultyService)
+        public FacultiesController(IFacultyService facultyService)
         {
             _facultyService = facultyService;
         }
@@ -24,8 +24,7 @@ namespace CampusWebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateFaculty(FacultyAddRequest facultyAddRequest)
         {
-            await _facultyService.Add(facultyAddRequest);
-            return Ok();
+            return Ok(await _facultyService.Add(facultyAddRequest));
         }
 
         [HttpPut]
