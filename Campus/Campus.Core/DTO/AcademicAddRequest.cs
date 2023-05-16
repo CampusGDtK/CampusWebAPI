@@ -30,7 +30,8 @@ namespace Campus.Core.DTO
         public string PhoneNumber { get; set; } = null!;
 
         [Required]
-        public Gender Gender { get; set; }
+        [MaxLength(10)]
+        public string Gender { get; set; } = null!;
 
         [Required]
         public Guid CathedraId { get; set; }
@@ -44,7 +45,7 @@ namespace Campus.Core.DTO
                 Position = this.Position,
                 Email = this.Email,
                 PhoneNumber = this.PhoneNumber,
-                Gender = this.Gender.ToString(),
+                Gender = this.Gender,
                 CathedraId = this.CathedraId
             };
 
