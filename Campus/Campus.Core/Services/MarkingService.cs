@@ -17,12 +17,49 @@ namespace Campus.Core.Services
         private readonly IRepository<CurrentControl> _currentControlRepository;
         private readonly IRepository<Student> _studentRepository;
         private readonly IRepository<Discipline> _disciplineRepository;
+        private readonly IRepository<Group> _groupRepository;
 
-        public MarkingService(IRepository<CurrentControl> currentControlRepository, IRepository<Student> studentRepository, IRepository<Discipline> disciplineRepository)
+        public MarkingService(IRepository<CurrentControl> currentControlRepository, IRepository<Student> studentRepository, IRepository<Discipline> disciplineRepository, IRepository<Group> groupRepository)
         {
             _currentControlRepository = currentControlRepository;
             _studentRepository = studentRepository;
             _disciplineRepository = disciplineRepository;
+            _groupRepository = groupRepository;
+        }
+
+        public async Task<IEnumerable<MarkResponse>> GetByGruopIdAndDisciplineId(Guid groupId, Guid disciplineId)
+        {
+            if (await _groupRepository.GetValueById(groupId) is null)
+                throw new KeyNotFoundException("Id of group not found");
+
+            if (await _disciplineRepository.GetValueById(disciplineId) is null)
+                throw new KeyNotFoundException("Id of discipline not found");
+
+            var sudentsIds = (await _studentRepository.GetAll()).Where(x => x.GroupId == groupId).Select(x => x.Id);
+
+            List<MarkResponse> responses = new List<MarkResponse>();
+
+            var currentControls = (await _currentControlRepository.GetAll())
+                .Where(x => x.DisciplineId == disciplineId && sudentsIds.Contains(x.StudentId));
+
+            foreach (var currentControl in currentControls)
+            {
+                IEnumerable<string>? details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail);
+
+                IEnumerable<int>? marks = JsonConvert.DeserializeObject<IEnumerable<int>>(currentControl.Mark);
+
+                responses.Add(
+                new MarkResponse()
+                {
+                    StudentId = currentControl.StudentId,
+                    DisciplineId = disciplineId,
+                    Details = details,
+                    Marks = marks,
+                    TotalMark = currentControl.TotalMark,
+                });
+            }
+
+            return responses;
         }
 
         public async Task<MarkResponse> GetByStudentAndDisciplineId(Guid studentId, Guid disciplineId)
@@ -57,9 +94,9 @@ namespace Campus.Core.Services
 
         public async Task<MarkResponse> SetMark(MarkSetRequest markSetRequest)
         {
-            if(markSetRequest == null) 
+            if (markSetRequest == null)
                 throw new ArgumentNullException("MarkSetRequest is null");
-            
+
             if (await _studentRepository.GetValueById(markSetRequest.StudentId) is null)
                 throw new KeyNotFoundException("Id of student not found");
 
@@ -67,7 +104,7 @@ namespace Campus.Core.Services
                 throw new KeyNotFoundException("Id of discipline not found");
 
             CurrentControl? currentControl = (await _currentControlRepository.GetAll())
-                .FirstOrDefault(control => control.StudentId == markSetRequest.StudentId 
+                .FirstOrDefault(control => control.StudentId == markSetRequest.StudentId
                 && control.DisciplineId == markSetRequest.DisciplineId);
 
             if (currentControl == null)
