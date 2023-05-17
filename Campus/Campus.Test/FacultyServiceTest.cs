@@ -17,10 +17,14 @@ namespace Campus.Test
     public class FacultyServiceTest
     {
         private readonly IFacultyService _facultyService;
+        private readonly ISpecialityService _specialityService;
 
         private readonly IRepository<Faculty> _facultyRepository;
+        private readonly IRepository<SpecialityFaculty> _specialityFacultyRepository;
 
         private readonly Mock<IRepository<Faculty>> _facultyRepositoryMock;
+        private readonly Mock<IRepository<SpecialityFaculty>> _specialityFacultyRepositoryMock;
+        private readonly Mock<ISpecialityService> _specialityServiceMock;
 
         private readonly IFixture _fixture;
 
@@ -29,9 +33,14 @@ namespace Campus.Test
             _fixture = new Fixture();
 
             _facultyRepositoryMock = new Mock<IRepository<Faculty>>();
-            _facultyRepository = _facultyRepositoryMock.Object;
+            _specialityServiceMock = new Mock<ISpecialityService>();
+            _specialityFacultyRepositoryMock = new Mock<IRepository<SpecialityFaculty>>();
 
-            _facultyService = new FacultyService(_facultyRepository);
+            _facultyRepository = _facultyRepositoryMock.Object;
+            _specialityFacultyRepository = _specialityFacultyRepositoryMock.Object;
+            _specialityService = _specialityServiceMock.Object;
+
+            _facultyService = new FacultyService(_facultyRepository, _specialityFacultyRepository, _specialityService);
         }
 
         #region AddFaculty
@@ -93,14 +102,25 @@ namespace Campus.Test
         [Fact]
         public async Task AddFaculty_ValidFaculty()
         {
+            var specialitiesList = _fixture.CreateMany<Speciality>();
+
+            var specialitiesResponses = specialitiesList.Select(x => x.ToSpecialityResponse());
+
+            var specialitiesIds = specialitiesList.Select(x => x.Id);
+
             //Arrange
             var facultyAddRequest = _fixture.Build<FacultyAddRequest>()
-                .With(x => x.Specialities, new List<Guid> { Guid.NewGuid() })
+                .With(x => x.Specialities, specialitiesIds)
                 .Create(); ;
 
             var faculty = facultyAddRequest.ToFaculty();
 
             var facultyResponseExpected = faculty.ToFacultyResponse();
+
+            facultyResponseExpected.SpecialitiesId = specialitiesIds;
+            facultyResponseExpected.SpecialitiesName = specialitiesList.Select(x => x.Name);
+
+            _specialityServiceMock.Setup(x => x.GetByFacultyId(It.IsAny<Guid>())).ReturnsAsync(specialitiesResponses);
 
             //Act
             var resultedFaculty = await _facultyService.Add(facultyAddRequest);

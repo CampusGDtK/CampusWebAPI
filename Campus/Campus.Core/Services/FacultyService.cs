@@ -15,11 +15,13 @@ namespace Campus.Core.Services
     {
         private readonly IRepository<Faculty> _facultyRepository;
         private readonly IRepository<SpecialityFaculty> _specialityFacultyRepository;
+        private readonly ISpecialityService _specialityService;
 
-        public FacultyService(IRepository<Faculty> facultyRepository, IRepository<SpecialityFaculty> specialityFacultyRepository)
+        public FacultyService(IRepository<Faculty> facultyRepository, IRepository<SpecialityFaculty> specialityFacultyRepository, ISpecialityService specialityService)
         {
             _facultyRepository = facultyRepository;
             _specialityFacultyRepository = specialityFacultyRepository;
+            _specialityService = specialityService;
         }
 
         public async Task<FacultyResponse> Add(FacultyAddRequest? facultyAddRequest)
@@ -47,7 +49,15 @@ namespace Campus.Core.Services
                 await _specialityFacultyRepository.Create(specialityFaculty);
             }
 
-            return faculty.ToFacultyResponse();
+            var facultyResponse = faculty.ToFacultyResponse();
+
+            var specialitiesByFaculty = await _specialityService.GetByFacultyId(faculty.Id);
+
+            facultyResponse.SpecialitiesId = specialitiesByFaculty?.Select(x => x.Id);
+
+            facultyResponse.SpecialitiesName = specialitiesByFaculty?.Select(x => x.Name);
+
+            return facultyResponse;
         }
 
         public async Task<IEnumerable<FacultyResponse>> GetAll()

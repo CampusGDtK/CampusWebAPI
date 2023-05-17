@@ -17,6 +17,7 @@ namespace Campus.Test
         private readonly Mock<IRepository<CurrentControl>> _currentControlRepositoryMock;
         private readonly Mock<IRepository<Student>> _studentRepositoryMock;
         private readonly Mock<IRepository<Discipline>> _disciplineRepositoryMock;
+        private readonly Mock<IRepository<Group>> _groupRepositoryMock;
         private readonly MarkingService _markingService;
 
         public MarkingServiceTests()
@@ -24,10 +25,13 @@ namespace Campus.Test
             _currentControlRepositoryMock = new Mock<IRepository<CurrentControl>>();
             _studentRepositoryMock = new Mock<IRepository<Student>>();
             _disciplineRepositoryMock = new Mock<IRepository<Discipline>>();
+            _groupRepositoryMock = new Mock<IRepository<Group>>();
+
             _markingService = new MarkingService(
                 _currentControlRepositoryMock.Object,
                 _studentRepositoryMock.Object,
-                _disciplineRepositoryMock.Object
+                _disciplineRepositoryMock.Object,
+                _groupRepositoryMock.Object
             );
         }
 
@@ -113,7 +117,7 @@ namespace Campus.Test
             var disciplineRepositoryMock = new Mock<IRepository<Discipline>>();
             disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync(discipline);
 
-            var markingService = new MarkingService(currentControlRepositoryMock.Object, studentRepositoryMock.Object, disciplineRepositoryMock.Object);
+            var markingService = new MarkingService(currentControlRepositoryMock.Object, studentRepositoryMock.Object, disciplineRepositoryMock.Object, _groupRepositoryMock.Object);
             
             // Act and Assert
             await Assert.ThrowsAsync<ArgumentException>(() => markingService.GetByStudentAndDisciplineId(studentId, disciplineId));
@@ -143,7 +147,7 @@ namespace Campus.Test
             studentRepositoryMock.Setup(r => r.GetValueById(studentId)).ReturnsAsync(student);
             var disciplineRepositoryMock = new Mock<IRepository<Discipline>>();
             disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync(discipline);
-            var markingService = new MarkingService(currentControlRepositoryMock.Object, studentRepositoryMock.Object, disciplineRepositoryMock.Object);
+            var markingService = new MarkingService(currentControlRepositoryMock.Object, studentRepositoryMock.Object, disciplineRepositoryMock.Object, _groupRepositoryMock.Object);
 
             // Act
             var result = await markingService.GetByStudentAndDisciplineId(studentId, disciplineId);
@@ -245,7 +249,7 @@ namespace Campus.Test
             disciplineRepositoryMock.Setup(r => r.GetValueById(disciplineId)).ReturnsAsync(discipline);
             currentControlRepositoryMock.Setup(r => r.GetAll()).ReturnsAsync(new List<CurrentControl> { currentControl });
 
-            var markingService = new MarkingService(currentControlRepositoryMock.Object, studentRepositoryMock.Object, disciplineRepositoryMock.Object);
+            var markingService = new MarkingService(currentControlRepositoryMock.Object, studentRepositoryMock.Object, disciplineRepositoryMock.Object, _groupRepositoryMock.Object);
 
             // Act
             var result = await markingService.GetByStudentAndDisciplineId(studentId, disciplineId);

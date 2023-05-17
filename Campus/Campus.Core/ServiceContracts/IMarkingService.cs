@@ -26,5 +26,13 @@ namespace Campus.Core.ServiceContracts
         /// <param name="markSetRequest">Object of MarkSetRequest that contains student and discipline Id and marks to set.</param>
         /// <returns>Marks that has been set.</returns>
         Task<MarkResponse> SetMark(MarkSetRequest markSetRequest);
+
+        /// <summary>
+        ///  Method to read mark of all students in group for discipline.
+        /// </summary>
+        /// <param name="groupId">Guid of group</param>
+        /// <param name="disciplineId">Guid of discipline</param>
+        /// <returns> Enumerable of mark response with all marks of all students in specified group for discipline</returns>
+        Task<IEnumerable<MarkResponse>> GetByGruopIdAndDisciplineId(Guid groupId, Guid disciplineId);
     }
 }
