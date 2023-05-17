@@ -1,0 +1,21 @@
+.header {
+    width: 100%;
+    height: 100px;
+    background: #120030;
+    display: flex;
+}
+
+.headerDiv {
+    width: 33%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.headerDivCenter{
+    p{
+        font-size: 40px;
+        color: white;
+    }
+}
