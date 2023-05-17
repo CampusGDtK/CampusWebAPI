@@ -119,6 +119,9 @@ namespace Campus.Core.Services
 
                 int countNewMarks = syllabus.Count() - marks.Count();
 
+                if (countNewMarks < 0)
+                    throw new ArgumentException("Incorrect format of syllabus");
+
                 for (int i = 0; i < countNewMarks; i++)
                 {
                     marks.Add(0);
