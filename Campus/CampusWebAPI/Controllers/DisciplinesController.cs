@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CampusWebAPI.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class DisciplinesController : Controller
 {
     private readonly IDisciplineService _disciplineService;

@@ -46,7 +46,7 @@ namespace Campus.Core.Services
             var result = await _cathedraRepository.Delete(cathedraId);
 
             if (!result)
-                throw new KeyNotFoundException(nameof(cathedraId));
+                throw new KeyNotFoundException("Id of cathedra not found");
         }
 
         public async Task<IEnumerable<CathedraResponse>> GetAll()
@@ -58,7 +58,7 @@ namespace Campus.Core.Services
         public async Task<IEnumerable<CathedraResponse>> GetByFacultyId(Guid facultyId)
         {
             if (await _facultyRepository.GetValueById(facultyId) == null)
-                throw new KeyNotFoundException(nameof(facultyId));
+                throw new KeyNotFoundException("Id of faculty not found");
 
             var cathedras = await _cathedraRepository.GetAll();
 

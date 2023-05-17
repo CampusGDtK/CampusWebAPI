@@ -37,7 +37,7 @@ public class StudentService : IStudentService
     {
         if (await _groupRepository.GetValueById(groupId) is null)
         {
-            throw new KeyNotFoundException("Id of student not found");
+            throw new KeyNotFoundException("Id of group not found");
         }
         
         var students = await _studentRepository.GetAll();
