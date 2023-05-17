@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CampusWebAPI.Controllers
 {
-    [Route("/groups")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupsController : ControllerBase
     {
         private readonly IGroupService _groupService;
         private readonly IMarkingService _markingService;
 
-        public GroupController(IGroupService groupService, IMarkingService markingService)
+        public GroupsController(IGroupService groupService, IMarkingService markingService)
         {
             _groupService = groupService;
             _markingService = markingService;
@@ -62,7 +62,7 @@ namespace CampusWebAPI.Controllers
         [HttpGet("{groupId}/marks/{disciplineId}")]
         public async Task<IActionResult> GetMarksOfStudentsFromGroupOfDiscipline([FromRoute] Guid groupId, [FromRoute] Guid disciplineId)
         {
-            var result = await _markingService.GetByGruopIdAndDisciplineId(groupId, disciplineId);
+            var result = await _markingService.GetByGroupAndDisciplineId(groupId, disciplineId);
             return Ok(result);
         }
 

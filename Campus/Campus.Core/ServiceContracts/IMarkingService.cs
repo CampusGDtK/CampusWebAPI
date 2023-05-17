@@ -13,6 +13,13 @@ namespace Campus.Core.ServiceContracts
     public interface IMarkingService
     {
         /// <summary>
+        /// Method to read marks of student for all disciplines. 
+        /// </summary>
+        /// <param name="studentId">Guid of student to read marks.</param>
+        /// <returns>Collection IEnumerable of MarkResponse objects of students for all disciplines.</returns>
+        Task<IEnumerable<MarkResponse>> GetByStudentId(Guid studentId);
+
+        /// <summary>
         /// Method to read mark of student for discipline.
         /// </summary>
         /// <param name="studentId">Guid of student.</param>
@@ -33,6 +40,6 @@ namespace Campus.Core.ServiceContracts
         /// <param name="groupId">Guid of group</param>
         /// <param name="disciplineId">Guid of discipline</param>
         /// <returns> Enumerable of mark response with all marks of all students in specified group for discipline</returns>
-        Task<IEnumerable<MarkResponse>> GetByGruopIdAndDisciplineId(Guid groupId, Guid disciplineId);
+        Task<IEnumerable<MarkResponse>> GetByGroupAndDisciplineId(Guid groupId, Guid disciplineId);
     }
 }

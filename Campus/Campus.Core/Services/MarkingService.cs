@@ -27,7 +27,7 @@ namespace Campus.Core.Services
             _groupRepository = groupRepository;
         }
 
-        public async Task<IEnumerable<MarkResponse>> GetByGruopIdAndDisciplineId(Guid groupId, Guid disciplineId)
+        public async Task<IEnumerable<MarkResponse>> GetByGroupAndDisciplineId(Guid groupId, Guid disciplineId)
         {
             if (await _groupRepository.GetValueById(groupId) is null)
                 throw new KeyNotFoundException("Id of group not found");
@@ -90,6 +90,24 @@ namespace Campus.Core.Services
             };
 
             return markResponse;
+        }
+
+        public async Task<IEnumerable<MarkResponse>> GetByStudentId(Guid studentId)
+        {
+            if (await _studentRepository.GetValueById(studentId) is null)
+                throw new KeyNotFoundException("Id of student not found");
+
+            IEnumerable<MarkResponse> marks = (await _currentControlRepository.GetAll())
+                .Where(currentControl => currentControl.StudentId == studentId)
+                .Select(currentControl => new MarkResponse()
+                {
+                    StudentId = studentId,
+                    DisciplineId = currentControl.DisciplineId,
+                    Marks = JsonConvert.DeserializeObject<IEnumerable<int>>(currentControl.Mark),
+                    Details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail),
+                });
+
+            return marks;
         }
 
         public async Task<MarkResponse> SetMark(MarkSetRequest markSetRequest)

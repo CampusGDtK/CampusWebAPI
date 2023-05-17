@@ -5,13 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CampusWebAPI.Controllers
 {
-    [Route("/cathedras")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class CathedraController : ControllerBase
+    public class CathedrasController : ControllerBase
     {
         private readonly ICathedraService _cathedraService;
 
-        public CathedraController(ICathedraService cathedraService)
+        public CathedrasController(ICathedraService cathedraService)
         {
             _cathedraService = cathedraService;
         }

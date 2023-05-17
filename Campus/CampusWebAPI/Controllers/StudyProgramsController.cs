@@ -6,7 +6,7 @@ namespace CampusWebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class StudyProgramsController : Controller
+public class StudyProgramsController : ControllerBase
 {
     private readonly IStudyProgramService _studyProgramService;
 
