@@ -54,16 +54,21 @@ namespace Campus.Core.Services
 
         public async Task<IEnumerable<FacultyResponse>> GetAll()
         {
-            var faculties = await _facultyRepository.GetAll();
+            var faculties = await _facultyRepository.GetAll();         
+            
+            var responses = new List<FacultyResponse>();
 
-            List<FacultyResponse> facultiesResponse = new List<FacultyResponse>();
+            foreach(var faculty in faculties)
+            {
+                var response = faculty.ToFacultyResponse();
 
-            foreach (var faculty in faculties)
-            {                
-                facultiesResponse.Add(await GetFacultyResponse(faculty));
-            }           
+                response.SpecialitiesId = faculty.SpecialityFaculties.Select(x => x.SpecialityId).ToList();
+                response.SpecialitiesName = faculty.SpecialityFaculties.Select(x=> x.Speciality.Name).ToList();
 
-            return facultiesResponse;
+                responses.Add(response);
+            }
+
+            return responses;
         }
 
         public async Task<FacultyResponse> GetById(Guid facultyId)
@@ -100,7 +105,7 @@ namespace Campus.Core.Services
 
             foreach (var id in specialitiesFacultiesId)
             {
-                await _specialityFacultyRepository.Delete(id);
+                _specialityFacultyRepository.Delete(id);
             }
 
             foreach (Guid specialityId in facultyUpdateRequest.Specialities)

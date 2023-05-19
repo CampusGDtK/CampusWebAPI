@@ -45,7 +45,7 @@ namespace Campus.Infrastructure.Repositories
 
         public async Task<IEnumerable<Faculty>> GetAll()
         {
-            var result = _db.Faculties.AsEnumerable();
+            var result = _db.Faculties.Include(x => x.SpecialityFaculties).ThenInclude(x => x.Speciality).AsEnumerable();
 
             return result;
         }
