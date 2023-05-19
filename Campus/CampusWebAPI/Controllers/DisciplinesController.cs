@@ -47,6 +47,6 @@ public class DisciplinesController : ControllerBase
     public async Task<IActionResult> DeleteDiscipline(Guid id)
     {
         await _disciplineService.Remove(id);
-        return Ok();
+        return Ok("Successfully deleted");
     }
 }

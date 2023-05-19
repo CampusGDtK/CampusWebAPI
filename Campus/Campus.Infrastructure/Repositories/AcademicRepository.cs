@@ -56,6 +56,7 @@ namespace Campus.Infrastructure.Repositories
         public async Task<Academic?> Update(Academic entity)
         {
             Academic? academic = await _db.Academics.FindAsync(entity.Id);
+
             if(academic == null)
             {
                 return null;

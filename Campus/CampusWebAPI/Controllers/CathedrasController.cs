@@ -54,7 +54,7 @@ namespace CampusWebAPI.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             await _cathedraService.Delete(id);
-            return Ok();
+            return Ok("Successfully deleted");
         }
 
     }

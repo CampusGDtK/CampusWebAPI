@@ -85,12 +85,15 @@ namespace Campus.Core.Services
             if (groupUpdateRequest == null)
                 throw new ArgumentNullException("GroupUpdateRequest is null");
 
-            if (await _facultyRepository.GetValueById(groupUpdateRequest.FacultyId) == null)
+            var faculty = await _facultyRepository.GetValueById(groupUpdateRequest.FacultyId);
+
+            if (faculty == null)
                 throw new KeyNotFoundException("Id of faculty not found");
 
             ValidationHelper.ModelValidation(groupUpdateRequest);
 
             var group = groupUpdateRequest.ToGroup();
+            group.Faculty = faculty;
 
             var result = await _groupRepository.Update(group);
 

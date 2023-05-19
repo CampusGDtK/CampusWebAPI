@@ -43,7 +43,7 @@ namespace CampusWebAPI.Controllers
         public async Task<IActionResult> DeleteFaculty(Guid id)
         {
             await _facultyService.Remove(id);
-            return Ok();
+            return Ok("Successfully deleted");
         }
     }
 }

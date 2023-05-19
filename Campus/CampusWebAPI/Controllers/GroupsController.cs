@@ -56,7 +56,7 @@ namespace CampusWebAPI.Controllers
         public async Task<IActionResult> DeleteGroup([FromRoute]Guid id)
         {
             await _groupService.Delete(id);
-            return Ok();
+            return Ok("Successfully deleted");
         }
 
         [HttpGet("{groupId}/marks/{disciplineId}")]
