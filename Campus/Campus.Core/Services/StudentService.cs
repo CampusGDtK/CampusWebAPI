@@ -70,6 +70,7 @@ public class StudentService : IStudentService
         {
             throw new ArgumentNullException("StudentUpdateRequest is null");
         }
+
         var student = new Student
         {
             Id = request.Id,
@@ -79,11 +80,14 @@ public class StudentService : IStudentService
             Email = request.Email,
             GroupId = request.GroupId
         };
+
         var result = await _studentRepository.Update(student);
+
         if (result is null)
         {
             throw new KeyNotFoundException("Id of student not found");
         }
+
         return result.ToStudentResponse();
     }
 

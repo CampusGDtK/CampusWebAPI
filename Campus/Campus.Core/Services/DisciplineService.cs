@@ -71,13 +71,19 @@ public class DisciplineService : IDisciplineService
         {
             throw new ArgumentNullException("DisciplineUpdateRequest is null");
         }
-        
-        if (await _cathedraRepository.GetValueById(disciplineRequest.CathedraId) is null)
+
+        var cathedra = await _cathedraRepository.GetValueById(disciplineRequest.CathedraId);
+
+        if (cathedra is null)
         {
             throw new KeyNotFoundException("Id of cathedra not found");
         }
-        
-        var result = await _disciplineRepository.Update(disciplineRequest.ToDiscipline());
+
+        var discipline = disciplineRequest.ToDiscipline();
+        discipline.Cathedra = cathedra;
+
+        var result = await _disciplineRepository.Update(discipline);
+
         if (result is null)
         {
             throw new KeyNotFoundException("Id of discipline not found");

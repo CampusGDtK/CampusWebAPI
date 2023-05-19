@@ -84,10 +84,14 @@ namespace Campus.Core.Services
 
             ValidationHelper.ModelValidation(academicUpdateRequest);
 
-            if (await _cathedraRepository.GetValueById(academicUpdateRequest.CathedraId) is null)
+            var cathedra = await _cathedraRepository.GetValueById(academicUpdateRequest.CathedraId);
+
+            if (cathedra is null)
                 throw new KeyNotFoundException("Id of cathedra not found");
 
             Academic academic = academicUpdateRequest.ToAcademic();
+            academic.Cathedra = cathedra;
+
             Academic? academicUpdated = await _academicRepository.Update(academic);
 
             if (academicUpdated == null)
