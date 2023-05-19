@@ -49,22 +49,21 @@ namespace Campus.Core.Services
                 await _specialityFacultyRepository.Create(specialityFaculty);
             }
 
-            var facultyResponse = faculty.ToFacultyResponse();
-
-            var specialitiesByFaculty = await _specialityService.GetByFacultyId(faculty.Id);
-
-            facultyResponse.SpecialitiesId = specialitiesByFaculty?.Select(x => x.Id);
-
-            facultyResponse.SpecialitiesName = specialitiesByFaculty?.Select(x => x.Name);
-
-            return facultyResponse;
+            return await GetFacultyResponse(faculty);
         }
 
         public async Task<IEnumerable<FacultyResponse>> GetAll()
         {
             var faculties = await _facultyRepository.GetAll();
 
-            return faculties.Select(x => x.ToFacultyResponse());
+            List<FacultyResponse> facultiesResponse = new List<FacultyResponse>();
+
+            foreach (var faculty in faculties)
+            {                
+                facultiesResponse.Add(await GetFacultyResponse(faculty));
+            }           
+
+            return facultiesResponse;
         }
 
         public async Task<FacultyResponse> GetById(Guid facultyId)
@@ -74,7 +73,7 @@ namespace Campus.Core.Services
             if (result is null)
                 throw new KeyNotFoundException("Id of faclulty not found");
 
-            return result.ToFacultyResponse();
+            return await GetFacultyResponse(result);
         }
 
         public async Task Remove(Guid facultyId)
@@ -97,7 +96,39 @@ namespace Campus.Core.Services
             if (updatedFaculty == null)
                 throw new KeyNotFoundException("Id of faclulty not found");
 
-            return updatedFaculty.ToFacultyResponse();
+            var specialitiesFacultiesId = (await _specialityFacultyRepository.GetAll()).Where(x => x.FacultyId == updatedFaculty.Id).Select(x => x.Id);
+
+            foreach (var id in specialitiesFacultiesId)
+            {
+                await _specialityFacultyRepository.Delete(id);
+            }
+
+            foreach (Guid specialityId in facultyUpdateRequest.Specialities)
+            {
+                SpecialityFaculty specialityFaculty = new SpecialityFaculty()
+                {
+                    Id = Guid.NewGuid(),
+                    FacultyId = updatedFaculty.Id,
+                    SpecialityId = specialityId
+                };
+
+                await _specialityFacultyRepository.Create(specialityFaculty);
+            }
+
+            return await GetFacultyResponse(updatedFaculty);
+        }
+
+        private async Task<FacultyResponse> GetFacultyResponse(Faculty faculty)
+        {
+            var facultyResponse = faculty.ToFacultyResponse();
+
+            var specialitiesByFaculty = await _specialityService.GetByFacultyId(faculty.Id);
+
+            facultyResponse.SpecialitiesId = specialitiesByFaculty?.Select(x => x.Id);
+
+            facultyResponse.SpecialitiesName = specialitiesByFaculty?.Select(x => x.Name);
+
+            return facultyResponse;
         }
     }
 }
