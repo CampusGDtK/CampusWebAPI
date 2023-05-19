@@ -84,7 +84,9 @@ namespace Campus.Core.Services
 
             ValidationHelper.ModelValidation(cathedraUpdateRequest);
 
-            if (await _facultyRepository.GetValueById(cathedraUpdateRequest.FacultyId) == null)
+            var faculty = await _facultyRepository.GetValueById(cathedraUpdateRequest.FacultyId);
+
+            if (faculty == null)
                 throw new KeyNotFoundException("Id of faculty not found");
 
             var cathedra = cathedraUpdateRequest.ToCathedra();
@@ -93,6 +95,8 @@ namespace Campus.Core.Services
 
             if (result is null)
                 throw new KeyNotFoundException("Id of cathedra not found");
+
+            result.Faculty = faculty;
 
             return result.ToCathedraResponse();
         }
