@@ -20,6 +20,7 @@ public class StudyProgramRepository : IRepository<StudyProgram>
     {
         return await _db.StudyPrograms
             .Include(sp => sp.Speciality)
+            .Include(sp => sp.Cathedra)
             .FirstOrDefaultAsync(sp => sp.Id == id);
     }
 
@@ -27,6 +28,7 @@ public class StudyProgramRepository : IRepository<StudyProgram>
     {
         return await _db.StudyPrograms
             .Include(sp => sp.Speciality)
+            .Include(sp => sp.Cathedra)
             .ToListAsync();
     }
 

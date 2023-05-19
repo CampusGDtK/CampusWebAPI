@@ -52,7 +52,9 @@ public class StudyProgramService : IStudyProgramService
         {
             throw new KeyNotFoundException("Id of speciality not found");
         }
-        var studyPrograms = await _studyProgramRepository.GetAll();
+
+        var studyPrograms = (await _studyProgramRepository.GetAll());
+
         return studyPrograms
             .Where(sp => sp.SpecialityId == specialityId)
             .Select(sp => sp.ToStudyProgramResponse());
