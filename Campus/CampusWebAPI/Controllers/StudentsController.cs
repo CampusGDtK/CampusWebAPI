@@ -49,7 +49,7 @@ public class StudentsController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         await _studentService.Delete(id);
-        return Ok();
+        return Ok("Successfully deleted");
     }
     
     [HttpGet("{studentId}/marks")]

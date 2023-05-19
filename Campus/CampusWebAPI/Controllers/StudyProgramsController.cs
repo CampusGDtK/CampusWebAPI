@@ -52,6 +52,6 @@ public class StudyProgramsController : ControllerBase
     public async Task<IActionResult> Delete(Guid id)
     {
         await _studyProgramService.Delete(id);
-        return Ok();
+        return Ok("Successfully deleted");
     }
 }
