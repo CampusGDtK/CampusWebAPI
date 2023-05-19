@@ -91,12 +91,12 @@ namespace Campus.Core.Services
 
             var cathedra = cathedraUpdateRequest.ToCathedra();
 
+            cathedra.Faculty = faculty;
+
             var result = await _cathedraRepository.Update(cathedra);
 
             if (result is null)
-                throw new KeyNotFoundException("Id of cathedra not found");
-
-            result.Faculty = faculty;
+                throw new KeyNotFoundException("Id of cathedra not found");            
 
             return result.ToCathedraResponse();
         }
