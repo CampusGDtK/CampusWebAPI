@@ -98,22 +98,34 @@ public class StudyProgramService : IStudyProgramService
         if(studyProgramUpdateRequest is null)
         {
             throw new ArgumentNullException("StudyProgramUpdateRequest is null");
-        }
-        if (await _studyProgramRepository.GetValueById(studyProgramUpdateRequest.Id) is null)
-        {
-            throw new KeyNotFoundException("Id of study program not found");
-        }
-        if(await _cathedraRepository.GetValueById(studyProgramUpdateRequest.CathedraId) is null)
+        }        
+
+        var cathedra = await _cathedraRepository.GetValueById(studyProgramUpdateRequest.CathedraId);
+
+        if (cathedra is null)
         {
             throw new KeyNotFoundException("Id of cathedra not found");
         }
-        if(await _specialityRepository.GetValueById(studyProgramUpdateRequest.SpecialityId) is null)
+
+        var speciality = await _specialityRepository.GetValueById(studyProgramUpdateRequest.SpecialityId);
+
+        if (speciality is null)
         {
             throw new KeyNotFoundException("Id of speciality not found");
         }
+
         var studyProgram = studyProgramUpdateRequest.ToStudyProgram();
-        await _studyProgramRepository.Update(studyProgram);
-        return studyProgram.ToStudyProgramResponse();
+        studyProgram.Speciality = speciality;
+        studyProgram.Cathedra = cathedra;
+
+        var result = await _studyProgramRepository.Update(studyProgram);
+
+        if (result is null)
+        {
+            throw new KeyNotFoundException("Id of study program not found");
+        }
+
+        return result.ToStudyProgramResponse();
     }
 
     public async Task Delete(Guid studyProgramId)

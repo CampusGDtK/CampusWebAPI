@@ -39,10 +39,12 @@ public class StudyProgramRepository : IRepository<StudyProgram>
     public async Task<StudyProgram?> Update(StudyProgram entity)
     {
         var studyProgram = await _db.StudyPrograms.FindAsync(entity.Id);
+
         if (studyProgram is null)
         {
             return null;
         }
+
         _mapper.Map(entity, studyProgram);
         await _db.SaveChangesAsync();
         return studyProgram;
