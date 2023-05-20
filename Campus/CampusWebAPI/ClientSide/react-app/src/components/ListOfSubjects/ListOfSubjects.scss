@@ -1,0 +1,8 @@
+.mainDivList {
+    width: 33%;
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+}
