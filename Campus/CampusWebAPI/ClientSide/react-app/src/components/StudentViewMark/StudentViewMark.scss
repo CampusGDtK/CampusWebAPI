@@ -1,0 +1,47 @@
+.mainDivView {
+    width: 66.5%;
+    height: calc(100vh - 100px);
+    // background-color: bisque;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .chooseParagraph {
+        font-size: 40px;
+        text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.25);
+        text-align: center;
+    }
+
+    .mainParagraph {
+        font-size: 32px;
+        text-shadow: 4px 4px 2px rgba(0, 0, 0, 0.45);
+        text-align: center;
+    }
+
+    .marksMainDiv {
+        width: 80%;
+        height: 60%;
+        background-color: #3F1A7E;
+        display: flex;
+        margin-top: 50px;
+        margin-bottom: 50px;
+
+        .marksSubDiv {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+
+            .marksStudentViewCell {
+                width: 100%;
+                height: 20%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 24px;
+                border: 1px solid #FFFFFF;
+            }
+        }
+    }
+}
