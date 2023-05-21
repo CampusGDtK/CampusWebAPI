@@ -14,12 +14,12 @@ public class AcademicDisciplineGroup
 
     public Guid AcademicId { get; set; }
 
-    [ForeignKey("GroupId")]
+    [ForeignKey("AcademicId")]
     public Academic? Academic { get; set; }
 
     [ForeignKey("DisciplineId")]
     public Discipline? Discipline { get; set; }
 
-    [ForeignKey("AcademicId")]
+    [ForeignKey("GroupId")]
     public Group? Group { get; set; }
 }

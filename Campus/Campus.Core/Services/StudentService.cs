@@ -50,15 +50,14 @@ public class StudentService : IStudentService
         {
             throw new ArgumentNullException("StudentAddRequest is null");
         }
-        var student = new Student
+
+        if(await _groupRepository.GetValueById(request.GroupId) is null)
         {
-            Id = Guid.NewGuid(),
-            FullName = request.FullName,
-            DateOfBirth = request.DateOfBirth,
-            PhoneNumber = request.PhoneNumber,
-            Email = request.Email,
-            GroupId = request.GroupId
-        };
+            throw new KeyNotFoundException("Id of group not found");
+        }
+
+        var student = request.ToStudent();
+
         await _studentRepository.Create(student);
 
         return student.ToStudentResponse();
@@ -71,15 +70,15 @@ public class StudentService : IStudentService
             throw new ArgumentNullException("StudentUpdateRequest is null");
         }
 
-        var student = new Student
+        var group = await _groupRepository.GetValueById(request.GroupId);
+
+        if (group is null)
         {
-            Id = request.Id,
-            FullName = request.FullName,
-            DateOfBirth = request.DateOfBirth,
-            PhoneNumber = request.PhoneNumber,
-            Email = request.Email,
-            GroupId = request.GroupId
-        };
+            throw new KeyNotFoundException("Id of group not found");
+        }
+
+        var student = request.ToStudent();
+        student.Group = group;
 
         var result = await _studentRepository.Update(student);
 

@@ -50,7 +50,7 @@ namespace Campus.Infrastructure.Repositories
 
         public async Task<Academic?> GetValueById(Guid id)
         {
-            return await _db.Academics.Include(x => x.Cathedra).Include(x => x.Cathedra).FirstOrDefaultAsync(a => a.Id == id);
+            return await _db.Academics.Include(x => x.Cathedra).FirstOrDefaultAsync(a => a.Id == id);
         }
 
         public async Task<Academic?> Update(Academic entity)

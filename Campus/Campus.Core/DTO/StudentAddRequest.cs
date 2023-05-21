@@ -7,12 +7,10 @@ public class StudentAddRequest
 {
     [Required]
     [MaxLength(100)]
-    [MinLength(4)]
     public string FullName { get; set; } = null!;
     [Required]
     public DateOnly DateOfBirth { get; set; }
     [Required]
-    [StringLength(8)]
     public string PhoneNumber { get; set; } = null!;
     [Required]
     [EmailAddress]

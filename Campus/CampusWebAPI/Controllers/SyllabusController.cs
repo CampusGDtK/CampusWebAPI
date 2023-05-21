@@ -27,12 +27,5 @@ namespace CampusWebAPI.Controllers
             await _syllabusService.SetSyllabus(academicId, disciplineId, syllabus);
             return Ok("Successfully set");
         }
-
-        [HttpDelete]
-        public async Task<IActionResult> DeleteSyllabus([FromQuery] Guid academicId, [FromQuery] Guid disciplineId)
-        {
-            await _syllabusService.DeleteSyllabus(academicId, disciplineId);
-            return Ok("Successfully deleted");
-        }
     }
 }

@@ -7,7 +7,6 @@ public class DisciplineAddRequest
 {
     [Required]
     [MaxLength(100)]
-    [MinLength(4)]
     public string Name { get; set; }
     [Required]
     public Guid CathedraId { get; set; }

@@ -8,12 +8,10 @@ public class StudentUpdateRequest
     public Guid Id { get; set; }
     [Required]
     [MaxLength(100)]
-    [MinLength(4)]
     public string FullName { get; set; } = null!;
     [Required]
     public DateOnly DateOfBirth { get; set; }
     [Required]
-    [StringLength(8)]
     [Phone]
     public string PhoneNumber { get; set; } = null!;
     [Required]

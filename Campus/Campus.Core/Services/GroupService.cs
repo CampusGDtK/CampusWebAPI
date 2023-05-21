@@ -15,11 +15,16 @@ namespace Campus.Core.Services
     {
         private readonly IRepository<Group> _groupRepository;
         private readonly IRepository<Faculty> _facultyRepository;
+        private readonly IRepository<StudyProgram> _studyProgramRepository;
+        private readonly IRepository<Academic> _academicRepository;
 
-        public GroupService(IRepository<Group> groupRepository, IRepository<Faculty> facultyRepository)
+        public GroupService(IRepository<Group> groupRepository, IRepository<Faculty> facultyRepository,
+            IRepository<StudyProgram> studyProgramRepository, IRepository<Academic> academicRepository)
         {
             _groupRepository = groupRepository;
             _facultyRepository = facultyRepository;
+            _studyProgramRepository = studyProgramRepository;
+            _academicRepository = academicRepository;
         }
 
         public async Task<GroupResponse> Add(GroupAddRequest groupAddRequest)
@@ -30,7 +35,17 @@ namespace Campus.Core.Services
             if (await _facultyRepository.GetValueById(groupAddRequest.FacultyId) == null)
             {
                 throw new KeyNotFoundException("Id of faculty not found");
-            }                
+            }
+
+            if (await _studyProgramRepository.GetValueById(groupAddRequest.StudyProgramId) == null)
+            {
+                throw new KeyNotFoundException("Id of study program not found");
+            }
+
+            if (await _academicRepository.GetValueById(groupAddRequest.CuratorId) == null)
+            {
+                throw new KeyNotFoundException("Id of curator not found");
+            }
 
             ValidationHelper.ModelValidation(groupAddRequest);
 
@@ -90,10 +105,26 @@ namespace Campus.Core.Services
             if (faculty == null)
                 throw new KeyNotFoundException("Id of faculty not found");
 
+            var studyProgram = await _studyProgramRepository.GetValueById(groupUpdateRequest.StudyProgramId);
+
+            if (studyProgram == null)
+            {
+                throw new KeyNotFoundException("Id of study program not found");
+            }
+
+            var academic = await _academicRepository.GetValueById(groupUpdateRequest.CuratorId);
+
+            if (academic == null)
+            {
+                throw new KeyNotFoundException("Id of curator not found");
+            }
+
             ValidationHelper.ModelValidation(groupUpdateRequest);
 
             var group = groupUpdateRequest.ToGroup();
             group.Faculty = faculty;
+            group.StudyProgram = studyProgram;
+            group.Curator = academic;
 
             var result = await _groupRepository.Update(group);
 

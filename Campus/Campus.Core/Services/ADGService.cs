@@ -153,7 +153,8 @@ namespace Campus.Core.Services
             //Deleting syllabys
             foreach(Guid disciplineId in disciplines)
             {
-                await _syllabusService.DeleteSyllabus(academicId, disciplineId);
+                if((await _syllabusService.GetSyllabus(academicId, disciplineId)).Any())
+                    await _syllabusService.DeleteSyllabus(academicId, disciplineId);
             }
 
             //Reseting relation

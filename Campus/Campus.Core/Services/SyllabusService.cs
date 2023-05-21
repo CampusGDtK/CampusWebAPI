@@ -79,9 +79,12 @@ namespace Campus.Core.Services
                 .Id;
 
             CurrentControl currentControl = (await _currentControlRepository.GetAll())
-                .First(control => control.StudentId == studentId && control.DisciplineId == disciplineId);
+                .FirstOrDefault(control => control.StudentId == studentId && control.DisciplineId == disciplineId);
 
-            IEnumerable<string> details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail);
+            IEnumerable<string> details = new List<string>();
+
+            if(currentControl != null)
+                details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl?.Detail);
 
             return details;
         }

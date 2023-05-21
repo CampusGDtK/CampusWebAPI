@@ -9,7 +9,6 @@ public class DisciplineUpdateRequest
     public Guid Id { get; set; }
     [Required]
     [MaxLength(100)]
-    [MinLength(4)]
     public string Name { get; set; } = null!;
     [Required]
     public Guid CathedraId { get; set; }

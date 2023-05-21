@@ -19,9 +19,9 @@ public class Group
     [ForeignKey("CuratorId")]
     public Academic? Curator { get; set; }
 
-    [ForeignKey("StudyProgramId")]
+    [ForeignKey("FacultyId")]
     public Faculty? Faculty { get; set; }
 
-    [ForeignKey("FacultyId")]
+    [ForeignKey("StudyProgramId")]
     public StudyProgram? StudyProgram { get; set; }
 }
