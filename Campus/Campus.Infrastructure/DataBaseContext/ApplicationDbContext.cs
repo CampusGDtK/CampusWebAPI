@@ -1,9 +1,11 @@
 ﻿using Campus.Core.Domain.Entities;
+using Campus.Core.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Campus.Infrastructure.DataBaseContext;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
 {
     public ApplicationDbContext() { }
 

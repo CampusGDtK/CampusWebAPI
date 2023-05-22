@@ -20,6 +20,11 @@ public class StudentUpdateRequest
     [Required]
     public Guid GroupId { get; set; }
 
+    public string? Password { get; set; }
+
+    [Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
+    public string? ConfirmPassword { get; set; }
+
     public Student ToStudent()
     {
         return new()

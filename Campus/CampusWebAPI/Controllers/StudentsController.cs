@@ -33,12 +33,6 @@ public class StudentsController : ControllerBase
         return Ok(await _studentService.GetById(id));
     }
     
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody]StudentAddRequest? request)
-    {
-        return Ok(await _studentService.Create(request!));
-    }
-    
     [HttpPut]
     public async Task<IActionResult> Update([FromBody]StudentUpdateRequest? request)
     {

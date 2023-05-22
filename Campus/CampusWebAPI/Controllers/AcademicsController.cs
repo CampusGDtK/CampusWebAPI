@@ -36,12 +36,6 @@ namespace CampusWebAPI.Controllers
             return Ok(await _academicService.GetAcademicById(academicId));
         }
 
-        [HttpPost]
-        public async Task<ActionResult<AcademicResponse>> Create([FromBody]AcademicAddRequest? academicAddRequest)
-        {
-            return Ok(await _academicService.Add(academicAddRequest));
-        }
-
         [HttpPut]
         public async Task<ActionResult<AcademicResponse>> Update([FromBody]AcademicUpdateRequest? academicUpdateRequest)
         {

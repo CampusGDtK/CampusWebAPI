@@ -24,6 +24,12 @@ namespace Campus.Test
         private readonly IRepository<Faculty> _facultyRepository;
         private readonly Mock<IRepository<Faculty>> _facultyRepositoryMock;
 
+        private readonly IRepository<StudyProgram> _studyProgramRepository;
+        private readonly Mock<IRepository<StudyProgram>> _studyProgramRepositoryMock;
+
+        private readonly IRepository<Academic> _academicRepository;
+        private readonly Mock<IRepository<Academic>> _academicRepositoryMock;
+
         private readonly IFixture _fixture;
 
         public GroupServiceTest()
@@ -36,7 +42,13 @@ namespace Campus.Test
             _facultyRepositoryMock = new Mock<IRepository<Faculty>>();
             _facultyRepository = _facultyRepositoryMock.Object;
 
-            _groupService = new GroupService(_groupRepository, _facultyRepository);
+            _studyProgramRepositoryMock = new Mock<IRepository<StudyProgram>>();
+            _studyProgramRepository = _studyProgramRepositoryMock.Object;
+
+            _academicRepositoryMock = new Mock<IRepository<Academic>>();
+            _academicRepository = _academicRepositoryMock.Object;
+
+            _groupService = new GroupService(_groupRepository, _facultyRepository, _studyProgramRepository, _academicRepository);
         }
 
         #region AddGroup
