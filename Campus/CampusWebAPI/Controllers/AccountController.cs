@@ -48,7 +48,7 @@ namespace CampusWebAPI.Controllers
 
             ApplicationUser user = new ApplicationUser()
             {
-                UserName = registerDTO.Name,
+                UserName = registerDTO.Email,
                 Email = registerDTO.Email
             };
 
@@ -60,13 +60,13 @@ namespace CampusWebAPI.Controllers
 
                 await _signInManager.SignInAsync(user, isPersistent: false);
 
-                var response = _jwtService.GetJwt(user);
+                var response = await _jwtService.GetJwt(user);
 
                 return Ok(response);
             }
             else
             {
-                return BadRequest(string.Join(", ", result.Errors.Select(error => error.Description)));    
+                return BadRequest(string.Join(" ", result.Errors.Select(error => error.Description)));    
             }
         }
 
@@ -95,7 +95,7 @@ namespace CampusWebAPI.Controllers
             }
             else
             {
-                return BadRequest(string.Join(", ", result.Errors.Select(error => error.Description)));
+                return BadRequest(string.Join(" ", result.Errors.Select(error => error.Description)));
             }
         }
 
@@ -124,7 +124,7 @@ namespace CampusWebAPI.Controllers
             }
             else
             {
-                return BadRequest(string.Join(", ", result.Errors.Select(error => error.Description)));
+                return BadRequest(string.Join(" ", result.Errors.Select(error => error.Description)));
             }
         }
 
@@ -143,7 +143,7 @@ namespace CampusWebAPI.Controllers
 
             if(result.Succeeded)
             {
-                var response = _jwtService.GetJwt(user);
+                var response = await _jwtService.GetJwt(user);
 
                 return Ok(response);
             }

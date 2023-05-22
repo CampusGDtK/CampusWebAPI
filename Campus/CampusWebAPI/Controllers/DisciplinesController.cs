@@ -17,7 +17,7 @@ public class DisciplinesController : ControllerBase
     {
         _disciplineService = disciplineService;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetDisciplines([FromQuery]Guid? cathedraId)
     {

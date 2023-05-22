@@ -10,6 +10,6 @@ namespace Campus.Core.ServiceContracts
 {
     public interface IJwtService
     {
-        AuthorizationResponse GetJwt(ApplicationUser user);
+        Task<AuthorizationResponse> GetJwt(ApplicationUser user);
     }
 }

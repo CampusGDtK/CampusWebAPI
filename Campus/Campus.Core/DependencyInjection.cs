@@ -25,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<IStudentService, StudentService>();
         services.AddScoped<IStudyProgramService, StudyProgramService>();
         services.AddScoped<ISyllabusService, SyllabusService>();
+        services.AddScoped<IJwtService, JwtService>();
 
         return services;
     }
