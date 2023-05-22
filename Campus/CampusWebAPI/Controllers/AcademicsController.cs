@@ -1,5 +1,7 @@
 ﻿using Campus.Core.DTO;
+using Campus.Core.Enums;
 using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -18,7 +20,7 @@ namespace CampusWebAPI.Controllers
             _academicService = academicService;
             _adgService = adgService;
         }
-
+        [Authorize(Roles = "Admin,Academic")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AcademicResponse>>> GetAll([FromQuery]Guid? cathedraId)
         {
@@ -30,18 +32,21 @@ namespace CampusWebAPI.Controllers
             return Ok(await _academicService.GetByCathedraId(cathedraId.Value));
         }
 
+        [Authorize(Roles = "Admin,Academic")]
         [HttpGet("{academicId}")]
         public async Task<ActionResult<AcademicResponse>> GetById(Guid academicId)
         {
             return Ok(await _academicService.GetAcademicById(academicId));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<ActionResult<AcademicResponse>> Update([FromBody]AcademicUpdateRequest? academicUpdateRequest)
         {
             return Ok(await _academicService.Update(academicUpdateRequest));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{academicId}")]
         public async Task<ActionResult> Delete(Guid academicId)
         {
@@ -49,12 +54,14 @@ namespace CampusWebAPI.Controllers
             return Ok("Successfully deleted");
         }
 
+        [Authorize(Roles = "Admin,Academic")]
         [HttpGet("{academicId}/disciplines")]
         public async Task<ActionResult<IEnumerable<DisciplineResponse>>> GetDisciplinesByAcademicId(Guid academicId)
         {
             return Ok(await _adgService.GetDisciplinesByAcademicId(academicId));
         }
 
+        [Authorize(Roles = "Admin,Academic")]
         [HttpGet("{academicId}/disciplines/{disciplineId}/groups")]
         public async Task<ActionResult<IEnumerable<GroupResponse>>> GetGroupsByDisciplineAndAcademicId(Guid academicId, Guid disciplineId)
         {

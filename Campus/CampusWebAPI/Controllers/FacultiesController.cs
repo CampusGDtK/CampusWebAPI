@@ -1,11 +1,14 @@
 ﻿using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CampusWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class FacultiesController : ControllerBase
     {
         private readonly IFacultyService _facultyService;

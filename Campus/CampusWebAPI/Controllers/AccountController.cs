@@ -2,6 +2,7 @@
 using Campus.Core.Enums;
 using Campus.Core.Identity;
 using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace CampusWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,15 +20,17 @@ namespace CampusWebAPI.Controllers
 
         private readonly IAcademicService _academicService;
         private readonly IStudentService _studentService;
+        private readonly IJwtService _jwtService;
 
         public AccountController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, 
-            SignInManager<ApplicationUser> signInManager, IAcademicService academicService, IStudentService studentService)
+            SignInManager<ApplicationUser> signInManager, IAcademicService academicService, IStudentService studentService, IJwtService jwtService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _academicService = academicService;
             _studentService = studentService;
+            _jwtService = jwtService;
         }
 
         [HttpPost("register")]
@@ -54,9 +58,11 @@ namespace CampusWebAPI.Controllers
             {
                 await _userManager.AddToRoleAsync(user, UserRole.Admin.ToString());
 
-                //JWT logic
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
-                return Ok();
+                var response = _jwtService.GetJwt(user);
+
+                return Ok(response);
             }
             else
             {
@@ -64,6 +70,7 @@ namespace CampusWebAPI.Controllers
             }
         }
 
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("register/student")]
         public async Task<IActionResult> RegisterStudent(StudentAddRequest studentAddRequest)
         {
@@ -84,9 +91,6 @@ namespace CampusWebAPI.Controllers
             {
                 await _userManager.AddToRoleAsync(user, UserRole.Student.ToString());
 
-                //JWT logic
-
-
                 return Ok();
             }
             else
@@ -95,6 +99,7 @@ namespace CampusWebAPI.Controllers
             }
         }
 
+        [Authorize(Roles = nameof(UserRole.Admin))]
         [HttpPost("register/academic")]
         public async Task<IActionResult> RegisterAcademic(AcademicAddRequest academicAddRequest)
         {
@@ -114,9 +119,6 @@ namespace CampusWebAPI.Controllers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, UserRole.Academic.ToString());
-
-                //JWT logic
-
 
                 return Ok();
             }
@@ -141,10 +143,9 @@ namespace CampusWebAPI.Controllers
 
             if(result.Succeeded)
             {
-                //JWT logic
+                var response = _jwtService.GetJwt(user);
 
-
-                return Ok();
+                return Ok(response);
             }
             else
             {
@@ -152,6 +153,7 @@ namespace CampusWebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("sign-out")]
         public async Task<IActionResult> SignOut()
         {

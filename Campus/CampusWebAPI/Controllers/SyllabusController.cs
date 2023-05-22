@@ -1,11 +1,14 @@
 ﻿using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CampusWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Academic")]
     public class SyllabusController : ControllerBase
     {
         private readonly ISyllabusService _syllabusService;
