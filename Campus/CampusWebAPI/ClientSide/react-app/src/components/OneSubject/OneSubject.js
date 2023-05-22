@@ -1,8 +1,8 @@
 import './OneSubject.scss';
 
-function OneSubject({value, text}) {
+function OneSubject({value, text, chooseSubject}) {
     return (
-        <p className='oneSubjectParagraph' data-value={value}>
+        <p className='oneSubjectParagraph' data-value={value} onClick={chooseSubject}>
             {text}
         </p>
     )

@@ -1,15 +1,15 @@
 import './StudentViewMark.scss';
 
-function StudentViewMark() {
-    function setContent(process) {
-        switch(process) {
-            case 'waiting': 
+function StudentViewMark({subjectId}) {
+    function setContent(subjectId) {
+        switch(subjectId) {
+            case '-': 
                 return (
                     <p className='chooseParagraph'>
                         Choose any subject to <br/> view your marks
                     </p>
                 )
-            case 'chose':
+            case 'value1':
                 return (
                     <>
                         <p className='mainParagraph'>
@@ -38,12 +38,12 @@ function StudentViewMark() {
                 )
             default: 
                 return (
-                    <p>Unexpected process</p>
+                    <p>Unexpected subjectId</p>
                 )
         }
     }
 
-    const content = setContent('chose');
+    const content = setContent(subjectId);
 
     return (
         <div className='mainDivView'>
