@@ -1,17 +1,18 @@
 import './App.scss';
-import Header from './components/Header/Header';
 import LogInPage from './components/LogInPage/LogInPage';
 import StudentView from './components/StudentView/StudentView';
 import AccountPage from './components/AccountPage/AccountPage';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 function App() {
   return (
-    <>
-      {/* <Header /> */}
-      {/* <LogInPage /> */}
-      <StudentView />
-      {/* <AccountPage /> */}
-    </>
+    <Router>
+      <Routes>
+        <Route path='/' element={<LogInPage />}/>
+        <Route path='/student-view' element={<StudentView />}/>
+        <Route path='/profile' element={<AccountPage />}/>
+      </Routes>
+    </Router>
   );
 }
 

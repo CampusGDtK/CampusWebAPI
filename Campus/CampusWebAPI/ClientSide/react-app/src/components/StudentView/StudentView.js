@@ -8,7 +8,6 @@ function StudentView() {
     const [subjectId, setSubjectId] = useState('-');
 
     function chooseSubject(id) {
-        console.log(id)
         setSubjectId(id)
     }
 

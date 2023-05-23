@@ -1,5 +1,6 @@
-import './Header.scss';
 import React from 'react';
+import {Link} from 'react-router-dom';
+import './Header.scss';
 import LOGOUT from '../../images/right-from-bracket-solid.svg';
 import Profile from '../../images/circle-user-regular.svg';
 import Back from '../../images/back.svg';
@@ -12,16 +13,25 @@ function Header({nameOfPage, role, sex}) {
             case 'view':
                 return (
                     <>
-                        <p>{title}Daniil</p>
-                        <img src={Profile} alt='profile'/>
+                        <Link to='/profile'>
+                            <p>{title}Daniil</p>
+                        </Link>
+                        <Link to='/profile'>
+                            <img src={Profile} alt='profile' />
+                        </Link>
                     </>
                 )
             case 'profile':
                 return (
                     <>
-                        <p>Back</p>
-                        <img src={Back} alt='back'/>
+                        <Link to='/student-view'>
+                            <p>Back</p>
+                        </Link>
+                        <Link to='/student-view'>
+                            <img src={Back} alt='back'/>
+                        </Link>
                     </>
+                    
                 )
         
             default:
@@ -34,8 +44,12 @@ function Header({nameOfPage, role, sex}) {
     return (
         <header className='header'>
             <div className='headerDiv headerDivLeft'>
-                <img src={LOGOUT} alt='LogOut'/>
-                <p>LOGOUT</p>
+                <Link to='/'>
+                    <img src={LOGOUT} alt='LogOut'/>                
+                </Link>
+                <Link to='/'>
+                    <p>LOGOUT</p>
+                </Link>
             </div>
             <div className='headerDiv headerDivCenter'>
                 <p>

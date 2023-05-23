@@ -34,13 +34,12 @@
         cursor: pointer;
     }
 
-    p {
+    a {
         text-shadow: 2px 4px 4px rgba(0, 0, 0, 0.5);
         font-size: 16px;
+        text-decoration: none;
+        color: white;
         margin-top: 5px;
-    }
-    p:hover {
-        cursor: pointer;
     }
 }
 
@@ -51,19 +50,17 @@
         width: 45px;
         margin-right: 70px;
         margin-left: 15px;
-        margin-top: 5px;
         filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.5));
     }
     img:hover {
         cursor: pointer;
     }
 
-    p {
+    a {
         text-shadow: 2px 4px 4px rgba(0, 0, 0, 0.5);
         font-size: 18px;
+        text-decoration: none;
+        color: white;
         margin-top: 5px;
-    }
-    p:hover {
-        cursor: pointer;
     }
 }
