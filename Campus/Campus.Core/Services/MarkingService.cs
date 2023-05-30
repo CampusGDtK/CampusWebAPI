@@ -55,7 +55,6 @@ namespace Campus.Core.Services
                 {
                     StudentId = currentControl.StudentId,
                     DisciplineId = disciplineId,
-                    Discipline = discipline.Name,
                     Details = details,
                     Marks = marks,
                     TotalMark = currentControl.TotalMark,
@@ -89,7 +88,6 @@ namespace Campus.Core.Services
             {
                 StudentId = studentId,
                 DisciplineId = disciplineId,
-                Discipline = discipline.Name,
                 Details = details,
                 Marks = marks,
                 TotalMark = currentControl.TotalMark,
@@ -112,13 +110,6 @@ namespace Campus.Core.Services
                     Marks = JsonConvert.DeserializeObject<IEnumerable<int>>(currentControl.Mark),
                     Details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail),
                 });
-
-            foreach(var mark in marks)
-            {
-                Discipline? discipline = await _disciplineRepository.GetValueById(mark.DisciplineId);
-
-                mark.Discipline = discipline.Name;
-            }
 
             return marks;
         }

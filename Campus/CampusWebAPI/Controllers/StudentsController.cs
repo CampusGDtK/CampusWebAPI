@@ -12,11 +12,14 @@ public class StudentsController : ControllerBase
 {
     private readonly IStudentService _studentService;
     private readonly IMarkingService _markingService;
+    private readonly IDisciplineService _disciplineService;
 
-    public StudentsController(IStudentService studentService, IMarkingService markingService)
+    public StudentsController(IStudentService studentService, IMarkingService markingService, 
+        IDisciplineService disciplineService)
     {
         _studentService = studentService;
         _markingService = markingService;
+        _disciplineService = disciplineService;
     }
 
     [Authorize(Roles = "Admin,Academic")]
@@ -50,6 +53,13 @@ public class StudentsController : ControllerBase
     {
         await _studentService.Delete(id);
         return Ok("Successfully deleted");
+    }
+
+    [Authorize]
+    [HttpGet("{studentId}/disciplines")]
+    public async Task<IActionResult> GetDisciplines(Guid studentId)
+    {
+        return Ok(await _disciplineService.GetByStudentId(studentId));
     }
 
     [Authorize]

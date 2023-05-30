@@ -12,6 +12,7 @@ namespace Campus.Core.ServiceContracts
         Task<DisciplineResponse> GetDisciplineById(Guid disciplineId);
         Task<IEnumerable<DisciplineResponse>> GetAll();
         Task<IEnumerable<DisciplineResponse>> GetByCathedraId(Guid cathedraId);
+        Task<IEnumerable<DisciplineResponse>> GetByStudentId(Guid studentId);
         Task<DisciplineResponse> Add(DisciplineAddRequest disciplineAddRequest);
         Task<DisciplineResponse> Update(DisciplineUpdateRequest disciplineUpdateRequest);
         Task Remove(Guid disciplineId);

@@ -9,12 +9,16 @@ public class DisciplineService : IDisciplineService
 {
     private readonly IRepository<Discipline> _disciplineRepository;
     private readonly IRepository<Cathedra> _cathedraRepository;
+    private readonly IRepository<Student> _studentRepository;
+    private readonly IRepository<CurrentControl> _currentControlRepository;
 
-
-    public DisciplineService(IRepository<Discipline> disciplineRepository, IRepository<Cathedra> cathedraRepository)
+    public DisciplineService(IRepository<Discipline> disciplineRepository, IRepository<Cathedra> cathedraRepository, 
+        IRepository<Student> studentRepository, IRepository<CurrentControl> currentControlRepository)
     {
         _disciplineRepository = disciplineRepository;
         _cathedraRepository = cathedraRepository;
+        _studentRepository = studentRepository;
+        _currentControlRepository = currentControlRepository;
     }
 
     public async Task<DisciplineResponse> GetDisciplineById(Guid id)
@@ -100,5 +104,17 @@ public class DisciplineService : IDisciplineService
         }
         await _disciplineRepository.Delete(id);
     }
-    
+
+    public async Task<IEnumerable<DisciplineResponse>> GetByStudentId(Guid studentId)
+    {
+        if(await _studentRepository.GetValueById(studentId) is null)
+            throw new KeyNotFoundException("Id of student not found");
+
+        var disciplines = (await _currentControlRepository.GetAll())
+            .Where(currentControl => currentControl.StudentId == studentId)
+            .Select(currentControl => currentControl.Discipline.ToDisciplineResponse())
+            .ToList();
+
+        return disciplines;
+    }
 }
