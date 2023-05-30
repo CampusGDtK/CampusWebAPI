@@ -11,19 +11,38 @@ function LogInPage({chooseStudentId}) {
     function validationPassword () {
         const password = document.querySelector('#password');
         if (validator.isUUID(password.value)) {
-            console.log('password ok');
+            password.style = "border: none;"
         } else {
-            console.log('password error');
+            password.style = "border: 3px solid #ff0000ab;" 
         }
-        // console.log(password.value);
     }
 
     function validationLogin () {
         const login = document.querySelector('#login');
         if (validator.isEmail(login.value)) {
-            console.log('login ok');
+            login.style = "border: none;"
         } else {
-            console.log('login error');
+            login.style = "border: 3px solid #ff0000ab;" 
+        }
+    }
+
+    async function authorization () {
+        const password = document.querySelector('#password');
+        const login = document.querySelector('#login');
+        password.value === '' ? password.style = "border: 3px solid #ff0000ab;" : password.style = "border: none;";
+        login.value === '' ? login.style = "border: 3px solid #ff0000ab;" : login.style = "border: none;";
+        if (login.value !== '' && login.value !== '') {
+            const auth = await fetch('http://localhost:5272/api/account/login', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: {
+                    "email": `${login.value}`,
+                    "password": `${password.value}`
+                }
+            })
+            console.log(auth.json());
         }
     }
 
@@ -43,9 +62,9 @@ function LogInPage({chooseStudentId}) {
                     required 
                     placeholder='Type your password' 
                     id='password'></input>
-                <Link to='/student-view'>
-                    <button>LOGIN</button>
-                </Link>
+                {/* <Link to='/student-view'> */}
+                    <button onClick={authorization}>LOGIN</button>
+                {/* </Link> */}
             </div>
         </div>
     )
