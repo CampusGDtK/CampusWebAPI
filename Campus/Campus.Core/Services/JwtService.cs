@@ -52,7 +52,9 @@ namespace Campus.Core.Services
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             string token = handler.WriteToken(tokenGenerator);
 
-            return new AuthorizationResponse { UserId = user.Id, Role = role, Email = user.Email, Expiration = expiration, Token = token};
+            Guid userId = user.UserId is null ? user.Id : user.UserId.Value;
+
+            return new AuthorizationResponse { UserId = userId, Role = role, Email = user.Email, Expiration = expiration, Token = token};
         }
     }
 }
