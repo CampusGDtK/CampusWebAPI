@@ -10,6 +10,7 @@ namespace Campus.Core.DTO
     {
         public Guid StudentId { get; set; }
         public Guid DisciplineId { get; set; }
+        public string Discipline { get; set; } = string.Empty;
         public IEnumerable<string> Details { get; set; } = null!;
         public IEnumerable<int> Marks { get; set; } = null!;
         public int TotalMark { get; set; }

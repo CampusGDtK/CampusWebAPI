@@ -32,7 +32,9 @@ namespace Campus.Core.Services
             if (await _groupRepository.GetValueById(groupId) is null)
                 throw new KeyNotFoundException("Id of group not found");
 
-            if (await _disciplineRepository.GetValueById(disciplineId) is null)
+            Discipline? discipline = await _disciplineRepository.GetValueById(disciplineId);
+
+            if (discipline is null)
                 throw new KeyNotFoundException("Id of discipline not found");
 
             var sudentsIds = (await _studentRepository.GetAll()).Where(x => x.GroupId == groupId).Select(x => x.Id);
@@ -53,6 +55,7 @@ namespace Campus.Core.Services
                 {
                     StudentId = currentControl.StudentId,
                     DisciplineId = disciplineId,
+                    Discipline = discipline.Name,
                     Details = details,
                     Marks = marks,
                     TotalMark = currentControl.TotalMark,
@@ -67,7 +70,9 @@ namespace Campus.Core.Services
             if (await _studentRepository.GetValueById(studentId) is null)
                 throw new KeyNotFoundException("Id of student not found");
 
-            if (await _disciplineRepository.GetValueById(disciplineId) is null)
+            Discipline? discipline = await _disciplineRepository.GetValueById(disciplineId);
+
+            if (discipline is null)
                 throw new KeyNotFoundException("Id of discipline not found");
 
             CurrentControl? currentControl = (await _currentControlRepository.GetAll())
@@ -84,6 +89,7 @@ namespace Campus.Core.Services
             {
                 StudentId = studentId,
                 DisciplineId = disciplineId,
+                Discipline = discipline.Name,
                 Details = details,
                 Marks = marks,
                 TotalMark = currentControl.TotalMark,
@@ -99,13 +105,20 @@ namespace Campus.Core.Services
 
             IEnumerable<MarkResponse> marks = (await _currentControlRepository.GetAll())
                 .Where(currentControl => currentControl.StudentId == studentId)
-                .Select(currentControl => new MarkResponse()
+                .Select(async currentControl => new MarkResponse()
                 {
                     StudentId = studentId,
-                    DisciplineId = currentControl.DisciplineId,
+                    DisciplineId = currentControl.DisciplineId
                     Marks = JsonConvert.DeserializeObject<IEnumerable<int>>(currentControl.Mark),
                     Details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail),
                 });
+
+            foreach(var mark in marks)
+            {
+                Discipline? discipline = await _disciplineRepository.GetValueById(mark.DisciplineId);
+
+                mark.Discipline = discipline.Name;
+            }
 
             return marks;
         }
