@@ -1,6 +1,8 @@
 ﻿using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CampusWebAPI.Controllers;
 
@@ -16,7 +18,8 @@ public class StudentsController : ControllerBase
         _studentService = studentService;
         _markingService = markingService;
     }
-    
+
+    [Authorize(Roles = "Admin,Academic")]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery]Guid? groupId)
     {
@@ -26,44 +29,44 @@ public class StudentsController : ControllerBase
         }
         return Ok(await _studentService.GetByGroupId(groupId.Value));
     }
-    
+
+    [Authorize(Roles = "Admin,Academic")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         return Ok(await _studentService.GetById(id));
     }
-    
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody]StudentAddRequest? request)
-    {
-        return Ok(await _studentService.Create(request!));
-    }
-    
+
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async Task<IActionResult> Update([FromBody]StudentUpdateRequest? request)
     {
         return Ok(await _studentService.Update(request!));
     }
-    
+
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _studentService.Delete(id);
         return Ok("Successfully deleted");
     }
-    
+
+    [Authorize]
     [HttpGet("{studentId}/marks")]
     public async Task<IActionResult> GetMarks(Guid studentId)
     {
         return Ok(await _markingService.GetByStudentId(studentId));
     }
-    
+
+    [Authorize]
     [HttpGet("{studentId}/marks/{disciplineId}")]
     public async Task<IActionResult> GetMarkInDiscipline(Guid studentId, Guid disciplineId)
     {
         return Ok(await _markingService.GetByStudentAndDisciplineId(studentId, disciplineId));
     }
-    
+
+    [Authorize(Roles = "Academic")]
     [HttpPost("{studentId}/marks/{disciplineId}")]
     public async Task<IActionResult> AddMark(Guid studentId, Guid disciplineId, [FromBody]IEnumerable<int> marks)
     {

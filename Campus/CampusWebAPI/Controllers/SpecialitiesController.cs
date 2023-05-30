@@ -1,12 +1,15 @@
 ﻿using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CampusWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class SpecialitiesController : ControllerBase
     {
         private readonly ISpecialityService _specialityService;

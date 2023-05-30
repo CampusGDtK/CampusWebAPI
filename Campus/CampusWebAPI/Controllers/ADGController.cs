@@ -1,11 +1,13 @@
 ﻿using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CampusWebAPI.Controllers
 {
     [Route("api/adg-relation")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class ADGController : ControllerBase
     {
         private readonly IADGService _adgService;

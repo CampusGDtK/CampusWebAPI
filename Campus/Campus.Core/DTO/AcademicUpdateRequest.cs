@@ -39,6 +39,11 @@ namespace Campus.Core.DTO
         [Required]
         public Guid CathedraId { get; set; }
 
+        public string? Password { get; set; }
+
+        [Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
+        public string? ConfirmPassword { get; set; }
+
         public Academic ToAcademic()
         {
             Academic academic = new Academic()

@@ -1,11 +1,14 @@
 ﻿using Campus.Core.DTO;
 using Campus.Core.ServiceContracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace CampusWebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "Admin")]
 public class DisciplinesController : ControllerBase
 {
     private readonly IDisciplineService _disciplineService;
@@ -14,7 +17,7 @@ public class DisciplinesController : ControllerBase
     {
         _disciplineService = disciplineService;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> GetDisciplines([FromQuery]Guid? cathedraId)
     {
