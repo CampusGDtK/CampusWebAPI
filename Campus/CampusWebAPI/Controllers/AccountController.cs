@@ -11,7 +11,6 @@ namespace CampusWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -33,6 +32,7 @@ namespace CampusWebAPI.Controllers
             _jwtService = jwtService;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDTO registerDTO)
         {
@@ -128,6 +128,7 @@ namespace CampusWebAPI.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {

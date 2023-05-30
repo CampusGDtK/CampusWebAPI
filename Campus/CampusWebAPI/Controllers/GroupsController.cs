@@ -73,6 +73,5 @@ namespace CampusWebAPI.Controllers
             var result = await _markingService.GetByGroupAndDisciplineId(groupId, disciplineId);
             return Ok(result);
         }
-
     }
 }

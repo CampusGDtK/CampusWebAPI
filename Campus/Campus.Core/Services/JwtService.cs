@@ -27,13 +27,15 @@ namespace Campus.Core.Services
         {
             var expiration = DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:Expiration_minutes"]));
 
+            string role = string.Join(',', (await _userManager.GetRolesAsync(user)));
+
             Claim[] claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Email),
-                new Claim(ClaimTypes.Role, string.Join(',', (await _userManager.GetRolesAsync(user))))
+                new Claim(ClaimTypes.Role, role)
             };
 
             SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -50,7 +52,7 @@ namespace Campus.Core.Services
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             string token = handler.WriteToken(tokenGenerator);
 
-            return new AuthorizationResponse { Email = user.Email, Expiration = expiration, Token = token};
+            return new AuthorizationResponse { UserId = user.Id, Role = role, Email = user.Email, Expiration = expiration, Token = token};
         }
     }
 }
