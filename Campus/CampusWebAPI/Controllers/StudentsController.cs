@@ -30,7 +30,7 @@ public class StudentsController : ControllerBase
         return Ok(await _studentService.GetByGroupId(groupId.Value));
     }
 
-    [Authorize(Roles = "Admin,Academic")]
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
