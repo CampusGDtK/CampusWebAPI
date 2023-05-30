@@ -15,17 +15,15 @@ function LogInPage({chooseStudentId}) {
         } else {
             console.log('password error');
         }
-        console.log(password.value);
+        // console.log(password.value);
     }
 
     function validationLogin () {
         const login = document.querySelector('#login');
-        if (login.value.length < 4) {
-            console.log('login is too short');
-        } else if (login.value.length > 20) {
-            console.log('login is too long');
+        if (validator.isEmail(login.value)) {
+            console.log('login ok');
         } else {
-            console.log('login is ok')
+            console.log('login error');
         }
     }
 
