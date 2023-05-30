@@ -130,7 +130,7 @@ namespace CampusWebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDTO loginDTO)
+        public async Task<IActionResult> Login([FromBody]LoginDTO loginDTO)
         {
             ApplicationUser? user = await _userManager.FindByEmailAsync(loginDTO.Email);
 

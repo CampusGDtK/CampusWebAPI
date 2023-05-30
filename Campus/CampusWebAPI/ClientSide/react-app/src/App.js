@@ -6,18 +6,21 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { useState } from 'react';
 
 function App() {
-  const [studentId, setStudentId] = useState();
+  const [userId, setUserId] = useState();
+  const [role, setRole] = useState();
+  const [token, setToken] = useState();
 
-  function chooseStudentId(id) {
-    console.log(id);
-    setStudentId(id);
+  function setUserCreds(id, role, token) {
+    setUserId(id);
+    setRole(role);
+    setToken(token);
   }
 
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<LogInPage setStudentId={chooseStudentId} />}/>
-        <Route path='/student-view' element={<StudentView studentId={studentId}/>}/>
+        <Route path='/' element={<LogInPage setUserCreds={setUserCreds} />}/>
+        <Route path='/student-view' element={<StudentView userId={userId} token={token}/>}/>
         <Route path='/profile' element={<AccountPage />}/>
       </Routes>
     </Router>
