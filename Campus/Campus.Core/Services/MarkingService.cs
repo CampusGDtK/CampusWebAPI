@@ -105,10 +105,10 @@ namespace Campus.Core.Services
 
             IEnumerable<MarkResponse> marks = (await _currentControlRepository.GetAll())
                 .Where(currentControl => currentControl.StudentId == studentId)
-                .Select(async currentControl => new MarkResponse()
+                .Select(currentControl => new MarkResponse()
                 {
                     StudentId = studentId,
-                    DisciplineId = currentControl.DisciplineId
+                    DisciplineId = currentControl.DisciplineId,
                     Marks = JsonConvert.DeserializeObject<IEnumerable<int>>(currentControl.Mark),
                     Details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail),
                 });
