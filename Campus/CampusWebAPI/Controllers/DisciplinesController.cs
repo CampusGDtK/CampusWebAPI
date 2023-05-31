@@ -8,7 +8,6 @@ namespace CampusWebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[Authorize(Roles = "Admin")]
 public class DisciplinesController : ControllerBase
 {
     private readonly IDisciplineService _disciplineService;
@@ -18,6 +17,7 @@ public class DisciplinesController : ControllerBase
         _disciplineService = disciplineService;
     }
 
+    [Authorize(Roles = "Admin,Academic")]
     [HttpGet]
     public async Task<IActionResult> GetDisciplines([FromQuery]Guid? cathedraId)
     {
@@ -27,25 +27,29 @@ public class DisciplinesController : ControllerBase
         }
         return Ok(await _disciplineService.GetByCathedraId(cathedraId.Value));
     }
-    
+
+    [Authorize(Roles = "Admin,Academic")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetDisciplineById(Guid id)
     {
         return Ok(await _disciplineService.GetDisciplineById(id));
     }
-    
+
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> AddDiscipline([FromBody] DisciplineAddRequest? disciplineRequest)
     {
         return Ok(await _disciplineService.Add(disciplineRequest!));
     }
-    
+
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async Task<IActionResult> UpdateDiscipline([FromBody] DisciplineUpdateRequest? disciplineRequest)
     {
         return Ok(await _disciplineService.Update(disciplineRequest!));
     }
-    
+
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDiscipline(Guid id)
     {
