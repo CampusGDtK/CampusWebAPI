@@ -46,8 +46,9 @@ namespace Campus.Infrastructure.Repositories
         public async Task<IEnumerable<CurrentControl>> GetAll()
         {
             return _db.CurrentControls
-                .Include(x => x.Discipline)
                 .Include(x => x.Student)
+                .Include(x => x.Discipline)
+                .ThenInclude(x => x.Cathedra)
                 .AsEnumerable();
         }
 

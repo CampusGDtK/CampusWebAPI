@@ -10,13 +10,18 @@ public class DisciplineServiceTest
 {
     private readonly Mock<IRepository<Discipline>> _disciplineRepositoryMock;
     private readonly Mock<IRepository<Cathedra>> _cathedraRepositoryMock;
+    private readonly Mock<IRepository<Student>> _studentRepositoryMock;
+    private readonly Mock<IRepository<CurrentControl>> _currentControlRepositoryMock;
     private readonly DisciplineService _disciplineService;
 
     public DisciplineServiceTest()
     {
         _disciplineRepositoryMock = new Mock<IRepository<Discipline>>();
         _cathedraRepositoryMock = new Mock<IRepository<Cathedra>>();
-        _disciplineService = new DisciplineService(_disciplineRepositoryMock.Object, _cathedraRepositoryMock.Object);
+        _studentRepositoryMock = new Mock<IRepository<Student>>();
+        _currentControlRepositoryMock = new Mock<IRepository<CurrentControl>>();
+        _disciplineService = new DisciplineService(_disciplineRepositoryMock.Object, _cathedraRepositoryMock.Object,
+            _studentRepositoryMock.Object, _currentControlRepositoryMock.Object);
     }
 
     [Fact]

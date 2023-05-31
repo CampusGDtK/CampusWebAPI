@@ -18,13 +18,17 @@ namespace Campus.Core.Services
         private readonly IRepository<Student> _studentRepository;
         private readonly IRepository<Discipline> _disciplineRepository;
         private readonly IRepository<Group> _groupRepository;
+        private readonly IDisciplineService _disciplineService;
 
-        public MarkingService(IRepository<CurrentControl> currentControlRepository, IRepository<Student> studentRepository, IRepository<Discipline> disciplineRepository, IRepository<Group> groupRepository)
+        public MarkingService(IRepository<CurrentControl> currentControlRepository, IRepository<Student> studentRepository, 
+            IRepository<Discipline> disciplineRepository, IRepository<Group> groupRepository, 
+            IDisciplineService disciplineService)
         {
             _currentControlRepository = currentControlRepository;
             _studentRepository = studentRepository;
             _disciplineRepository = disciplineRepository;
             _groupRepository = groupRepository;
+            _disciplineService = disciplineService;
         }
 
         public async Task<IEnumerable<MarkResponse>> GetByGroupAndDisciplineId(Guid groupId, Guid disciplineId)
@@ -55,6 +59,7 @@ namespace Campus.Core.Services
                 {
                     StudentId = currentControl.StudentId,
                     DisciplineId = disciplineId,
+                    DisciplineName = discipline.Name,
                     Details = details,
                     Marks = marks,
                     TotalMark = currentControl.TotalMark,
@@ -88,6 +93,7 @@ namespace Campus.Core.Services
             {
                 StudentId = studentId,
                 DisciplineId = disciplineId,
+                DisciplineName = discipline.Name,
                 Details = details,
                 Marks = marks,
                 TotalMark = currentControl.TotalMark,
@@ -111,6 +117,18 @@ namespace Campus.Core.Services
                     Details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail),
                 });
 
+            IEnumerable<DisciplineResponse> disciplines = await _disciplineService.GetByStudentId(studentId);
+
+            foreach(var mark in marks)
+            {
+                var discipline = disciplines.FirstOrDefault(x => x.Id == mark.DisciplineId);
+
+                if(discipline != null)
+                {
+                    mark.DisciplineName = discipline.Name;
+                }
+            }
+
             return marks;
         }
 
@@ -122,7 +140,9 @@ namespace Campus.Core.Services
             if (await _studentRepository.GetValueById(markSetRequest.StudentId) is null)
                 throw new KeyNotFoundException("Id of student not found");
 
-            if (await _disciplineRepository.GetValueById(markSetRequest.DisciplineId) is null)
+            Discipline? discipline = await _disciplineRepository.GetValueById(markSetRequest.DisciplineId);
+
+            if (discipline is null)
                 throw new KeyNotFoundException("Id of discipline not found");
 
             CurrentControl? currentControl = (await _currentControlRepository.GetAll())
@@ -147,6 +167,7 @@ namespace Campus.Core.Services
             {
                 StudentId = currentControlUpdated.StudentId,
                 DisciplineId = currentControlUpdated.DisciplineId,
+                DisciplineName = discipline.Name,
                 Details = details,
                 Marks = marks,
                 TotalMark = currentControlUpdated.TotalMark
