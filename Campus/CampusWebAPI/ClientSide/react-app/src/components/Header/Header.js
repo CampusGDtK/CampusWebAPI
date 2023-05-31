@@ -5,8 +5,8 @@ import LOGOUT from '../../images/right-from-bracket-solid.svg';
 import Profile from '../../images/circle-user-regular.svg';
 import Back from '../../images/back.svg';
 
-function Header({nameOfPage, role, sex}) {
-    const title = role === 'academic' ? sex === 'male' ? 'Mr. ' : 'Mrs. ' : '';
+function Header({nameOfPage, role, sex, title}) {
+    const prep = role === 'Academic' ? sex === 'male' ? 'Mr. ' : 'Mrs. ' : '';
 
     function chooseButton (nameOfPage) {
         switch (nameOfPage) {
@@ -14,7 +14,7 @@ function Header({nameOfPage, role, sex}) {
                 return (
                     <>
                         <Link to='/profile'>
-                            <p>{title}Daniil</p>
+                            <p>{prep}{title}</p>
                         </Link>
                         <Link to='/profile'>
                             <img src={Profile} alt='profile' />

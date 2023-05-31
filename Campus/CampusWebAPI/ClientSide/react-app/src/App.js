@@ -9,6 +9,7 @@ function App() {
   const [userId, setUserId] = useState();
   const [role, setRole] = useState();
   const [token, setToken] = useState();
+  const [userData, setUserData] = useState();
 
   function setUserCreds(id, role, token) {
     setUserId(id);
@@ -16,12 +17,20 @@ function App() {
     setToken(token);
   }
 
+  function changeUserData (data) {
+    setUserData(data);
+  }
+
   return (
     <Router>
       <Routes>
         <Route path='/' element={<LogInPage setUserCreds={setUserCreds} />}/>
-        <Route path='/student-view' element={<StudentView userId={userId} token={token}/>}/>
-        <Route path='/profile' element={<AccountPage />}/>
+        <Route path='/student-view' element={<StudentView 
+                                              userId={userId} 
+                                              token={token} 
+                                              changeUserData={changeUserData}
+                                              userData={userData}/>}/>
+        <Route path='/profile' element={<AccountPage userData={userData}/>}/>
       </Routes>
     </Router>
   );

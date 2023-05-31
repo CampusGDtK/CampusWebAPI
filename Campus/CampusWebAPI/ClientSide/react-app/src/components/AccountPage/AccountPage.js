@@ -2,18 +2,18 @@ import Header from '../Header/Header';
 import Profile from '../../images/circle-user-regular.svg';
 import './AccountPage.scss';
 
-function AccountPage() {
+function AccountPage({userData}) {
     return (
         <>
             <Header nameOfPage='profile'/>
             <div className='profilePageMainDiv'>
                 <div className='profilePageWrapper'>
                     <img src={Profile} alt='profile'/>
-                    <p>Daniil Dziubenko</p>
-                    <p>Group: IP-15</p>
-                    <p>Email: freekick2017uk@gmail.com</p>
-                    <p>Phone number: +380996601848</p>
-                    <p>Date of birth: 04-10-2003</p>
+                    <p>{userData.fullName}</p>
+                    <p>Group: {userData.groupName}</p>
+                    <p>Email: {userData.email}</p>
+                    <p>Phone number: {userData.phoneNumber}</p>
+                    <p>Date of birth: {userData.dateOfBirth}</p>
                 </div>
             </div>
         </>
