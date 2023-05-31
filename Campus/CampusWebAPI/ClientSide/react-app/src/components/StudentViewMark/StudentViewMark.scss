@@ -1,6 +1,7 @@
 .mainDivView {
     width: 66.5%;
     height: calc(100vh - 100px);
+    min-height: fit-content;
     // background-color: bisque;
     display: flex;
     justify-content: center;

@@ -1,49 +1,61 @@
+import { useEffect, useState } from 'react';
 import './StudentViewMark.scss';
+import Spinner from '../Spinner/Spinner';
 
-function StudentViewMark({subjectId}) {
-    function setContent(subjectId) {
-        switch(subjectId) {
-            case '-': 
-                return (
+function StudentViewMark({subjectId, studentId, token}) {
+    const [marks, setMarks] = useState();
+ 
+    useEffect(() => {
+        async function getUserMarks(subjectId) {
+            if (subjectId === '-') {
+                setMarks('-');
+            } else {
+                const resp = await fetch(`http://localhost:5272/api/students/${studentId}/marks/${subjectId}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                const data = await resp.json();
+                console.log(data);
+                setMarks(data);
+            }
+        }
+
+        getUserMarks(subjectId)
+        .catch(error => console.error(error));
+    }, [subjectId])
+
+    const content = marks ?
+                    marks === '-' ?
                     <p className='chooseParagraph'>
                         Choose any subject to <br/> view your marks
-                    </p>
-                )
-            case 'value1':
-                return (
+                    </p> :
                     <>
                         <p className='mainParagraph'>
-                            Subject 1
+                            {marks.disciplineId}
                         </p>
                         <div className='marksMainDiv'>
                             <div className='marksSubDiv'>
-                                <div className='marksStudentViewCell'>MKR 1</div>
-                                <div className='marksStudentViewCell'>Lab 1</div>
-                                <div className='marksStudentViewCell'>MKR 2</div>
-                                <div className='marksStudentViewCell'>Lab 2</div>
-                                <div className='marksStudentViewCell'>Lab 3</div>
+                                {marks.details.map((element, index) => {
+                                    return (
+                                        <div className='marksStudentViewCell'>{element}</div>
+                                    )
+                                })}
                             </div>
                             <div className='marksSubDiv'>
-                                <div className='marksStudentViewCell'>10</div>
-                                <div className='marksStudentViewCell'>5</div>
-                                <div className='marksStudentViewCell'>15</div>
-                                <div className='marksStudentViewCell'>12</div>
-                                <div className='marksStudentViewCell'>3</div>
+                                {marks.marks.map((element, index) => {
+                                    return (
+                                        <div className='marksStudentViewCell'>{element}</div>
+                                    )
+                                })}
                             </div>
                         </div>
                         <p className='mainParagraph'>
-                            Total score: 45
+                            Total score: {marks.totalMark}
                         </p>
                     </>
-                )
-            default: 
-                return (
-                    <p>Unexpected subjectId</p>
-                )
-        }
-    }
-
-    const content = setContent(subjectId);
+                : <Spinner/>;
 
     return (
         <div className='mainDivView'>
