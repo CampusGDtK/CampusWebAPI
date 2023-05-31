@@ -19,6 +19,7 @@ function StudentViewMark({subjectId, studentId, token}) {
                 const data = await resp.json();
                 console.log(data);
                 setMarks(data);
+                
             }
         }
 
@@ -33,20 +34,20 @@ function StudentViewMark({subjectId, studentId, token}) {
                     </p> :
                     <>
                         <p className='mainParagraph'>
-                            {marks.disciplineId}
+                            {marks.disciplineName}
                         </p>
                         <div className='marksMainDiv'>
                             <div className='marksSubDiv'>
                                 {marks.details.map((element, index) => {
                                     return (
-                                        <div className='marksStudentViewCell'>{element}</div>
+                                        <div key={index} className='marksStudentViewCell'>{element}</div>
                                     )
                                 })}
                             </div>
                             <div className='marksSubDiv'>
                                 {marks.marks.map((element, index) => {
                                     return (
-                                        <div className='marksStudentViewCell'>{element}</div>
+                                        <div key={index} className='marksStudentViewCell'>{element}</div>
                                     )
                                 })}
                             </div>

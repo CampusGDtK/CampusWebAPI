@@ -4,6 +4,7 @@ import StudentView from './components/StudentView/StudentView';
 import AccountPage from './components/AccountPage/AccountPage';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { useState } from 'react';
+import AcademicView from './components/AcademicView/AcademicView';
 
 function App() {
   const [userId, setUserId] = useState();
@@ -30,7 +31,12 @@ function App() {
                                               token={token} 
                                               changeUserData={changeUserData}
                                               userData={userData}/>}/>
-        <Route path='/profile' element={<AccountPage userData={userData}/>}/>
+        <Route path='/academic-view' element={<AcademicView
+                                              userId={userId}
+                                              token={token}
+                                              changeUserData={changeUserData}
+                                              userData={userData}/>}/>
+        <Route path='/profile' element={<AccountPage userData={userData} role={role}/>}/>
       </Routes>
     </Router>
   );
