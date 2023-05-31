@@ -5,8 +5,8 @@ import LOGOUT from '../../images/right-from-bracket-solid.svg';
 import Profile from '../../images/circle-user-regular.svg';
 import Back from '../../images/back.svg';
 
-function Header({nameOfPage, role, sex, title}) {
-    const prep = role === 'Academic' ? sex === 'male' ? 'Mr. ' : 'Mrs. ' : '';
+function Header({nameOfPage, role, sex, title, routeBack}) {
+    const prep = role === 'Academic' ? sex === 'Male' ? 'Mr. ' : 'Mrs. ' : '';
 
     function chooseButton (nameOfPage) {
         switch (nameOfPage) {
@@ -24,10 +24,10 @@ function Header({nameOfPage, role, sex, title}) {
             case 'profile':
                 return (
                     <>
-                        <Link to='/student-view'>
+                        <Link to={routeBack}>
                             <p>Back</p>
                         </Link>
-                        <Link to='/student-view'>
+                        <Link to={routeBack}>
                             <img src={Back} alt='back'/>
                         </Link>
                     </>
