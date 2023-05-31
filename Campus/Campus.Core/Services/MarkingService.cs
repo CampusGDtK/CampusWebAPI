@@ -107,7 +107,7 @@ namespace Campus.Core.Services
             if (await _studentRepository.GetValueById(studentId) is null)
                 throw new KeyNotFoundException("Id of student not found");
 
-            IEnumerable<MarkResponse> marks = (await _currentControlRepository.GetAll())
+            List<MarkResponse> marks = (await _currentControlRepository.GetAll())
                 .Where(currentControl => currentControl.StudentId == studentId)
                 .Select(currentControl => new MarkResponse()
                 {
@@ -115,7 +115,8 @@ namespace Campus.Core.Services
                     DisciplineId = currentControl.DisciplineId,
                     Marks = JsonConvert.DeserializeObject<IEnumerable<int>>(currentControl.Mark),
                     Details = JsonConvert.DeserializeObject<IEnumerable<string>>(currentControl.Detail),
-                });
+                })
+                .ToList();
 
             IEnumerable<DisciplineResponse> disciplines = await _disciplineService.GetByStudentId(studentId);
 
