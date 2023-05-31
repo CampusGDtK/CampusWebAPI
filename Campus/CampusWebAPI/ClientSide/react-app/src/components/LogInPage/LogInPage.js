@@ -75,7 +75,7 @@ function LogInPage({setUserCreds}) {
                     required 
                     placeholder='Type your password' 
                     id='password'></input>
-                <button onClick={authorization}>LOGIN</button>
+                <button className='button' onClick={authorization}>LOGIN</button>
             </div>
         </div>
     )

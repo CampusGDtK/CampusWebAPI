@@ -4,10 +4,12 @@ import Header from '../Header/Header';
 import ListOfSubjects from '../ListOfSubjects/ListOfSubjects';
 import AcademicViewGroups from '../AcademicViewGroups/AcademicViewGroups';
 import Spinner from '../Spinner/Spinner';
+import Close from '../../images/close.svg';
 
 function AcademicView ({userId, token, changeUserData, userData}) {
     const [subjectId, setSubjectId] = useState('-');
     const [listOfSubjects, setListOfSubjects] = useState();
+    const [groupId, setGroupId] = useState();
 
     useEffect(() => {
         async function getUserData () {
@@ -50,14 +52,39 @@ function AcademicView ({userId, token, changeUserData, userData}) {
         setSubjectId(id)
     }
 
+    function changeGroupId(id) {
+        setGroupId(id);
+    }
+
+    function changeModalVisibility () {
+        const modal = document.querySelector('.modalWrapper');
+        if (modal.style.display === 'block') modal.style = 'display: none;';
+        else modal.style = 'display: block;';
+    }
+
     const content = userData && listOfSubjects ?
     <>
         <Header nameOfPage='view' title={userData.name} role={'Academic'} sex={userData.gender}/>
         <div className='mainSection'>
             <ListOfSubjects chooseSubject={chooseSubject} listOfSubjects={listOfSubjects}/>
             <div className='verticalLine'/>
-            <AcademicViewGroups subjectId={subjectId} academicId={userId} token={token}/>                
+            <AcademicViewGroups 
+            subjectId={subjectId} 
+            academicId={userId} 
+            token={token} 
+            changeGroupId={changeGroupId} 
+            changeModalVisibility={changeModalVisibility}/>                
         </div>
+        <div className='modalWrapper'>
+            <div className='mainModalWindow'>
+                <img src={Close} alt='close' className='closeImg' onClick={changeModalVisibility}/>
+            </div>
+        </div>
+        {/* <div className='modalWrapper'>
+            <div className='subModalWindow'>
+                
+            </div>
+        </div> */}
     </> : <Spinner />;
 
     return (
